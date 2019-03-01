@@ -3,11 +3,15 @@ const path = require('path');
 const expressHbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+require('dotenv').config();
 
 const db = require('./models');
 
-const authRouter = require('./routes/html/auth');
-const matchesRouter = require('./routes/html/matches');
+const authHtmlRouter = require('./routes/html/auth');
+const authApiRouter = require('./routes/api/auth');
+const matchesHtmlRouter = require('./routes/html/matches');
+const matchesApiRouter = require('./routes/html/matches');
+
 const errorController = require('./controllers/error');
 
 const PORT = process.env.PORT || 3000;
@@ -34,7 +38,7 @@ app.use((req, res, next) => {
 });
 
 app.use(session({
-    secret: 'Sports-better-secret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new SequelizeStore({
@@ -61,8 +65,10 @@ app.use((req, res, next) => {
         })
 });
 
-app.use(matchesRouter);
-app.use(authRouter);
+app.use(matchesHtmlRouter);
+app.use('/api', matchesApiRouter);
+app.use('/api', authApiRouter);
+app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
