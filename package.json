@@ -1,0 +1,32 @@
+{
+  "name": "sports-better",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenchris/sports-better.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenchris/sports-better/issues"
+  },
+  "homepage": "https://github.com/nguyenchris/sports-better#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-session-sequelize": "^6.0.0",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^4.42.1"
+  }
+}
