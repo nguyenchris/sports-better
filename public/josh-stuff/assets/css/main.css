@@ -2,11 +2,8 @@
     display: none;
 }
 
-
 .masthead.segment {
-    min-height: 1000px;
-    /* height: .95vh; */
-    /* height: 100%; */
+    min-height: 700px;
     padding: 1em 0em;
 }
 
