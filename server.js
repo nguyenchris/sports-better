@@ -42,12 +42,13 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new SequelizeStore({
-        db: db.sequelize
+        db: db.sequelize,
+        expiration: 3 * 60 * 60 * 1000
     })
 }));
 
 app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.isLoggedIn = req.session.isLoggedIn;
     next();
 });
 
@@ -55,7 +56,7 @@ app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
     }
-    User.findByPk(req.session.user.id)
+    db.User.findByPk(req.session.user.id)
         .then(user => {
             req.user = user;
             next()
@@ -72,9 +73,7 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync({
-        force: true
-    })
+    .sync()
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);

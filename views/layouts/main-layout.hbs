@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{title}}</title>
+    <title>Sports Betting | {{title}}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    {{#if loginCSS}}
+    {{#if authCSS}}
     <link rel="stylesheet" href="/assets/css/login.css">
     {{/if}}
 </head>
@@ -38,7 +38,9 @@
         <a class="active item" href="/">Home</a>
         <a class="item" href="/matches">Matches</a>
         <a class="item" href="/leaders">Leaderboard</a>
-        <a class="item" href="/login">Login</a>
+        {{#if isLoggedIn}}<a class="item" href="/login">Login</a>
+        {{else}}<a class="item" href="/logout">Logout</a>{{/if}}
+
         <a class="item" href="/signup">Signup</a>
     </div>
 
@@ -54,10 +56,18 @@
                     </a>
                     <a class="active item" href="/">Home</a>
                     <a class="item" href="/matches">Matches</a>
-                    <a class="item" href="/leaders">Leaderboard</a>
                     <div class="right item">
-                        <a class="ui inverted button" href="/login">Log in</a>
-                        <a class="ui inverted button" href="/signup">Sign Up</a>
+                        {{#if isLoggedIn}}
+                        <a class="item" href="/leaders">Leaderboard</a>
+                        <a class="ui inverted button logout">Logout</a>
+                        {{else}}
+                        {{#unless loginJS}}
+                        <a class="ui inverted button" href="/login">Login</a>
+                        {{/unless}}
+                        {{#unless signupJS}}
+                        <a class="ui inverted button" href="/signup">Signup</a>
+                        {{/unless}}
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -84,6 +94,9 @@
 
     {{#if loginJS}}
     <script src="assets/js/login.js"></script>
+    {{/if}}
+    {{#if signupJS}}
+    <script src="assets/js/signup.js"></script>
     {{/if}}
 </body>
 

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 module.exports = function (sequelize, DataTypes) {
-    const User = sequelize.define('user', {
+    const User = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -23,6 +23,11 @@ module.exports = function (sequelize, DataTypes) {
         password: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        imageUrl: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            isUrl: true
         }
     });
 

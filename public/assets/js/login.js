@@ -29,6 +29,16 @@ $(document).ready(function () {
         onSuccess: submitLogin
     });
 
+    $('#search_form').keypress((e) => {
+        if (e.keyCode === 13 || e.which === 13) {
+            e.preventDefault();
+            if (query.length > 1) {
+                encodeSearch('&q=', query);
+                $('#textarea1').val('');
+            }
+        }
+    });
+
     function submitLogin(event, fields) {
         event.preventDefault();
         const obj = {
@@ -39,11 +49,9 @@ $(document).ready(function () {
         $.post('/api/login', obj, function(data, result) {
             if (result == 'success') {
                 window.location.assign('/');
+            } else {
+                
             }
         })
-
     }
-
-
-
 });
