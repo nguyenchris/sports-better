@@ -2,14 +2,45 @@ const db = require('../../models');
 const {
     validationResult
 } = require('express-validator/check');
+const bcrypt = require('bcryptjs');
 
 
+
+// Post request /api/login
 exports.postLogin = (req, res, next) => {
-
-    res.status(201).json(true);
+    const errors = validationResult(req);
+    const errorMsg = {
+        error: 'Email or password is incorrect.'
+    };
+    if (!errors.isEmpty()) {
+        res.status(422).json(errorMsg)
+    }
+    db.User
+        .findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        .then(user => {
+            if (!user) {
+                return res.status(422).json(errorMsg)
+            }
+            const isMatch = user.validPassword(req.body.password);
+            if (!isMatch) {
+                return res.status(422).json({
+                    error: errorMsg
+                })
+            } else {
+                req.session.user = user;
+                req.session.isLoggedIn = true;
+                return res.status(201).json(true);
+            }
+        })
+        .catch(err => console.log(err));
 };
 
 
+// Post request /api/signup
 exports.postSignup = (req, res, next) => {
     const errors = validationResult(req);
     db.User
@@ -20,12 +51,12 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
             if (!errors.isEmpty()) {
-                res.json({
-                    errors: errors.array()[0].msg
+                return res.json({
+                    error: errors.array()[0].msg
                 })
             } else if (result.length > 0) {
-                res.status(422).json({
-                    errors: 'Email already taken.'
+                    return res.status(422).json({
+                    error: 'Email already taken.'
                 });
             } else {
                 db.User
@@ -33,19 +64,22 @@ exports.postSignup = (req, res, next) => {
                     .then(user => {
                         req.session.user = user;
                         req.session.isLoggedIn = true;
-                        res.status(201).send(true);
-                    }).catch(err => {
+                        return res.status(201).json(true);
+                    })
+                    .catch(err => {
                         console.log(err);
                     })
             }
         })
 };
 
+
+// Post request /api/logout
 exports.postLogout = (req, res, next) => {
     req.session.destroy((err) => {
         if (err) {
             console.log(err);
         }
-        res.status(201).send(true);
+        return res.status(201).send(true);
     })
 }

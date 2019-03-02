@@ -29,29 +29,33 @@ $(document).ready(function () {
         onSuccess: submitLogin
     });
 
-    $('#search_form').keypress((e) => {
-        if (e.keyCode === 13 || e.which === 13) {
-            e.preventDefault();
-            if (query.length > 1) {
-                encodeSearch('&q=', query);
-                $('#textarea1').val('');
-            }
-        }
-    });
+
+
 
     function submitLogin(event, fields) {
         event.preventDefault();
+        let div = $('<div class="ui active dimmer">')
+        let loader = $('<div class="ui large text loader">').text('Logging In');
+        div.append(loader);
+        $('form').append(div)
         const obj = {
             email: fields.email,
             password: fields.password
         }
 
-        $.post('/api/login', obj, function(data, result) {
-            if (result == 'success') {
+        $.post('/api/login', obj)
+            .done(function (data) {
                 window.location.assign('/');
-            } else {
-                
-            }
-        })
+            })
+            .fail(function (err) {
+                $('.dimmer').remove();
+                const msg = err.responseJSON.error;
+                $('.ui.form').form('add errors', [msg])
+            });
     }
+
+
+
+
+
 });

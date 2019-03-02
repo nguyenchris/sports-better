@@ -55,13 +55,6 @@ $(document).ready(function () {
                         prompt: 'You must provide a valid image URL'
                     }
                 ]
-            },
-            checkbox: {
-                identifier: 'terms',
-                rules: [{
-                    type: 'checked',
-                    prompt: 'You must agree to the terms.'
-                }]
             }
         },
         onSuccess: submitSignup
@@ -87,12 +80,8 @@ $(document).ready(function () {
             })
             .fail(function(err) {
                 $('.dimmer').remove();
-                const msg = err.responseJSON.errors;
+                const msg = err.responseJSON.error;
                 $('.ui.form').form('add errors', [msg])
             });
-
-        // if () {
-        // } else {
-        // }
     }
 });

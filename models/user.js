@@ -37,7 +37,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     // Method to check if password entered is correct
-    User.prototype.validPassword = function (password) {
+    User.prototype.validPassword = function(password) {
         return bcrypt.compareSync(password, this.password);
     };
 

@@ -54,20 +54,22 @@
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item" href="/">Home</a>
-                    <a class="item" href="/matches">Matches</a>
+                    <a class="{{#if activeIndex}}active{{/if}} item" href="/">Home</a>
+                    <a class="item {{#if activeMatches}}active{{/if}}" href="/matches">Matches</a>
+                    {{#if isLoggedIn}}
+                        <a class="item {{#if activeLeaders}}active{{/if}}" href="/leaders">Leaderboard</a>
+                    {{/if}}
                     <div class="right item">
-                        {{#if isLoggedIn}}
-                        <a class="item" href="/leaders">Leaderboard</a>
+                    {{#if isLoggedIn}}
                         <a class="ui inverted button logout">Logout</a>
-                        {{else}}
-                        {{#unless loginJS}}
+                    {{else}}
+                    {{#unless loginJS}}
                         <a class="ui inverted button" href="/login">Login</a>
-                        {{/unless}}
-                        {{#unless signupJS}}
+                    {{/unless}}
+                    {{#unless signupJS}}
                         <a class="ui inverted button" href="/signup">Signup</a>
-                        {{/unless}}
-                        {{/if}}
+                    {{/unless}}
+                    {{/if}}
                     </div>
                 </div>
             </div>

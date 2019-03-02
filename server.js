@@ -53,6 +53,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+    console.log(req.session.user);
     if (!req.session.user) {
         return next();
     }
@@ -72,8 +73,11 @@ app.use('/api', authApiRouter);
 app.use(authHtmlRouter);
 app.use(errorController.get404);
 
+
+
+
 db.sequelize
-    .sync()
+    .sync()   // Add {force: true} if need to reset DB tables
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);
