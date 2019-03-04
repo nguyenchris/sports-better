@@ -1,12 +1,25 @@
-$('#button').on('click', function(e) {
-    console.log('hi');
-    e.preventDefault();
-    $.ajax({
-        url: '/api/matches',
-        method: 'GET',
-        dataType: 'json'
-    }).done(function(data) {
+// $('#button').on('click', function(e) {
+//     console.log('hi');
+//     e.preventDefault();
+//     $.ajax({
+//         url: '/api/matches',
+//         method: 'GET',
+//         dataType: 'json'
+//     }).done(function(data) {
+//         console.log(data);
+//     })
+// });
+
+
+$(document).ready(function() {
+
+    $.get('/api/matches', function (data) {
         console.log(data);
     })
+
+$('.cards .dimmable').dimmer({
+    on: 'hover'
 });
 
+
+})
