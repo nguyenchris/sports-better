@@ -1,287 +1,53 @@
-{{!-- <script id="match-card-template" type="text/x-handlebars-template"> --}}
+<div class="ui container">
 
-<div class="ui cards centered">
-    <div class="card" data-matchId="">
-        <div class="blurring dimmable content">
-            <div class="ui dimmer">
-                <div class="content">
-                    <div class="center">
-                        <div class="ui inverted button">Game Details</div>
+    <div class="ui cards centered">
+
+        {{#each games}}
+        <div class="card" data-matchId="">
+            <div class="blurring dimmable content">
+                <div class="ui dimmer">
+                    <div class="content">
+                        <div class="center">
+                            <div class="ui inverted button">Game Details</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content info">
+                    <div class="ui header centered">
+                        <span class="left floated home-team">{{schedule.homeTeam.abbreviation}}</span><span class="live">VS</span><span
+                            class="right floated away-team">{{schedule.awayTeam.abbreviation}}</span>
+                    </div>
+                    <div class="meta">
+                        <span class="left aligned home">Home</span>
+                        <span class="right floated away">Away</span>
+                    </div>
+                    <img class="left floated tiny ui image home-img" src="/img/{{schedule.homeTeam.abbreviation}}.svg">
+                    <img class="right floated tiny ui image away-img" src="/img/{{schedule.awayTeam.abbreviation}}.svg">
+
+                    <div class="meta center aligned time">
+                        <span>7:00 PM ET</span>
+                    </div>
+                    <div class="description">
+                        <span class="left aligned home-score">{{score.homeScoreTotal}}</span>
+                        <span class="right floated away-score">{{score.awayScoreTotal}}</span>
                     </div>
                 </div>
             </div>
-            <div class="content info">
-                <div class="ui header centered">
-                    <span class="left floated home-team">Suns</span><span class="live">LIVE</span><span
-                        class="right floated away-team">Nets</span>
-                </div>
-                <div class="meta">
-                    <span class="left aligned home">Home</span>
-                    <span class="right floated away">Away</span>
-                </div>
-                <img class="left floated tiny ui image home-img" src="/img/ATL.svg">
-                <img class="right floated tiny ui image away-img" src="/img/BRO.svg">
-
-                <div class="meta center aligned time">
-                    <span>7:00 PM ET</span>
-                </div>
-                <div class="description">
-                    <span class="left aligned home-score">100</span>
-                    <span class="right floated away-score">90</span>
+            <div class="extra content bet-money">
+                <div class="ui description">
+                    <p class="total-money">Total: $900</p>
                 </div>
             </div>
-        </div>
-        <div class="extra content bet-money">
-            <div class="ui description">
-                <p class="total-money">Total: $900</p>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Bet <span class="bet-btn-team">Home</span>
-                </div>
-                <div class="ui basic red button away-bet" data-teamId="">Bet <span>Away</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" data-matchId="">
-        <div class="blurring dimmable content">
-            <div class="ui dimmer">
-                <div class="content">
-                    <div class="center">
-                        <div class="ui inverted button">Game Details</div>
+            <div class="extra content">
+                <div class="ui two buttons">
+                    <div class="ui basic green button bet home-bet" data-teamId="{{schedule.homeTeam.id}}">Bet <span
+                            class="bet-btn-team">Home</span>
                     </div>
+                    <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet <span>Away</span></div>
                 </div>
             </div>
-            <div class="content info">
-                <div class="ui header centered">
-                    <span class="left floated home-team">Suns</span><span class="live">VS</span><span
-                        class="right floated away-team">Nets</span>
-                </div>
-                <div class="meta">
-                    <span class="left aligned home">Home</span>
-                    <span class="right floated away">Away</span>
-                </div>
-                <img class="left floated tiny ui image home-img" src="/img/PHX.svg">
-                <img class="right floated tiny ui image away-img" src="/img/IND.svg">
+        </div>
+        {{/each}}
 
-                <div class="meta center aligned start-time">
-                    <span>7:00 PM ET</span>
-                </div>
-                <div class="description">
-                    <span class="left aligned home-score">100</span>
-                    <span class="right floated away-score">90</span>
-                </div>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" data-matchId="">
-        <div class="blurring dimmable content">
-            <div class="ui dimmer">
-                <div class="content">
-                    <div class="center">
-                        <div class="ui inverted button">Game Details</div>
-                    </div>
-                </div>
-            </div>
-            <div class="content info">
-                <div class="ui header centered">
-                    <span class="left floated home-team">Suns</span><span class="red">VS</span><span
-                        class="right floated away-team">Nets</span>
-                </div>
-                <div class="meta">
-                    <span class="left aligned home">Home</span>
-                    <span class="right floated away">Away</span>
-                </div>
-                <img class="left floated tiny ui image home-img" src="/img/SAC.svg">
-                <img class="right floated tiny ui image away-img" src="/img/NYK.svg">
-
-                <div class="meta center aligned time">
-                    <span>7:00 PM ET</span>
-                </div>
-                <div class="description">
-                    <span class="left aligned home-score"></span>
-                    <span class="right floated away-score"></span>
-                </div>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" data-matchId="">
-        <div class="blurring dimmable content">
-            <div class="ui dimmer">
-                <div class="content">
-                    <div class="center">
-                        <div class="ui inverted button">Game Details</div>
-                    </div>
-                </div>
-            </div>
-            <div class="content info">
-                <div class="ui header centered">
-                    <span class="left floated home-team">Suns</span><span>VS</span><span
-                        class="right floated away-team">Nets</span>
-                </div>
-                <div class="meta">
-                    <span class="left aligned home">Home</span>
-                    <span class="right floated away">Away</span>
-                </div>
-                <img class="left floated tiny ui image home-img" src="/img/LAL.svg">
-                <img class="right floated tiny ui image away-img" src="/img/LAC.svg">
-
-                <div class="meta center aligned start-time">
-                    <span>7:00 PM ET</span>
-                </div>
-                <div class="description">
-                    <span class="left aligned home-score">100</span>
-                    <span class="right floated away-score">90</span>
-                </div>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" data-matchId="">
-        <div class="content info">
-            <div class="ui header centered">
-                <span class="left floated home-team">Suns</span><span>VS</span><span
-                    class="right floated away-team">Nets</span>
-            </div>
-            <img class="left floated tiny ui image home-img" src="/img/POR.svg">
-            <img class="right floated tiny ui image away-img" src="/img/IND.svg">
-            <div class="meta center aligned start-time">
-                <p>7:00 PM ET</p>
-            </div>
-            <div class="description">
-                <span class="meta left floated home">Home</span>
-                <span class="meta right floated away">Away</span>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" data-matchId="">
-        <div class="content info">
-            <div class="ui header centered">
-                <span class="left floated home-team">Suns</span><span>VS</span><span
-                    class="right floated away-team">Nets</span>
-            </div>
-            <img class="left floated tiny ui image home-img" src="/img/SAC.svg">
-            <img class="right floated tiny ui image away-img" src="/img/GSW.svg">
-            <div class="meta center aligned start-time">
-                <p>7:00 PM ET</p>
-            </div>
-            <div class="description">
-                <span class="meta left floated home">Home</span>
-                <span class="meta right floated away">Away</span>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="card" data-matchId="">
-        <div class="content info">
-            <div class="ui header centered">
-                <span class="left floated home-team">Suns</span><span>VS</span><span
-                    class="right floated away-team">Nets</span>
-            </div>
-            <img class="left floated tiny ui image home-img" src="/img/CLE.svg">
-            <img class="right floated tiny ui image away-img" src="/img/DAL.svg">
-            <div class="meta center aligned start-time">
-                <p>7:00 PM ET</p>
-            </div>
-            <div class="description">
-                <span class="meta left floated home">Home</span>
-                <span class="meta right floated away">Away</span>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button home-bet" data-teamId="">Approve</div>
-                <div class="ui basic red button away-bet" data-teamId="">Decline</div>
-            </div>
-        </div>
     </div>
 </div>
-
-{{!-- </script> --}}
-{{!-- 
-<div class="ui cards centered">
-    <div class="card">
-        <div class="content">
-            <img class="right floated tiny ui image"
-                src="https://www.nba.com/.element/img/1.0/teamsites/logos/teamlogos_500x500/phx.svg">
-            <img class="left floated tiny ui image"
-                src="https://www.nba.com/.element/img/1.0/teamsites/logos/teamlogos_500x500/phx.svg">
-
-            <div class="header">
-                Elliot Fu
-            </div>
-            <div class="meta">
-                Friends of Veronika
-            </div>
-            <div class="description">
-                Elliot requested permission to view your contact details
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button">Approve</div>
-                <div class="ui basic red button">Decline</div>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="content">
-            <img class="right floated tiny ui image"
-                src="https://www.nba.com/.element/img/1.0/teamsites/logos/teamlogos_500x500/phx.svg">
-            <img class="left floated tiny ui image"
-                src="https://www.nba.com/.element/img/1.0/teamsites/logos/teamlogos_500x500/phx.svg">
-
-            <div class="header">
-               {{homeTeam}} VS {{awayTeam}}
-            </div>
-            <div class="meta">
-                New Member
-            </div>
-            <div class="description">
-                Jenny wants to add you to the group <b>best friends</b>
-            </div>
-        </div>
-        <div class="extra content">
-            <div class="ui two buttons">
-                <div class="ui basic green button">Approve</div>
-                <div class="ui basic red button">Decline</div>
-            </div>
-        </div>
-    </div>
-</div> --}}

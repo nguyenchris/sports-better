@@ -1,5 +1,6 @@
 .ui .cards .card {
     width: 31%;
+    animation: fadeIn 1s;
 }
 
 .ui .cards .card .info .home {
@@ -66,3 +67,18 @@
     text-align: center;
 }
 
+/* @keyframes fadeIn {
+    0% {
+        t
+    }
+} */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
