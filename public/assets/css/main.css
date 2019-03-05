@@ -1,10 +1,19 @@
+body {
+    background-color: #1B1C1C;
+}
+
+/* .whole-page-container {
+    background-color: #1B1C1C;
+} */
+
+
 .hidden.menu {
     display: none;
 }
 
 
 .masthead.segment {
-    min-height: 1000px;
+    min-height: 100px;
     /* height: .95vh; */
     /* height: 100%; */
     padding: 1em 0em;
@@ -101,42 +110,4 @@
     }
 }
 
-    /*Shedule Cards*/
-    .cardBody{
-        background-color: azure;
-        height: auto;
-        padding: 0%;
-        margin: 2%;
-
-    }
-    .homeTeam{
-        background-color: cornflowerblue;
-        padding: 5%;
-
-    }
-    .awayTeam{
-        background-color: crimson;
-        padding: 5%;
-    }
-    .Vs{
-        color: black;
-        padding-top: 3%;
-        font-size: 25px;
-        font-size: 40px;
-
-    }
-    .betButton{
-        margin-top: 25%;
-    }
-    .carMargin{
-        margin: 5%;
-
-    }
-    .date{
-        color:black;
-        font-size: 18px;
-    }
-    .time{
-        color:black;
-        font-size: 18px;
-    }
+    

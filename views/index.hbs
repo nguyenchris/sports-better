@@ -1,169 +1,123 @@
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<h1>Home Page</h1>
+<h1>Schedule</h1>
 
-<body>
-    <div class="row">
-        <div class="col-sm-8">
-            <div class="card" style="width: auto;">
-                <div class="cardBody cardHeader">
-                    <div class="row">
-                        <span class="col-sm-5">
-                            <h3 class=".card-title homeTeam"></h3>
-                        </span>
-                        <div class="col-sm-2 Vs">
-                            <h3 class="card-title Vs">Vs</h3>
-                        </div>
-                        <span class="col-sm-5">
-                            <h3 class=".card-title awayTeam"></h3>
-                        </span>
-                    </div>
-                    <p class="card-text"></p>
-                    <div class="row">
-                        {{!-- empty div between above date for layout --}}
-                        <div class="col-sm-3">
-                            <div></div>
+
+    <div class="ui container">
+
+        <div class="ui cards centered">
+
+            {{#each games}}
+            <div class="card" data-matchId="">
+                <div class="blurring dimmable content">
+                    <div class="ui dimmer">
+                        <div class="content">
+                            <div class="center">
+                                <div class="ui inverted button">Game Details</div>
+                            </div>
                         </div>
                     </div>
-                    {{!-- date div --}}
-                    <div class="col-sm-12">
-                        <p class="date"></p>
-                    </div>
-                    {{!-- empty div between above time for layout --}}
-                    <div class="col-sm-3">
-                        <div></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <p class="time"></p>
+                    <div class="content info">
+                        <div class="ui header centered">
+                            <span class="left floated home-team">{{schedule.homeTeam.name}}</span><span
+                                class="live">VS</span><span
+                                class="right floated away-team">{{schedule.awayTeam.name}}</span>
                         </div>
-                    </div>
-                    {{!-- empty div between above gameInfo for layout --}}
-                    <div class="col-sm-3">
-                        <div></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" id="gameInfo">Game Info</button>
+                        <div class="meta">
+                            <span class="left aligned home">Home</span>
+                            <span class="right floated away">Away</span>
+                        </div>
+                        <img class="left floated tiny ui image home-img"
+                            src="/img/{{schedule.homeTeam.abbreviation}}.svg">
+                        <img class="right floated tiny ui image away-img"
+                            src="/img/{{schedule.awayTeam.abbreviation}}.svg">
+
+                        <div class="meta center aligned time">
+                            <span>7:00 PM ET</span>
+                        </div>
+                        <div class="description">
+                            <span class="left aligned home-score">{{score.homeScoreTotal}}</span>
+                            <span class="right floated away-score">{{score.awayScoreTotal}}</span>
                         </div>
                     </div>
                 </div>
-                {{!-- Bet button row --}}
-                <div class="row">
-                    <div class="col-sm-12"></div>
+                <div class="extra content bet-money">
+                    <div class="ui description">
+                        <p class="total-money">Total: $900</p>
+                    </div>
                 </div>
-                {{!-- Empty div for bet button --}}
-                <div class="row">
-                    <div class="col-sm-3">
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div class="ui basic green button bet home-bet" data-teamId="{{schedule.homeTeam.id}}">Bet <span
+                                class="bet-btn-team">Home</span>
+                        </div>
+                        <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet
+                            <span>Away</span></div>
                     </div>
-                    <div class="col-sm-3">
-                        <button class="betButton"><a href="#" class="card-link">Bet</a></button>
-                    </div>
-                    <div class="col-sm-3">
-                        <button class="betButton"><a href="#" class="card-link">Bet</a></button>
-                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+    </div>
+
+    <div id="gInfo" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Game Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="city"></p>
+                    <p class="location"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
                 </div>
             </div>
         </div>
     </div>
 
-
-  <div id="gInfo" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Game Info</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class="city"></p>
-        <p class="location"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-      </div>
-    </div>
-  </div>
-</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
 <script>
 
-    $(document).ready(function () {
-
-        
-
-        $.ajax({
-            type: "GET",
-            url: "https://api.mysportsfeeds.com/v1.0/pull/nba/2018-2019-regular/full_game_schedule.json?date=today",
-            dataType: 'json',
-            async: true,
-            headers: {
-                "Authorization": "Basic " + btoa([""] + ":" + [""])
-            },
-            success: function (res) {
-                console.log(res);
-                let date = res.fullgameschedule.gameentry[0].date;
-                let time = res.fullgameschedule.gameentry[0].time;
-                let homeTeam = res.fullgameschedule.gameentry[0].homeTeam.Name;
-                let awayTeam = res.fullgameschedule.gameentry[0].awayTeam.Name;
-                let city = res.fullgameschedule.gameentry[0].homeTeam.City;
-                let venue = res.fullgameschedule.gameentry[0].location;
-
-
-                $(".homeTeam").append(homeTeam);
-                $(".awayTeam").append(awayTeam);
-                $(".date").append(date);
-                $(".time").append(time);
-
-            }
-
-        });
+$(document).ready(function () {
 
 
 
-        $("#gameInfo").on("click", function (event) {
-            event.preventDefault();
-            
-        $.ajax({
-            type: "GET",
-            url: "https://api.mysportsfeeds.com/v1.0/pull/nba/2018-2019-regular/full_game_schedule.json?date=today",
-            dataType: 'json',
-            async: true,
-            headers: {
-                "Authorization": "Basic " + btoa(["a22651a5-e813-4c51-8218-6f25cf"] + ":" + ["Ri2008zzo!"])
-            },
-            success: function (res) {
-                console.log(res);
-                let date = res.fullgameschedule.gameentry[0].date;
-                let time = res.fullgameschedule.gameentry[0].time;
-                let homeTeam = res.fullgameschedule.gameentry[0].homeTeam.Name;
-                let awayTeam = res.fullgameschedule.gameentry[0].awayTeam.Name;
-                let city = res.fullgameschedule.gameentry[0].homeTeam.City;
-                let venue = res.fullgameschedule.gameentry[0].location;
+    // Get request for today's games
+    $.get('/api/matches', function (data) {
+        console.log(data);
 
 
-                $(".homeTeam").append(homeTeam);
-                $(".awayTeam").append(awayTeam);
-                $(".date").append(date);
-                $(".time").append(time);
+
+    })
+
+
+
+
+    $("#gameInfo").on("click", function (event) {
+        event.preventDefault();
+        $.get('/api/matches', function (data) {
+            console.log(data);
+
 
             $("#gInfo").modal("show");
-            
-
-            $(".city").append("City: " + city);
-            $(".location").append("Location: " + city);
-            }
-
-        });
 
         })
-    });
 
+
+    })
+});
+
+   
 </script>
