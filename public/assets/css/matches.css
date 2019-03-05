@@ -1,6 +1,28 @@
+.ui .cards {
+    margin-top: 3%;
+}
+
+.ui.header.date-div {
+    /* background-color: #1B1C1C; */
+    color: white;
+}
+
+.ui.header h4 {
+    font-size: 30px;
+}
+
+.ui.segment.date-segment {
+    background-color: #1B1C1C;
+}
+
+.ui.segment .date-header {
+    margin-top: 8px;
+}
+
+
 .ui .cards .card {
     width: 31%;
-    animation: fadeIn 1s;
+    animation: fadeIn 1.6s;
 }
 
 .ui .cards .card .info .home {
@@ -67,11 +89,6 @@
     text-align: center;
 }
 
-/* @keyframes fadeIn {
-    0% {
-        t
-    }
-} */
 
 @keyframes fadeIn {
     0% {
