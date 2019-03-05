@@ -100,3 +100,43 @@
         font-size: 1.5em;
     }
 }
+
+    /*Shedule Cards*/
+    .cardBody{
+        background-color: azure;
+        height: auto;
+        padding: 0%;
+        margin: 2%;
+
+    }
+    .homeTeam{
+        background-color: cornflowerblue;
+        padding: 5%;
+
+    }
+    .awayTeam{
+        background-color: crimson;
+        padding: 5%;
+    }
+    .Vs{
+        color: black;
+        padding-top: 3%;
+        font-size: 25px;
+        font-size: 40px;
+
+    }
+    .betButton{
+        margin-top: 25%;
+    }
+    .carMargin{
+        margin: 5%;
+
+    }
+    .date{
+        color:black;
+        font-size: 18px;
+    }
+    .time{
+        color:black;
+        font-size: 18px;
+    }

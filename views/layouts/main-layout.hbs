@@ -12,6 +12,10 @@
     {{#if authCSS}}
     <link rel="stylesheet" href="/assets/css/login.css">
     {{/if}}
+
+    {{#if activeMatches}}
+    <link rel="stylesheet" href="/assets/css/matches.css">
+    {{/if}}
 </head>
 
 <body>
@@ -95,10 +99,13 @@
     <script src="/assets/js/main.js"></script>
 
     {{#if loginJS}}
-    <script src="assets/js/login.js"></script>
+    <script src="/assets/js/login.js"></script>
     {{/if}}
     {{#if signupJS}}
-    <script src="assets/js/signup.js"></script>
+    <script src="/assets/js/signup.js"></script>
+    {{/if}}
+    {{#if activeMatches}}
+    <script src="/assets/js/matches.js"></script>
     {{/if}}
 </body>
 

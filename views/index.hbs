@@ -1,19 +1,169 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 <h1>Home Page</h1>
 
-  
-    <tbody> 
-        {{#schedule}} 
-        <tr> 
-            <td>{{homeTeam}}</td> 
-            <td>{{awayTeam}}</td> 
-        </tr> 
-        {{/schedule}} 
-    </tbody> 
-</table>
+<body>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="card" style="width: auto;">
+                <div class="cardBody cardHeader">
+                    <div class="row">
+                        <span class="col-sm-5">
+                            <h3 class=".card-title homeTeam"></h3>
+                        </span>
+                        <div class="col-sm-2 Vs">
+                            <h3 class="card-title Vs">Vs</h3>
+                        </div>
+                        <span class="col-sm-5">
+                            <h3 class=".card-title awayTeam"></h3>
+                        </span>
+                    </div>
+                    <p class="card-text"></p>
+                    <div class="row">
+                        {{!-- empty div between above date for layout --}}
+                        <div class="col-sm-3">
+                            <div></div>
+                        </div>
+                    </div>
+                    {{!-- date div --}}
+                    <div class="col-sm-12">
+                        <p class="date"></p>
+                    </div>
+                    {{!-- empty div between above time for layout --}}
+                    <div class="col-sm-3">
+                        <div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="time"></p>
+                        </div>
+                    </div>
+                    {{!-- empty div between above gameInfo for layout --}}
+                    <div class="col-sm-3">
+                        <div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" id="gameInfo">Game Info</button>
+                        </div>
+                    </div>
+                </div>
+                {{!-- Bet button row --}}
+                <div class="row">
+                    <div class="col-sm-12"></div>
+                </div>
+                {{!-- Empty div for bet button --}}
+                <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="betButton"><a href="#" class="card-link">Bet</a></button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="betButton"><a href="#" class="card-link">Bet</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <div id="gInfo" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Game Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="city"></p>
+        <p class="location"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-    
+
+    $(document).ready(function () {
+
+        
+
+        $.ajax({
+            type: "GET",
+            url: "https://api.mysportsfeeds.com/v1.0/pull/nba/2018-2019-regular/full_game_schedule.json?date=today",
+            dataType: 'json',
+            async: true,
+            headers: {
+                "Authorization": "Basic " + btoa([""] + ":" + [""])
+            },
+            success: function (res) {
+                console.log(res);
+                let date = res.fullgameschedule.gameentry[0].date;
+                let time = res.fullgameschedule.gameentry[0].time;
+                let homeTeam = res.fullgameschedule.gameentry[0].homeTeam.Name;
+                let awayTeam = res.fullgameschedule.gameentry[0].awayTeam.Name;
+                let city = res.fullgameschedule.gameentry[0].homeTeam.City;
+                let venue = res.fullgameschedule.gameentry[0].location;
+
+
+                $(".homeTeam").append(homeTeam);
+                $(".awayTeam").append(awayTeam);
+                $(".date").append(date);
+                $(".time").append(time);
+
+            }
+
+        });
 
 
 
+        $("#gameInfo").on("click", function (event) {
+            event.preventDefault();
+            
+        $.ajax({
+            type: "GET",
+            url: "https://api.mysportsfeeds.com/v1.0/pull/nba/2018-2019-regular/full_game_schedule.json?date=today",
+            dataType: 'json',
+            async: true,
+            headers: {
+                "Authorization": "Basic " + btoa(["a22651a5-e813-4c51-8218-6f25cf"] + ":" + ["Ri2008zzo!"])
+            },
+            success: function (res) {
+                console.log(res);
+                let date = res.fullgameschedule.gameentry[0].date;
+                let time = res.fullgameschedule.gameentry[0].time;
+                let homeTeam = res.fullgameschedule.gameentry[0].homeTeam.Name;
+                let awayTeam = res.fullgameschedule.gameentry[0].awayTeam.Name;
+                let city = res.fullgameschedule.gameentry[0].homeTeam.City;
+                let venue = res.fullgameschedule.gameentry[0].location;
+
+
+                $(".homeTeam").append(homeTeam);
+                $(".awayTeam").append(awayTeam);
+                $(".date").append(date);
+                $(".time").append(time);
+
+            $("#gInfo").modal("show");
+            
+
+            $(".city").append("City: " + city);
+            $(".location").append("Location: " + city);
+            }
+
+        });
+
+        })
+    });
 
 </script>
