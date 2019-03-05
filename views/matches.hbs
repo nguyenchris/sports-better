@@ -1,4 +1,15 @@
 <div class="ui container">
+    <div class="ui segment date-segment">
+        <div class="ui header centered date-div">
+            <h4>Matches</h4>
+            <h5 class="date-header"></h5>
+        </div>
+    </div>
+    <div class="ui cards centered" id="matches-div">
+    </div>
+</div>
+
+{{!-- <div class="ui container">
 
     <div class="ui cards centered">
 
@@ -14,7 +25,8 @@
                 </div>
                 <div class="content info">
                     <div class="ui header centered">
-                        <span class="left floated home-team">{{schedule.homeTeam.abbreviation}}</span><span class="live">VS</span><span
+                        <span class="left floated home-team">{{schedule.homeTeam.abbreviation}}</span><span
+                            class="live">VS</span><span
                             class="right floated away-team">{{schedule.awayTeam.abbreviation}}</span>
                     </div>
                     <div class="meta">
@@ -25,7 +37,8 @@
                     <img class="right floated tiny ui image away-img" src="/img/{{schedule.awayTeam.abbreviation}}.svg">
 
                     <div class="meta center aligned time">
-                        <span>7:00 PM ET</span>
+                        <span></span>
+
                     </div>
                     <div class="description">
                         <span class="left aligned home-score">{{score.homeScoreTotal}}</span>
@@ -43,11 +56,12 @@
                     <div class="ui basic green button bet home-bet" data-teamId="{{schedule.homeTeam.id}}">Bet <span
                             class="bet-btn-team">Home</span>
                     </div>
-                    <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet <span>Away</span></div>
+                    <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet
+                        <span>Away</span></div>
                 </div>
             </div>
         </div>
         {{/each}}
 
     </div>
-</div>
+</div> --}}
