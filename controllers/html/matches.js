@@ -1,41 +1,10 @@
 const gameJson = require('../../todayGames.json');
 const moment = require('moment');
-
-
 const axios = require('axios');
-const btoa = require('btoa');
-require('dotenv').config();
+const config = require('../../config/axios-config');
 
-const key = process.env.NBA_APIKEY
-const pw = process.env.NBA_PASSWORD
-
-const credentials = btoa(key + ':' + pw);
-
-
-// API call to pull json data and then write the json file to the root directory.
-// Run file to get the new data for todays games
-// axios.get('https://api.mysportsfeeds.com/v2.0/pull/nba/current/games.json?date=today', {
-//     method: 'get',
-//     headers: {
-//         'Authorization': 'Basic ' + credentials
-//     },
-//     responseType: 'json'
-// }).then(result => {
-//     const gamesArray = result.data.games
-
-//     const statusOfGameArr = gamesArray.map(game => {
-//         if (game.schedule.playedStatus == 'COMPLETED') {
-//             schedule
-//         }
-//     })
-//     const obj = {
-//         games: result.data.games
-//     }
-// });
-
-
-
-
+// Controller to render homepage HTML
+// Route: /
 exports.getIndex = (req, res, next) => {
     res.render('index', {
         title: 'Home',
@@ -43,17 +12,36 @@ exports.getIndex = (req, res, next) => {
     });
 };
 
-exports.getMatches = (req, res, next) => {
-    const time = "2019-03-03T18:00:00.000Z"
-    console.log('time', moment(time).format('MMMM Do, h:mm'));
-    // .format('')
-    res.render('matches', {
-        title: 'Matches',
-        activeMatches: true,
-        games: gameJson.games
-    });
+// Controller to get today's matches and render HTML
+// Route: /matches
+exports.getMatches = async (req, res, next) => {
+    const today = moment(new Date()).format('YYYYMMDD')
+    // axios.get(`https://api.mysportsfeeds.com/v2.1/pull/nba/current/date/${today}/games.json?sort=game.starttime.A`, config)
+    //     .then(result => {
+    //         const origGameArray = result.data.games;
+    //         const newGameArray = origGameArray.map(game => {
+    //             let {
+    //                 playedStatus,
+    //                 startTime
+    //             } = game.schedule;
+    //             game.schedule.startTime = moment(startTime).format('h:mm a');
+    //             if (playedStatus == 'UNPLAYED') {
+    //                 game.schedule.playedStatus = null;
+    //             } else if (playedStatus == 'COMPLETED' || playedStatus == 'COMPLETED_PENDING_REVIEW') {
+    //                 game.schedule.playedStatus = 'FINAL';
+    //             }
+    //             return game;
+    //         })
+    //         console.log(newGameArray);
+            res.render('matches', {
+                title: 'Matches',
+                activeMatches: true
+            });
+        // })
 };
 
+// Controller to get leaders in bet earnings
+// Route: /leaders
 exports.getLeaderboard = (req, res, next) => {
     res.render('leaders', {
         title: 'Leaders',
