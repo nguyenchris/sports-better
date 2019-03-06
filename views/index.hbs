@@ -1,69 +1,62 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
 
 
-<h1>Schedule</h1>
 
 
-    <div class="ui container">
 
-        <div class="ui cards centered">
 
-            {{#each games}}
-            <div class="card" data-matchId="">
-                <div class="blurring dimmable content">
-                    <div class="ui dimmer">
-                        <div class="content">
-                            <div class="center">
-                                <div class="ui inverted button">Game Details</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content info">
-                        <div class="ui header centered">
-                            <span class="left floated home-team">{{schedule.homeTeam.name}}</span><span
-                                class="live">VS</span><span
-                                class="right floated away-team">{{schedule.awayTeam.name}}</span>
-                        </div>
-                        <div class="meta">
-                            <span class="left aligned home">Home</span>
-                            <span class="right floated away">Away</span>
-                        </div>
-                        <img class="left floated tiny ui image home-img"
-                            src="/img/{{schedule.homeTeam.abbreviation}}.svg">
-                        <img class="right floated tiny ui image away-img"
-                            src="/img/{{schedule.awayTeam.abbreviation}}.svg">
 
-                        <div class="meta center aligned time">
-                            <span>7:00 PM ET</span>
-                        </div>
-                        <div class="description">
-                            <span class="left aligned home-score">{{score.homeScoreTotal}}</span>
-                            <span class="right floated away-score">{{score.awayScoreTotal}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="extra content bet-money">
-                    <div class="ui description">
-                        <p class="total-money">Total: $900</p>
-                    </div>
-                </div>
-                <div class="extra content">
-                    <div class="ui two buttons">
-                        <div class="ui basic green button bet home-bet" data-teamId="{{schedule.homeTeam.id}}">Bet <span
-                                class="bet-btn-team">Home</span>
-                        </div>
-                        <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet
-                            <span>Away</span></div>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"> --}}
+    {{!-- <link rel="stylesheet" href="/assets/css/main.css"> --}}
+
+
+
+{{!-- 
+<div class="ui container">
+    <div class="ui segment date-segment">
+        <div class="ui header centered date-div">
+            <h4>Matches</h4>
+            <h5 class="date-header"></h5>
         </div>
     </div>
+    <div class="ui cards centered" id="matches-div">
+    </div>
+</div> --}}
 
-    <div id="gInfo" class="modal" tabindex="-1" role="dialog">
+    {{!-- <div id="gInfo" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,12 +75,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+
+
+ {{!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-
 <script>
 
 $(document).ready(function () {
@@ -102,22 +95,14 @@ $(document).ready(function () {
 
     })
 
+    
+
+
+    
 
 
 
-    $("#gameInfo").on("click", function (event) {
-        event.preventDefault();
-        $.get('/api/matches', function (data) {
-            console.log(data);
-
-
-            $("#gInfo").modal("show");
-
-        })
-
-
-    })
 });
 
    
-</script>
+</script> --}}
