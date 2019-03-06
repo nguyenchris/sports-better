@@ -19,7 +19,6 @@
     margin-top: 8px;
 }
 
-
 .ui .cards .card {
     width: 31%;
     animation: fadeIn 1.6s;
@@ -74,15 +73,20 @@
 }
 
 .ui .cards .card .dimmable .home-score {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .ui .cards .card .dimmable .away-score {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .red {
     color: red;
+}
+
+.ui .cards .card .dimmable .info .header .live.red {
+    padding: 1.5px 4px;
+    border: solid 1.5px red;
 }
 
 .ui .cards .card .content .bet-money .total-money {

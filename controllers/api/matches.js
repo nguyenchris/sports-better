@@ -7,7 +7,7 @@ const gameJson = require('../../todayGames.json');
 // Route: /api/matches
 exports.getTodayMatches = (req, res, next) => {
     const today = moment(new Date()).format('YYYYMMDD');
-    const dateHeader = moment(new Date()).format('dddd, MMMM Do YYYY');
+    const dateHeader = moment(new Date()).format('dddd, MMMM Do, YYYY');
     axios.get(`https://api.mysportsfeeds.com/v2.1/pull/nba/current/date/${today}/games.json?sort=game.starttime.A`, config)
         .then(result => {
             const origGameArray = result.data.games;
@@ -35,3 +35,4 @@ exports.getTodayMatches = (req, res, next) => {
 exports.getGameJson = (req, res, next) => {
     res.json(gameJson);
 }
+

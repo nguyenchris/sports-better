@@ -10,6 +10,7 @@ $(document).ready(function () {
                 console.log(data);
                 $('.date-header').text(data.date);
                 let markupData = data.games.map(game => {
+                    const { playedStatus } = game.schedule;
                     if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
                         game.score.homeScoreTotal = '';
                         game.score.awayScoreTotal = '';
@@ -20,14 +21,14 @@ $(document).ready(function () {
                 <div class="ui dimmer">
                     <div class="content">
                         <div class="center">
-                            <div class="ui inverted button">Game Details</div>
+                            <div class="ui inverted button game-details" data-matchId="${game.schedule.id}">Game Details</div>
                         </div>
                     </div>
                 </div>
                 <div class="content info">
                     <div class="ui header centered">
                         <span class="left floated home-team">${game.schedule.homeTeam.abbreviation}</span><span
-                            class="live">VS</span><span
+                            class="live ${playedStatus === 'LIVE' ? 'red' : ''}">${playedStatus}</span><span
                             class="right floated away-team">${game.schedule.awayTeam.abbreviation}</span>
                     </div>
                     <div class="meta">
@@ -87,10 +88,29 @@ $(document).ready(function () {
             // Get the teamid for whichever team user bets on
             const id = $(this).attr('data-teamId');
             event.stopPropagation();
-            console.log(id);
+            console.log('teamId=', id);
         });
         $('.cards .dimmable').dimmer({
             on: 'hover'
         });
+
+        const gameClickHandler = $('.game-details').on('click', function () {
+            const id = $(this).attr('data-matchId');
+            console.log('matchId=', id);
+        })
+        $('.ui.modal')
+            .modal('attach events', '.game-details', 'show');
     }
+
+    $('#example2').calendar({
+        type: 'date'
+    });
+
+
+    $(document).on("change", '#date-picker', function (e) {
+        console.log(e)
+        console.log("Date changed: ", e.target.value);
+    });
+
+
 })
