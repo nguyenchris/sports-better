@@ -10,7 +10,7 @@ const nbaAPIurl = 'https://api.mysportsfeeds.com/v2.1/pull/nba/current'
 // Route: /api/matches
 exports.getTodayMatches = (req, res, next) => {
     const today = moment(new Date()).format('YYYYMMDD');
-    const dateHeader = moment(new Date()).format('MMMM Do, YYYY');
+    const dateHeader = moment(new Date()).format('MMMM D, YYYY');
     const dayHeader = moment(new Date()).format('dddd');
     axios.get(`${nbaAPIurl}/date/${today}/games.json?sort=game.starttime.A`, config)
         .then(result => {
@@ -46,8 +46,9 @@ exports.getTodayMatches = (req, res, next) => {
 exports.getMatchByDate = (req, res, next) => {
     const utcDate = new Date(req.params.date)
     const date = moment(utcDate).format('YYYYMMDD');
-    const dateHeader = moment(utcDate).format('MMMM Do, YYYY');
-    const dayHeader = moment(new Date()).format('dddd');
+    const dateHeader = moment(utcDate).format('MMMM D, YYYY');
+    const dayHeader = moment(utcDate).format('dddd');
+    const today = moment(new Date()).format('MMMM D, YYYY');
     axios.get(`${nbaAPIurl}/date/${date}/games.json?sort=game.starttime.A`, config)
         .then(result => {
             const origGameArray = result.data.games;
@@ -67,7 +68,8 @@ exports.getMatchByDate = (req, res, next) => {
             res.json({
                 games: newGameArray,
                 date: dateHeader,
-                day: dayHeader
+                day: dayHeader,
+                today: today
             })
         })
         .catch(err => {
@@ -77,6 +79,12 @@ exports.getMatchByDate = (req, res, next) => {
             return next(error);
         })
 }
+
+
+exports.getGameLineup = (req, res, next) => {
+
+}
+
 
 // Route: /api/matches/modal/:matchId
 exports.getModalMatch = (req, res, next) => {

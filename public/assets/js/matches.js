@@ -7,23 +7,27 @@ $(document).ready(function () {
             .done(function (data) {
                 console.log(data);
                 $("#date-picker").attr("placeholder", data.date);
-                $('.date-header').text(data.day);
+                $('.date-header').text('TODAY');
                 generateGameCard(data);
             })
             .fail(function (err) {
                 console.log(err);
             })
     }
-// getMatchByDate();
 
-    function getMatchByDate(date) {
+    function getMatchByDate(date, text) {
         activateLoader();
         $.get(`/api/matches/${date}`)
-            .done(function(data) {
+            .done(function (data) {
+                if (data.today == text) {
+                    $('.date-header').text('TODAY');
+                } else {
+                    $('.date-header').text(data.day);
+                }
                 generateGameCard(data);
                 console.log(data);
             })
-            .fail(function(err) {
+            .fail(function (err) {
                 console.log(err);
             })
     }
@@ -31,15 +35,22 @@ $(document).ready(function () {
 
     // Function to generate each individual game card
     function generateGameCard(data) {
-        let markupData = data.games.map(game => {
-            const {
-                playedStatus
-            } = game.schedule;
-            if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
-                game.score.homeScoreTotal = '';
-                game.score.awayScoreTotal = '';
-            }
-            let markup = `
+        $('matches-div').empty();
+        if (data.games.length === 0) {
+            removeLoader();
+            $('#matches-div').append('<h1 class="white">No Games Found</h1>')
+        } else {
+
+
+            let markupData = data.games.map(game => {
+                const {
+                    playedStatus
+                } = game.schedule;
+                if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
+                    game.score.homeScoreTotal = '';
+                    game.score.awayScoreTotal = '';
+                }
+                let markup = `
         <div class="card" data-matchId="${game.schedule.id}">
             <div class="blurring dimmable content">
                 <div class="ui dimmer">
@@ -70,7 +81,8 @@ $(document).ready(function () {
             </div>
             <div class="extra content bet-money">
                 <div class="ui description">
-                    <p class="total-money">Total: $900</p>
+                    <p class="total-money">Total Bid Amt: $900</p>
+                    <p class="num-bids">Total Bids: 15</p>
                 </div>
             </div>
             <div class="extra content">
@@ -84,15 +96,13 @@ $(document).ready(function () {
             </div>
         </div>
         `;
-            return markup;
-        });
-        removeLoader();
-        document.getElementById('matches-div').innerHTML = markupData.join('');
-        activateListeners();
+                return markup;
+            });
+            removeLoader();
+            document.getElementById('matches-div').innerHTML = markupData.join('');
+            activateListeners();
+        }
     }
-
-
-
 
 
     function activateLoader() {
@@ -130,20 +140,13 @@ $(document).ready(function () {
     }
 
 
-
     $('#example2').calendar({
         type: 'date',
-        onChange: function (date) {
+        onChange: function (date, text) {
             const utcDate = new Date(date);
-            getMatchByDate(utcDate);
+            console.log(text);
+            getMatchByDate(utcDate, text);
         },
-    });
-
-
-
-    $(document).on("change", '#date-picker', function (e) {
-        console.log(e)
-        console.log("Date changed: ", e.target.value);
     });
 
 
