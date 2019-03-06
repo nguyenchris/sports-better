@@ -12,7 +12,6 @@ exports.getIndex = (req, res, next) => {
 
 // Route: /matches
 exports.getMatches = async (req, res, next) => {
-            console.log(newGameArray);
             res.render('matches', {
                 title: 'Matches',
                 activeMatches: true

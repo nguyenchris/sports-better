@@ -8,7 +8,7 @@
 }
 
 .ui.header h4 {
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .ui.segment.date-segment {
@@ -16,7 +16,8 @@
 }
 
 .ui.segment .date-header {
-    margin-top: 8px;
+    margin-top: 0px;
+    font-size: 20px;
 }
 
 .ui .cards .card {
@@ -93,6 +94,21 @@
     text-align: center;
 }
 
+.ui .segment .date-div .calendar input {
+    width: 90%;
+    cursor: pointer;
+    text-align: center;
+}
+
+.ui .segment .date-div .calendar i {
+    margin-left: 5%;
+}
+
+.ui .segment .date-div .calendar input::placeholder {
+    color: black;
+    opacity: .6;
+    /* text-align: center; */
+}
 
 @keyframes fadeIn {
     0% {

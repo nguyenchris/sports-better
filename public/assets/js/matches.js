@@ -1,21 +1,45 @@
 $(document).ready(function () {
-    getMatches();
-
+    getTodayMatches();
     // Function to get all of today's matches
-    // NOTE: Refactor this into a function that renders the markup to DOM in order for pagination to occur when selecting different dates.
-    function getMatches() {
+    function getTodayMatches() {
         activateLoader();
         $.get('/api/matches')
             .done(function (data) {
                 console.log(data);
-                $('.date-header').text(data.date);
-                let markupData = data.games.map(game => {
-                    const { playedStatus } = game.schedule;
-                    if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
-                        game.score.homeScoreTotal = '';
-                        game.score.awayScoreTotal = '';
-                    }
-                    let markup = `
+                $("#date-picker").attr("placeholder", data.date);
+                $('.date-header').text(data.day);
+                generateGameCard(data);
+            })
+            .fail(function (err) {
+                console.log(err);
+            })
+    }
+// getMatchByDate();
+
+    function getMatchByDate(date) {
+        activateLoader();
+        $.get(`/api/matches/${date}`)
+            .done(function(data) {
+                generateGameCard(data);
+                console.log(data);
+            })
+            .fail(function(err) {
+                console.log(err);
+            })
+    }
+
+
+    // Function to generate each individual game card
+    function generateGameCard(data) {
+        let markupData = data.games.map(game => {
+            const {
+                playedStatus
+            } = game.schedule;
+            if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
+                game.score.homeScoreTotal = '';
+                game.score.awayScoreTotal = '';
+            }
+            let markup = `
         <div class="card" data-matchId="${game.schedule.id}">
             <div class="blurring dimmable content">
                 <div class="ui dimmer">
@@ -60,16 +84,16 @@ $(document).ready(function () {
             </div>
         </div>
         `;
-                    return markup;
-                });
-                removeLoader();
-                document.getElementById('matches-div').innerHTML = markupData.join('');
-                activateListeners();
-            })
-            .fail(function (err) {
-                console.log(err);
-            })
+            return markup;
+        });
+        removeLoader();
+        document.getElementById('matches-div').innerHTML = markupData.join('');
+        activateListeners();
     }
+
+
+
+
 
     function activateLoader() {
         let div = $('<div class="ui active centered inline dimmer">')
@@ -78,9 +102,12 @@ $(document).ready(function () {
         $('#matches-div').append(div);
     }
 
+
+
     function removeLoader() {
         $('#matches-div').empty();
     }
+
 
     function activateListeners() {
         // Click event listener for when a bet button is clicked
@@ -102,15 +129,33 @@ $(document).ready(function () {
             .modal('attach events', '.game-details', 'show');
     }
 
+
+
     $('#example2').calendar({
-        type: 'date'
+        type: 'date',
+        onChange: function (date) {
+            const utcDate = new Date(date);
+            getMatchByDate(utcDate);
+        },
     });
+
 
 
     $(document).on("change", '#date-picker', function (e) {
         console.log(e)
         console.log("Date changed: ", e.target.value);
     });
+
+
+
+
+
+
+
+
+
+
+
 
 
 })

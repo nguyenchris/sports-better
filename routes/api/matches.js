@@ -7,5 +7,9 @@ const router = express.Router();
 
 router.get('/matches', matchesApiController.getTodayMatches);
 
+router.get('/matches/:date', matchesApiController.getMatchByDate);
+
+router.get('/matches/modal/:matchId', matchesApiController.getModalMatch);
+
 module.exports = router;
 
