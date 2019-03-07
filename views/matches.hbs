@@ -3,7 +3,7 @@
         <div class="ui header centered date-div">
             <h4>Matches</h4>
             <h5 class="date-header"></h5>
-            <div class="ui calendar" id="example2">
+            <div class="ui calendar" id="calendar">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
                     <input readonly type="text" placeholder="" id="date-picker">
@@ -22,72 +22,113 @@
 <div class="ui modal">
     <div class="header">Header</div>
     <div class="scrolling content">
-        <table class="ui very compact table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Another Status</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <td>Jamie</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>Requires call</td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <td>Jamie</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>Requires call</td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <td>Jamie</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>Requires call</td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <td>Jamie</td>
-                    <td>Approved</td>
-                    <td>Approved</td>
-                    <td>Requires call</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="ui button">Activate Tab</div>
+        <div class="ui top attached tabular menu">
+            <a class="active item" data-tab="first">First</a>
+            <a class="item" data-tab="second">Second</a>
+            <a class="item" data-tab="third">Third</a>
+        </div>
+        <div class="ui bottom attached active tab segment" data-tab="first">
+
+            <div class="chart-area">
+                <div class="home-charts">
+                    <div class="fg-chart charts">
+                        <canvas id="home-fg"></canvas>
+                    </div>
+                    <div class="three-pt-chart charts">
+                        <canvas id="home-3pt"></canvas>
+                    </div>
+                    <div class="ft-chart charts">
+                        <canvas id="home-ft"></canvas>
+                    </div>
+                </div>
+
+                <div class="away-charts">
+                    <div class="fg-chart charts" id="home-fg">
+                        <canvas id="away-fg"></canvas>
+                    </div>
+                    <div class="three-pt-chart charts">
+                        <canvas id="away-3pt"></canvas>
+                    </div>
+                    <div class="ft-chart charts">
+                        <canvas id="away-ft"></canvas>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="second">
+                Second
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="third">
+                Third
+            </div>
+
+            <table class="ui very compact table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Another Status</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>Jamie</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>Requires call</td>
+                    </tr>
+                    <tr>
+                        <td>John</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>Jamie</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>Requires call</td>
+                    </tr>
+                    <tr>
+                        <td>John</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>Jamie</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>Requires call</td>
+                    </tr>
+                    <tr>
+                        <td>John</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>Jamie</td>
+                        <td>Approved</td>
+                        <td>Approved</td>
+                        <td>Requires call</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 
 
-{{!-- <div class="ui container">
+    {{!-- <div class="ui container">
 
     <div class="ui cards centered">
 

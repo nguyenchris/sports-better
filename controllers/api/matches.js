@@ -12,6 +12,11 @@ exports.getTodayMatches = (req, res, next) => {
     const today = moment(new Date()).format('YYYYMMDD');
     const dateHeader = moment(new Date()).format('MMMM D, YYYY');
     const dayHeader = moment(new Date()).format('dddd');
+
+    // axios.get(`${nbaAPIurl}/games/48541/boxscore.json`, config)
+    //     .then(result => {
+    //         res.json(result.data);
+    //     })
     axios.get(`${nbaAPIurl}/date/${today}/games.json?sort=game.starttime.A`, config)
         .then(result => {
             const origGameArray = result.data.games;
