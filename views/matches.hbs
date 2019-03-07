@@ -12,8 +12,10 @@
         </div>
     </div>
 
+
     <div class="ui cards centered" id="matches-div">
     </div>
+
 </div>
 
 
@@ -22,15 +24,22 @@
 <div class="ui modal">
     <div class="header">Header</div>
     <div class="scrolling content">
-        <div class="ui button">Activate Tab</div>
-        <div class="ui top attached tabular menu">
-            <a class="active item" data-tab="first">First</a>
-            <a class="item" data-tab="second">Second</a>
-            <a class="item" data-tab="third">Third</a>
+        {{!-- <div class="ui active dimmer inverted" id="modal-loader">
+            <div class="ui large text loader centered inline">Loading</div>
+        </div> --}}
+        <div class="ui three item menu">
+            <a class="active item">Editorials</a>
+            <a class="item">Reviews</a>
+            <a class="item">Upcoming Events</a>
         </div>
-        <div class="ui bottom attached active tab segment" data-tab="first">
-
-            <div class="chart-area">
+        {{!-- <div class="ui top attached tabular menu">
+            <a class="active item" data-tab="stats">Game Stats</a>
+            <a class="item" data-tab="second">Bet Odds</a>
+        </div>
+        <div class="ui bottom attached active tab segment stats-tab" data-tab="stats">
+        </div> --}}
+        {{!-- Charts --}}
+        {{!-- <div class="chart-area">
                 <div class="home-charts">
                     <div class="fg-chart charts">
                         <canvas id="home-fg"></canvas>
@@ -55,15 +64,15 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="ui bottom attached tab segment" data-tab="second">
-                Second
-            </div>
-            <div class="ui bottom attached tab segment" data-tab="third">
-                Third
-            </div>
+            </div> --}}
 
-            <table class="ui very compact table">
+
+        {{!-- <div class="ui bottom attached tab segment odds-tab" data-tab="odds">
+
+        </div> --}}
+
+
+        {{!-- <table class="ui very compact table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -122,67 +131,148 @@
                         <td>Requires call</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> --}}
+
+        <div class="ui comments">
+            {{!-- <h3 class="ui dividing header">Comments</h3>
+            <div class="comment">
+                <a class="avatar">
+                    <img src="">
+                </a>
+                <div class="content">
+                    <a class="author">Matt</a>
+                    <div class="metadata">
+                        <span class="date">Today at 5:42PM</span>
+                    </div>
+                    <div class="text">
+                        How artistic!
+                    </div>
+                    <div class="actions">
+                        <a class="reply">Reply</a>
+                    </div>
+                </div>
+            </div>
+            <div class="comment">
+                <a class="avatar">
+                    <img src="">
+                </a>
+                <div class="content">
+                    <a class="author">Elliot Fu</a>
+                    <div class="metadata">
+                        <span class="date">Yesterday at 12:30AM</span>
+                    </div>
+                    <div class="text">
+                        <p>This has been very useful for my research. Thanks as well!</p>
+                    </div>
+                    <div class="actions">
+                        <a class="reply">Reply</a>
+                    </div>
+                </div>
+            </div>
+            <div class="comment">
+                <a class="avatar">
+                    <img src="">
+                </a>
+                <div class="content">
+                    <a class="author">Joe Henderson</a>
+                    <div class="metadata">
+                        <span class="date">5 days ago</span>
+                    </div>
+                    <div class="text">
+                        Dude, this is awesome. Thanks so much
+                    </div>
+                    <div class="actions">
+                        <a class="reply">Reply</a>
+                    </div>
+                </div>
+            </div> --}}
+            <form class="ui reply form">
+                <div class="field">
+                    <textarea></textarea>
+                </div>
+                <div class="ui blue labeled submit icon button">
+                    <i class="icon edit"></i> Add Reply
+                </div>
+            </form>
         </div>
     </div>
 
-
-
-    {{!-- <div class="ui container">
-
-    <div class="ui cards centered">
-
-        {{#each games}}
-        <div class="card" data-matchId="">
-            <div class="blurring dimmable content">
-                <div class="ui dimmer">
-                    <div class="content">
-                        <div class="center">
-                            <div class="ui inverted button">Game Details</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content info">
-                    <div class="ui header centered">
-                        <span class="left floated home-team">{{schedule.homeTeam.abbreviation}}</span><span
-                            class="live">VS</span><span
-                            class="right floated away-team">{{schedule.awayTeam.abbreviation}}</span>
-                    </div>
-                    <div class="meta">
-                        <span class="left aligned home">Home</span>
-                        <span class="right floated away">Away</span>
-                    </div>
-                    <img class="left floated tiny ui image home-img" src="/img/{{schedule.homeTeam.abbreviation}}.svg">
-                    <img class="right floated tiny ui image away-img" src="/img/{{schedule.awayTeam.abbreviation}}.svg">
-
-                    <div class="meta center aligned time">
-                        <span></span>
-
-                    </div>
-                    <div class="description">
-                        <span class="left aligned home-score">{{score.homeScoreTotal}}</span>
-                        <span class="right floated away-score">{{score.awayScoreTotal}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="extra content bet-money">
-                <div class="ui description">
-                    <p class="total-money">Total: $900</p>
-                </div>
-            </div>
-            <div class="extra content">
-                <div class="ui two buttons">
-                    <div class="ui basic green button bet home-bet" data-teamId="{{schedule.homeTeam.id}}">Bet <span
-                            class="bet-btn-team">Home</span>
-                    </div>
-                    <div class="ui basic red button bet away-bet" data-teamId="{{schedule.awayTeam.id}}">Bet
-                        <span>Away</span></div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-
-    </div>
 </div>
 
-</div> --}}
+
+
+
+
+{{!-- Table for linescore header --}}
+
+{{!-- 
+<table class="ui very basic collapsing celled table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Correct Guesses</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <h4 class="ui image header">
+                    <img src="/images/avatar2/small/lena.png" class="ui mini rounded image">
+                    <div class="content">
+                        Lena
+                        <div class="sub header">Human Resources
+                        </div>
+                    </div>
+                </h4>
+            </td>
+            <td>
+                22
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4 class="ui image header">
+                    <img src="/images/avatar2/small/matthew.png" class="ui mini rounded image">
+                    <div class="content">
+                        Matthew
+                        <div class="sub header">Fabric Design
+                        </div>
+                    </div>
+                </h4>
+            </td>
+            <td>
+                15
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4 class="ui image header">
+                    <img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image">
+                    <div class="content">
+                        Lindsay
+                        <div class="sub header">Entertainment
+                        </div>
+                    </div>
+                </h4>
+            </td>
+            <td>
+                12
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4 class="ui image header">
+                    <img src="/images/avatar2/small/mark.png" class="ui mini rounded image">
+                    <div class="content">
+                        Mark
+                        <div class="sub header">Executive
+                        </div>
+                    </div>
+                </h4>
+            </td>
+            <td>
+                11
+            </td>
+        </tr>
+    </tbody>
+</table> --}}

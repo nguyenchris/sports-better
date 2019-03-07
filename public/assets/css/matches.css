@@ -2,6 +2,10 @@
     margin-top: 3%;
 }
 
+.ui.placeholder.segment {
+    background-color: #1B1C1C;
+}
+
 .ui.header.date-div {
     /* background-color: #1B1C1C; */
     color: white;
@@ -116,7 +120,7 @@
 
 .chart-area {
     text-align: center;
-    width: 100%;
+    /* width: 100%; */
 }
 
 .charts {
@@ -153,6 +157,7 @@
     height: 100px;
     display: inline-block;
 } */
+
 
 @keyframes fadeIn {
     0% {

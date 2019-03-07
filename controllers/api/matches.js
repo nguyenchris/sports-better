@@ -13,10 +13,7 @@ exports.getTodayMatches = (req, res, next) => {
     const dateHeader = moment(new Date()).format('MMMM D, YYYY');
     const dayHeader = moment(new Date()).format('dddd');
 
-    // axios.get(`${nbaAPIurl}/games/48541/boxscore.json`, config)
-    //     .then(result => {
-    //         res.json(result.data);
-    //     })
+
     axios.get(`${nbaAPIurl}/date/${today}/games.json?sort=game.starttime.A`, config)
         .then(result => {
             const origGameArray = result.data.games;
@@ -85,17 +82,21 @@ exports.getMatchByDate = (req, res, next) => {
         })
 }
 
-
-exports.getGameLineup = (req, res, next) => {
-
+// Route: /api/matches/modal/:matchId
+exports.getMatchBoxscore = (req, res, next) => {
+    const id = req.params.matchId;
+    axios.get(`${nbaAPIurl}/games/${id}/boxscore.json`, config)
+        .then(result => {
+            res.json(result.data);
+        })
 }
 
 
 // Route: /api/matches/modal/:matchId
-exports.getModalMatch = (req, res, next) => {
-    console.log(req.params);
-    // axios.get('https://api.mysportsfeeds.com/v2.1/pull/nba/{season}/games/{game}/boxscore.{format}')
-}
+// exports.getModalMatch = (req, res, next) => {
+//     console.log(req.params);
+//     // axios.get('https://api.mysportsfeeds.com/v2.1/pull/nba/{season}/games/{game}/boxscore.{format}')
+// }
 
 // Controller which returns static json file for testing today's gameJson
 exports.getGameJson = (req, res, next) => {

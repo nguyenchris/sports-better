@@ -32,94 +32,26 @@ $(document).ready(function () {
             });
     }
 
-    // Function to generate each individual game card
-    function generateGameCard(data) {
-        $('matches-div').empty();
-        if (data.games.length === 0) {
-            removeLoader();
-            $('#matches-div').append('<h1 class="white">No Games Found</h1>');
-        } else {
-            let markupData = data.games.map(game => {
-                const {
-                    playedStatus
-                } = game.schedule;
-                if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
-                    game.score.homeScoreTotal = '';
-                    game.score.awayScoreTotal = '';
-                }
-                let markup = `
-        <div class="card" data-matchId="${game.schedule.id}">
-            <div class="blurring dimmable content">
-                <div class="ui dimmer">
-                    <div class="content">
-                        <div class="center">
-                            <div class="ui inverted button game-details" data-matchId="${
-                              game.schedule.id
-                            }">Game Details</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content info">
-                    <div class="ui header centered">
-                        <span class="left floated home-team">${
-                          game.schedule.homeTeam.abbreviation
-                        }</span><span
-                            class="live ${
-                              playedStatus === 'LIVE' ? 'red' : ''
-                            }">${playedStatus}</span><span
-                            class="right floated away-team">${
-                              game.schedule.awayTeam.abbreviation
-                            }</span>
-                    </div>
-                    <div class="meta">
-                        <span class="left aligned home">Home</span>
-                        <span class="right floated away">Away</span>
-                    </div>
-                    <img class="left floated tiny ui image home-img" src="/img/${
-                      game.schedule.homeTeam.abbreviation
-                    }.svg">
-                    <img class="right floated tiny ui image away-img" src="/img/${
-                      game.schedule.awayTeam.abbreviation
-                    }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
-                    </div>
-                    <div class="description">
-                        <span class="left aligned home-score">${
-                          game.score.homeScoreTotal
-                        }</span>
-                        <span class="right floated away-score">${
-                          game.score.awayScoreTotal
-                        }</span>
-                    </div>
-                </div>
-            </div>
-            <div class="extra content bet-money">
-                <div class="ui description">
-                    <p class="total-money">Total Bid Amt: $900</p>
-                    <p class="num-bids">Total Bids: 15</p>
-                </div>
-            </div>
-            <div class="extra content">
-                <div class="ui two buttons">
-                    <div class="ui basic green button bet home-bet" data-teamId="${
-                      game.schedule.homeTeam.id
-                    }">Bet <span
-                            class="bet-btn-team">Home</span>
-                    </div>
-                    <div class="ui basic red button bet away-bet" data-teamId="${
-                      game.schedule.awayTeam.id
-                    }">Bet
-                        <span>Away</span></div>
-                </div>
-            </div>
-        </div>
-        `;
-                return markup;
-            });
-            removeLoader();
-            document.getElementById('matches-div').innerHTML = markupData.join('');
-            activateListeners();
-        }
+    function getMatchDetails(id) {
+        $.get(`/api/matches/modal/${id}`)
+            .done(function (game) {
+                console.log(game);
+            })
+            .fail(function (err) {
+                console.log(err);
+            })
     }
+
+    function postBet(id) {
+        $.post(`/api/user/${id}`)
+            .done(function (result) {
+                console.log(result);
+            })
+            .fail(function (err) {
+                console.log(err);
+            })
+    }
+
 
     function activateLoader() {
         let div = $('<div class="ui active centered inline dimmer">');
@@ -134,10 +66,10 @@ $(document).ready(function () {
         $('#matches-div').empty();
     }
 
+
+    // Activates bet button clicker and 
     function activateListeners() {
-        // Click event listener for when a bet button is clicked
         $('.bet').on('click', function (event) {
-            // Get the teamid for whichever team user bets on
             const id = $(this).attr('data-teamId');
             event.stopPropagation();
             console.log('teamId=', id);
@@ -146,7 +78,15 @@ $(document).ready(function () {
             on: 'hover'
         });
 
-        const gameClickHandler = $('.game-details').on('click', function () {
+
+        /*
+        Click match > open modal > get boxscore, comments > render items > remove loader
+        active class > 
+        */
+
+
+        // Click handler to get match id
+        $('.game-details').on('click', function () {
             const id = $(this).attr('data-matchId');
             // getChartFG();
             // getChart3PT();
@@ -154,15 +94,16 @@ $(document).ready(function () {
             $('.ui.modal').modal({
                 transition: 'scale',
                 duration: 400,
+                blurring: true,
                 // onShow: function () {
                 //     $('.game-details').modal({
                 //         transition: 'fade',
                 //         duration: 10000
                 //     })
                 // },
-                onVisible: getChartFG,
+                // onVisible: getChartFG,
                 onHide: function () {
-                    $('.chart-area').empty();
+                    // $('.chart-area').empty();
                 }
             }).modal('show');
         });
@@ -187,39 +128,118 @@ $(document).ready(function () {
 
 
 
-
-
-
-    function emptyCharts() {
-        `<div class="home-charts">
-    <div class="fg-chart charts">
-        <canvas id="home-fg"></canvas>
-    </div>
-    <div class="three-pt-chart charts">
-        <canvas id="home-3pt"></canvas>
-    </div>
-    <div class="ft-chart charts">
-        <canvas id="home-ft"></canvas>
-    </div>
-</div>
-
-<div class="away-charts">
-    <div class="fg-chart charts" id="home-fg">
-        <canvas id="away-fg"></canvas>
-    </div>
-    <div class="three-pt-chart charts">
-        <canvas id="away-3pt"></canvas>
-    </div>
-    <div class="ft-chart charts">
-        <canvas id="away-ft"></canvas>
-    </div>
-</div>`
+    // Function to generate each individual game card
+    function generateGameCard(data) {
+        $('matches-div').empty();
+        if (data.games.length === 0) {
+            removeLoader();
+            $('#matches-div').append('<h1 class="white">No Games Found</h1>');
+        } else {
+            let markupData = data.games.map(game => {
+                const {
+                    playedStatus
+                } = game.schedule;
+                if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
+                    game.score.homeScoreTotal = '';
+                    game.score.awayScoreTotal = '';
+                }
+                let markup = `
+                  <div class="card" data-matchId="${game.schedule.id}">
+                      <div class="blurring dimmable content">
+                          <div class="ui dimmer">
+                              <div class="content">
+                                  <div class="center">
+                                      <div class="ui inverted button game-details" data-matchId="${
+                                        game.schedule.id
+                                      }">Game Details</div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="content info">
+                              <div class="ui header centered">
+                                  <span class="left floated home-team">${
+                                    game.schedule.homeTeam.abbreviation
+                                  }</span><span
+                                      class="live ${
+                                        playedStatus === 'LIVE' ? 'red' : ''
+                                      }">${playedStatus}</span><span
+                                      class="right floated away-team">${
+                                        game.schedule.awayTeam.abbreviation
+                                      }</span>
+                              </div>
+                              <div class="meta">
+                                  <span class="left aligned home">Home</span>
+                                  <span class="right floated away">Away</span>
+                              </div>
+                              <img class="left floated tiny ui image home-img" src="/img/${
+                                game.schedule.homeTeam.abbreviation
+                              }.svg">
+                              <img class="right floated tiny ui image away-img" src="/img/${
+                                game.schedule.awayTeam.abbreviation
+                              }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
+                              </div>
+                              <div class="description">
+                                  <span class="left aligned home-score">${
+                                    game.score.homeScoreTotal
+                                  }</span>
+                                  <span class="right floated away-score">${
+                                    game.score.awayScoreTotal
+                                  }</span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="extra content bet-money">
+                          <div class="ui description">
+                              <p class="total-money">Total Bid Amt: $900</p>
+                              <p class="num-bids">Total Bids: 15</p>
+                          </div>
+                      </div>
+                      <div class="extra content">
+                          <div class="ui two buttons">
+                              <div class="ui basic animated fade green button bet home-bet" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
+                                <div class="visible content">Bet Home</div>
+                                <div class="hidden content">
+                                  <i class="dollar sign icon"></i>
+                                </div>
+                              </div>
+                              <div class="ui basic animated fade red button bet home-bet" data-teamId="${game.schedule.awayTeam.id}" tabindex="0">
+                                <div class="visible content">Bet Away</div>
+                                <div class="hidden content">
+                                  <i class="dollar sign icon"></i>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+        `;
+                return markup;
+            });
+            removeLoader();
+            document.getElementById('matches-div').innerHTML = markupData.join('');
+            activateListeners();
+        }
     }
 
 
+    `<div class="ui basic green button bet home-bet" data-teamId="${
+                                game.schedule.homeTeam.id
+                              }">Bet <span
+                                      class="bet-btn-team">Home</span>
+                              </div>`
 
 
-    function getChartFG() {
+
+
+
+
+
+
+
+
+
+
+
+    function createCharts() {
         Chart.pluginService.register({
             beforeDraw: function (chart) {
                 var width = chart.chart.width,
@@ -236,6 +256,39 @@ $(document).ready(function () {
                 ctx.save();
             }
         });
+
+
+        let markup = `    
+            <div class="home-charts">
+                <div class="fg-chart charts">
+                    <canvas id="home-fg"></canvas>
+                </div>
+                <div class="three-pt-chart charts">
+                    <canvas id="home-3pt"></canvas>
+                </div>
+                <div class="ft-chart charts">
+                    <canvas id="home-ft"></canvas>
+                </div>
+            </div>
+
+            <div class="away-charts">
+                <div class="fg-chart charts" id="home-fg">
+                    <canvas id="away-fg"></canvas>
+                </div>
+                <div class="three-pt-chart charts">
+                    <canvas id="away-3pt"></canvas>
+                </div>
+                <div class="ft-chart charts">
+                    <canvas id="away-ft"></canvas>
+                </div>
+            </div>`
+    }
+
+
+
+
+    function getChartFG() {
+
 
         // chart1
         var data = {
