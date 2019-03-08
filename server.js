@@ -11,6 +11,7 @@ const authHtmlRouter = require('./routes/html/auth');
 const authApiRouter = require('./routes/api/auth');
 const matchesHtmlRouter = require('./routes/html/matches');
 const matchesApiRouter = require('./routes/api/matches');
+const betsApiRouter = require('./routes/api/bets');
 
 const errorController = require('./controllers/error');
 
@@ -70,6 +71,7 @@ app.use((req, res, next) => {
 app.use(matchesHtmlRouter);
 app.use('/api', matchesApiRouter);
 app.use('/api', authApiRouter);
+app.use('/api', betsApiRouter);
 app.use(authHtmlRouter);
 app.use(errorController.get404);
 
