@@ -48,7 +48,7 @@ $(document).ready(function() {
       })
       .fail(function(err) {
         $('.dimmer').remove();
-        const msg = err.responseJSON.error;
+        const msg = err.responseJSON.error.error;
         console.log(msg);
         $('.ui.form').form('add errors', [msg]);
       });

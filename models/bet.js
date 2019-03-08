@@ -11,8 +11,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     selectedTeam: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   });
 

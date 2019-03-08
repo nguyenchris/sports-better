@@ -1,11 +1,16 @@
 $(document).ready(function() {
   getTodayMatches();
   // Function to get all of today's matches
+
+  // Global variable to hold all the data for the selected date of matches
+  let matchesData = {};
+
   function getTodayMatches() {
     activateLoader();
     $.get('/api/matches')
       .done(function(data) {
-        console.log(data);
+        matchesData = data;
+        console.log(matchesData);
         $('#date-picker').attr('placeholder', data.date);
         $('.date-header').text('TODAY');
         generateGameCard(data);
@@ -24,6 +29,7 @@ $(document).ready(function() {
         } else {
           $('.date-header').text(data.day);
         }
+        matchesdata = data;
         generateGameCard(data);
         console.log(data);
       })
@@ -42,6 +48,7 @@ $(document).ready(function() {
       });
   }
 
+  // Function to send post request with data for the user's selection
   function postBet(bet) {
     $.post(`/api/bets`, bet)
       .done(function(result) {
@@ -50,6 +57,14 @@ $(document).ready(function() {
       .fail(function(err) {
         console.log(err);
       });
+  }
+
+  // Helper function to sort through searched match data in order to find the data for a match by passing in the id
+  function findMatchData(id) {
+    const matchObj = matchesData.games.find(game => {
+      return game.schedule.id === id;
+    });
+    return matchObj;
   }
 
   function activateLoader() {
@@ -67,24 +82,35 @@ $(document).ready(function() {
 
   // Click handler for when user selects bet button. Pulls teamId and input amount.
   function betClickHandler(event) {
-      const id = $(this).attr('data-teamId');
-      event.stopPropagation();
-      postBet({
-          id: id,
-          amount: 100
-      })
-      console.log('teamId=', id);
+    event.stopPropagation();
+    const teamId = parseInt($(this).attr('data-teamId'));
+    const matchId = parseInt(
+      $(this)
+        .parents()
+        .attr('data-matchId')
+    );
+    const matchObj = findMatchData(matchId);
+    console.log(matchObj);
+    postBet({
+      id: teamId,
+      amount: 100,
+      matchId: matchId,
+      playedStatus: matchObj.schedule.playedStatus,
+      selectedteam: teamId
+    });
   }
 
   // Activates bet button clicker and
   function activateListeners() {
-    $('.bet').on('click', betClickHandler)
+    $('.bet').on('click', betClickHandler);
 
     $('.cards .dimmable').dimmer({
       on: 'hover'
     });
 
     /*
+        **** Code flow of when user selects a match to get details ****
+
         Click match > open modal > get boxscore, comments > render items > remove loader
         active class > 
         */
@@ -190,7 +216,9 @@ $(document).ready(function() {
                           </div>
                       </div>
                       <div class="extra content">
-                          <div class="ui two buttons">
+                          <div class="ui two buttons" data-matchId="${
+                            game.schedule.id
+                          }">
                               <div class="ui basic animated fade green button bet home-bet" data-teamId="${
                                 game.schedule.homeTeam.id
                               }" tabindex="0">

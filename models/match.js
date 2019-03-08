@@ -5,12 +5,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    status: {
+    playedStatus: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
-    winningTeam: {
+    winningTeamName: {
       type: DataTypes.STRING,
+      allowNull: true
+    },
+    winningTeamId: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     date: {
