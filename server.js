@@ -10,7 +10,7 @@ const db = require('./models');
 const authHtmlRouter = require('./routes/html/auth');
 const authApiRouter = require('./routes/api/auth');
 const matchesHtmlRouter = require('./routes/html/matches');
-const matchesApiRouter = require('./routes/html/matches');
+const matchesApiRouter = require('./routes/api/matches');
 
 const errorController = require('./controllers/error');
 
@@ -72,9 +72,6 @@ app.use('/api', matchesApiRouter);
 app.use('/api', authApiRouter);
 app.use(authHtmlRouter);
 app.use(errorController.get404);
-
-
-
 
 db.sequelize
     .sync()   // Add {force: true} if need to reset DB tables

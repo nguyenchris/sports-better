@@ -1,10 +1,14 @@
+body {
+    background-color: #1B1C1C;
+}
+
 .hidden.menu {
     display: none;
 }
 
 
 .masthead.segment {
-    min-height: 1000px;
+    min-height: 100px;
     /* height: .95vh; */
     /* height: 100%; */
     padding: 1em 0em;
@@ -100,3 +104,5 @@
         font-size: 1.5em;
     }
 }
+
+    
