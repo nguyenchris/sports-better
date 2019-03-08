@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes) {
     amount: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    selectedTeam: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
   });
 
