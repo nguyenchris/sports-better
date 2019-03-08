@@ -3,8 +3,8 @@ const path = require('path');
 const expressHbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-require('dotenv').config();
 const PORT = process.env.PORT || 3000;
+require('dotenv').config();
 
 const db = require('./models');
 
