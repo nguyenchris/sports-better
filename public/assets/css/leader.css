@@ -1,0 +1,16 @@
+
+#tableHeader{
+    margin-top: 5%;
+    margin-left: 10%;
+    color: white;
+    
+
+}
+.ui.table{
+
+    width: 70%;
+}
+
+.ui.inverted.grey.table{
+    margin: 0% 10% 0% 10%;
+}
