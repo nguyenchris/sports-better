@@ -9,7 +9,7 @@ $(document).ready(function() {
     activateLoader();
     $.get('/api/matches')
       .done(function(data) {
-        matchesData = data;
+        matchesData = {...data};
         console.log(matchesData);
         $('#date-picker').attr('placeholder', data.date);
         $('.date-header').text('TODAY');
@@ -29,9 +29,9 @@ $(document).ready(function() {
         } else {
           $('.date-header').text(data.day);
         }
-        matchesdata = data;
+        matchesData = {...data}
+        console.log(matchesData);
         generateGameCard(data);
-        console.log(data);
       })
       .fail(function(err) {
         console.log(err);
@@ -61,6 +61,7 @@ $(document).ready(function() {
 
   // Helper function to sort through searched match data in order to find the data for a match by passing in the id
   function findMatchData(id) {
+    console.log(matchesData);
     const matchObj = matchesData.games.find(game => {
       return game.schedule.id === id;
     });
@@ -92,11 +93,12 @@ $(document).ready(function() {
     const matchObj = findMatchData(matchId);
     console.log(matchObj);
     postBet({
-      id: teamId,
+      selectedTeamId: teamId,
       amount: 100,
       matchId: matchId,
       playedStatus: matchObj.schedule.playedStatus,
-      selectedteam: teamId
+      selectedteam: teamId,
+      startTime: matchObj.startTime
     });
   }
 
@@ -197,7 +199,7 @@ $(document).ready(function() {
                               }.svg">
                               <img class="right floated tiny ui image away-img" src="/img/${
                                 game.schedule.awayTeam.abbreviation
-                              }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
+                              }.svg"><div class="meta center aligned time"><span>${game.startTime.toUpperCase()} MST</span>
                               </div>
                               <div class="description">
                                   <span class="left aligned home-score">${
@@ -328,27 +330,7 @@ $(document).ready(function() {
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
   /****************************
           Jeremy's Code Below for comments
      */
-
-
-
-
-
-
-
-     
 });
