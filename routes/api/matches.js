@@ -11,4 +11,6 @@ router.get('/matches/:date', matchesApiController.getMatchByDate);
 
 router.get('/matches/modal/:matchId', matchesApiController.getMatchBoxscore);
 
+router.get('/matches/comments', matchesApiController.postComment);
+
 module.exports = router;

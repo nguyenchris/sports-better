@@ -101,3 +101,9 @@ exports.getMatchBoxscore = (req, res, next) => {
 exports.getGameJson = (req, res, next) => {
   res.json(gameJson);
 };
+
+
+exports.postComment = (req, res, next) => {
+  console.log('=====  Comments  =====');
+  console.log(req.body);
+}
