@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true
         },
         startTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATE(6),
             allowNull: false
         },
         awayScoreTotal: {
@@ -29,6 +29,19 @@ module.exports = function(sequelize, DataTypes) {
         homeScoreTotal: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        homeTeamId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        awayTeamId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        checkGame: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     });
 

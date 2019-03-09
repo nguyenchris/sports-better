@@ -30,20 +30,20 @@ app.set('view engine', 'hbs');
 
 app.use(
     express.urlencoded({
-        extended: false
+        extended: true
     })
 );
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PUT, PATCH, DELETE'
-    );
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader(
+//         'Access-Control-Allow-Methods',
+//         'GET, POST, PUT, PATCH, DELETE'
+//     );
+//     next();
+// });
 
 app.use(
     session({
@@ -77,9 +77,9 @@ app.use((req, res, next) => {
         });
 });
 
+app.use('/api', authApiRouter);
 app.use(matchesHtmlRouter);
 app.use('/api', matchesApiRouter);
-app.use('/api', authApiRouter);
 app.use('/api', betsApiRouter);
 app.use(authHtmlRouter);
 app.use(errorController.get404);
