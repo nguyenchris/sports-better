@@ -2,10 +2,12 @@ const moment = require('moment');
 
 const db = require('../../models');
 
-exports.postBet = (req, res, next) => {
+exports.postUserBet = (req, res, next) => {
     console.log(req.body.match);
     const matchId = parseInt(req.body.match.id);
     const startTime = req.body.match.startTime;
+    const homeTeamId = parseInt(req.body.match.homeTeamId);
+    const awayTeamId = parseInt(req.body.match.awayTeamId);
     console.log(startTime);
     req.user
         .createBet({
@@ -23,7 +25,9 @@ exports.postBet = (req, res, next) => {
                     return db.Match.create({
                         id: matchId,
                         playedStatus: false,
-                        startTime: startTime
+                        startTime: startTime,
+                        awayTeamId: awayTeamId,
+                        homeTeamId: homeTeamId
                     }).then(match => {
                         match.addBet(bet).then(bet => {
                             return res.json(bet);
@@ -44,14 +48,42 @@ exports.postBet = (req, res, next) => {
 };
 
 exports.getMatchBets = (req, res, next) => {
-    console.log(req.body);
+    const matchesNumArr = JSON.parse(req.query.matches);
+    console.log(matchesNumArr);
+    db.Match.findAll({
+        where: {
+            id: matchesNumArr
+        },
+        include: [db.Bet]
+    }).then(matches => {
+        if (matches.length === 0) {
+            return res.json(matches);
+        }
+        res.json({
+            matchesArr: matches
+        });
+    });
+};
 
-    // db.Match.findAll({
-    //     where: {
-    //         id:
-    //     },
-    //     include: [db.Bet]
-    // }).then(matches => {
-    //     res.json(matches);
-    // });
+exports.getUserBets = (req, res, next) => {
+    db.User.findByPk(parseInt(req.params.userId)).then(user => {
+        user.getBets()
+            .then(bets => {
+                if (bets.length === 0) {
+                    return res.json(bets);
+                }
+                const betTotal = bets.reduce((acc, bet) => {
+                    return (acc += bet.amount);
+                }, 0);
+                res.json({
+                    user: req.user,
+                    bets: bets,
+                    betTotal: betTotal
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                throw err;
+            });
+    });
 };

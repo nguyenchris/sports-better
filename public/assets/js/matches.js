@@ -1,22 +1,34 @@
 $(document).ready(function() {
-    getTodayMatches();
+    // getTodayMatches();
+
+    fetchUser();
 
     // Global variable to hold all the data for the selected date of matches
     let matchesData = {};
     let matchIdBet = null;
     let teamIdBet = null;
     let betObj = {};
+    let user = {};
+    let allMatchBets = {};
+    let matchBetTotals = [];
+
+    function fetchUser() {
+        $.get('/api/user').done(function(fetchedUser) {
+            user = { ...fetchedUser };
+            getTodayMatches();
+        });
+    }
 
     // Function to get all of today's matches
     function getTodayMatches() {
         activateLoader();
         $.get('/api/matches')
             .done(function(data) {
-                matchesData = { ...data };
-                console.log(matchesData);
+                // matchesData = { ...data };
                 $('#date-picker').attr('placeholder', data.date);
                 $('.date-header').text('TODAY');
-                generateGameCard(data);
+                getAllMatchBets(data);
+                // generateGameCard(data);
             })
             .fail(function(err) {
                 console.log(err);
@@ -32,9 +44,10 @@ $(document).ready(function() {
                 } else {
                     $('.date-header').text(data.day);
                 }
-                matchesData = { ...data };
-                console.log(matchesData);
-                generateGameCard(data);
+                // matchesData = { ...data };
+                // console.log(matchesData);
+                getAllMatchBets(data);
+                // generateGameCard(data);
             })
             .fail(function(err) {
                 console.log(err);
@@ -51,11 +64,58 @@ $(document).ready(function() {
             });
     }
 
+    function getAllMatchBets(matches) {
+        let matchIdsArr = matches.games.map(match => {
+            return match.schedule.id;
+        });
+
+        matchesData = { ...matches };
+
+        console.log('matchesData', matchesData);
+        console.log('matchesArr', matchIdsArr);
+        console.log('query', encodeURIComponent(JSON.stringify(matchIdsArr)));
+        $.get(
+            `/api/bets/matches/?matches=${encodeURIComponent(
+                JSON.stringify(matchIdsArr)
+            )}`
+        )
+            .done(function(data) {
+                if (data.length === 0) {
+                    return generateGameCard(matchesData);
+                }
+                // matchBetTotal = data.reduce((acc, match) => {
+                //     return match.Bets
+                // }, 0)
+                allMatchBets = data.matchesArr.map(match => {
+                    match.betTotal = match.Bets.reduce((acc, bet) => {
+                        return (acc += bet.amount);
+                    }, 0);
+                    return match;
+                });
+
+                generateGameCard(matchesData);
+                console.log('matchesWithBetData ', data);
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+    }
+
+    function getUserBet(userData) {
+        $.get(`/api/bets/${user.id}`)
+            .done(function(data) {
+                user = { ...data };
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
+    }
+
     // Function to send post request with data for the user's selection
     function postBet(bet) {
         $.post(`/api/bets/user`, bet)
             .done(function(result) {
-                console.log(result);
+                // getUserBet();
             })
             .fail(function(err) {
                 console.log(err);
@@ -98,26 +158,15 @@ $(document).ready(function() {
             console.log('================================');
 
             // disabled buttons that were selected
-            // const buttonDivs = $('.extra.content')
-            //     .find(`[data-matchId='${matchIdBet}']`)
-            //     .children('.bet');
+            const buttonDivs = $('.extra.content')
+                .find(`[data-matchId='${matchIdBet}']`)
+                .children('.bet');
 
             const buttonDiv = $('.two.buttons').find(
                 `[data-teamid='${teamIdBet}']`
             );
 
-            // $(`[data-teamid='${teamIdBet}']`).replaceWith(`
-            //     <div class="ui basic animated fade green button bet home-bet ${
-            //         playedStatus !== 'VS' ? 'disabled' : ''
-            //     }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
-            //                     <div class="visible content">Bet Home</div>
-            //                     <div class="hidden content">
-            //                       <i class="dollar sign icon"></i>
-            //                     </div>
-            //                   </div>
-            //                   `);
-
-            const localBetObj = {
+            let localBetObj = {
                 bet: {
                     selectedTeamId: teamIdBet,
                     amount: parseInt(fields.amount)
@@ -125,7 +174,9 @@ $(document).ready(function() {
                 match: {
                     id: matchIdBet,
                     playedStatus: matchObj.schedule.playedStatus,
-                    startTime: matchObj.schedule.startTime
+                    startTime: matchObj.schedule.startTime,
+                    homeTeamId: matchObj.schedule.homeTeam.id,
+                    awayTeamId: matchObj.schedule.awayTeam.id
                 }
             };
 
@@ -134,6 +185,34 @@ $(document).ready(function() {
 
             postBet(betObj);
         }
+    }
+
+    function changeBetBtnToInput(matchId) {
+        let markup;
+
+        user.best.forEach(bet => {
+            markup = `
+            <div class="ui basic animated fade green button bet home-bet ${
+                playedStatus !== 'VS' ? 'disabled' : ''
+            }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
+                                <div class="visible content">${user.bet}</div>
+                                <div class="hidden content">
+                                  <i class="dollar sign icon"></i>
+                                </div>
+                              </div>
+        `;
+
+            $(`[data-teamid='${teamIdBet}']`).replaceWith(`
+                <div class="ui basic animated fade green button bet home-bet ${
+                    playedStatus !== 'VS' ? 'disabled' : ''
+                }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
+                                <div class="visible content">Bet Home</div>
+                                <div class="hidden content">
+                                  <i class="dollar sign icon"></i>
+                                </div>
+                              </div>
+                              `);
+        });
     }
 
     // Click handler for when user selects bet button. Pulls teamId and input amount.
@@ -331,8 +410,6 @@ $(document).ready(function() {
             activateListeners();
         }
     }
-
-    function changeBetBtnToInput() {}
 
     // function createCharts() {
     // Chart.pluginService.register({
