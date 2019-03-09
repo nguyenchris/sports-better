@@ -3,14 +3,17 @@ const moment = require('moment');
 const db = require('../../models');
 
 exports.postBet = (req, res, next) => {
-    const matchId = parseInt(req.body.matchId);
-    const startTime = parseInt(req.body.startTime);
+    console.log(req.body.match);
+    const matchId = parseInt(req.body.match.id);
+    const startTime = req.body.match.startTime;
+    console.log(startTime);
     req.user
         .createBet({
-            amount: parseInt(req.body.amount),
-            selectedTeamId: parseInt(req.body.selectedTeamId)
+            amount: parseInt(req.body.bet.amount),
+            selectedTeamId: parseInt(req.body.bet.selectedTeamId)
         })
         .then(bet => {
+            let createdBet = bet;
             db.Match.findOne({
                 where: {
                     id: matchId
@@ -29,7 +32,7 @@ exports.postBet = (req, res, next) => {
                 }
                 match.addBet(bet).then(match => {
                     res.json({
-                        bet: bet,
+                        bet: createdBet,
                         match: match
                     });
                 });
@@ -38,4 +41,17 @@ exports.postBet = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
+};
+
+exports.getMatchBets = (req, res, next) => {
+    console.log(req.body);
+
+    // db.Match.findAll({
+    //     where: {
+    //         id:
+    //     },
+    //     include: [db.Bet]
+    // }).then(matches => {
+    //     res.json(matches);
+    // });
 };

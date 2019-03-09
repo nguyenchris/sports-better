@@ -3,6 +3,9 @@ $(document).ready(function() {
 
     // Global variable to hold all the data for the selected date of matches
     let matchesData = {};
+    let matchIdBet = null;
+    let teamIdBet = null;
+    let betObj = {};
 
     // Function to get all of today's matches
     function getTodayMatches() {
@@ -50,7 +53,7 @@ $(document).ready(function() {
 
     // Function to send post request with data for the user's selection
     function postBet(bet) {
-        $.post(`/api/bets`, bet)
+        $.post(`/api/bets/user`, bet)
             .done(function(result) {
                 console.log(result);
             })
@@ -81,25 +84,76 @@ $(document).ready(function() {
         $('#matches-div').empty();
     }
 
+    function updateBetButton(matchObj, teamId) {}
+
+    function getBetAmount(event, fields) {
+        if (fields.amount) {
+            $('.mini.modal').modal('hide');
+            const matchObj = findMatchData(matchIdBet);
+            console.log('=======BET DATA AFTER SUBMIT=======');
+            console.log('matchIdBet', matchIdBet);
+            console.log('teamIdBet', teamIdBet);
+            console.log('matchObj', matchObj);
+            console.log('amount', fields.amount);
+            console.log('================================');
+
+            // disabled buttons that were selected
+            // const buttonDivs = $('.extra.content')
+            //     .find(`[data-matchId='${matchIdBet}']`)
+            //     .children('.bet');
+
+            const buttonDiv = $('.two.buttons').find(
+                `[data-teamid='${teamIdBet}']`
+            );
+
+            // $(`[data-teamid='${teamIdBet}']`).replaceWith(`
+            //     <div class="ui basic animated fade green button bet home-bet ${
+            //         playedStatus !== 'VS' ? 'disabled' : ''
+            //     }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
+            //                     <div class="visible content">Bet Home</div>
+            //                     <div class="hidden content">
+            //                       <i class="dollar sign icon"></i>
+            //                     </div>
+            //                   </div>
+            //                   `);
+
+            const localBetObj = {
+                bet: {
+                    selectedTeamId: teamIdBet,
+                    amount: parseInt(fields.amount)
+                },
+                match: {
+                    id: matchIdBet,
+                    playedStatus: matchObj.schedule.playedStatus,
+                    startTime: matchObj.schedule.startTime
+                }
+            };
+
+            betObj = { ...localBetObj };
+            console.log(betObj);
+
+            postBet(betObj);
+        }
+    }
+
     // Click handler for when user selects bet button. Pulls teamId and input amount.
     function betClickHandler(event) {
         event.stopPropagation();
-        const teamId = parseInt($(this).attr('data-teamId'));
-        const matchId = parseInt(
+        teamIdBet = parseInt($(this).attr('data-teamId'));
+        matchIdBet = parseInt(
             $(this)
                 .parents()
                 .attr('data-matchId')
         );
-        const matchObj = findMatchData(matchId);
-        console.log(matchObj);
-        postBet({
-            selectedTeamId: teamId,
-            amount: 100,
-            matchId: matchId,
-            playedStatus: matchObj.schedule.playedStatus,
-            selectedteam: teamId,
-            startTime: matchObj.startTime
-        });
+
+        $('.mini.modal')
+            .modal({
+                duration: 210,
+                onHidden: function() {
+                    $('#bet-amount').val('');
+                }
+            })
+            .modal('show');
     }
 
     // Activates bet button clicker and
@@ -108,6 +162,12 @@ $(document).ready(function() {
 
         $('.cards .dimmable').dimmer({
             on: 'hover'
+        });
+
+        $('.mini.modal').modal({
+            onHidden: function() {
+                $('#bet-amount').val('');
+            }
         });
 
         /*
@@ -144,6 +204,22 @@ $(document).ready(function() {
         // $('.menu .item').tab();
         $('.menu>[data-tab=game-stats]').tab();
         $('.menu>[data-tab=bet-odds]').tab();
+
+        $('.small.form').form({
+            on: 'submit',
+            fields: {
+                amount: {
+                    identifier: 'amount',
+                    rules: [
+                        {
+                            type: 'integer[1..1000000]',
+                            prompt: 'Please enter an integer value'
+                        }
+                    ]
+                }
+            },
+            onSuccess: getBetAmount
+        });
     }
 
     $('#calendar').calendar({
@@ -223,17 +299,21 @@ $(document).ready(function() {
                           <div class="ui two buttons" data-matchId="${
                               game.schedule.id
                           }">
-                              <div class="ui basic animated fade green button bet home-bet" data-teamId="${
-                                  game.schedule.homeTeam.id
-                              }" tabindex="0">
+                              <div class="ui basic animated fade green button bet home-bet ${
+                                  playedStatus !== 'VS' ? 'disabled' : ''
+                              }" data-teamId="${
+                    game.schedule.homeTeam.id
+                }" tabindex="0">
                                 <div class="visible content">Bet Home</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
                                 </div>
                               </div>
-                              <div class="ui basic animated fade red button bet home-bet disabled" data-teamId="${
-                                  game.schedule.awayTeam.id
-                              }" tabindex="0">
+                              <div class="ui basic animated fade red button bet away-bet ${
+                                  playedStatus !== 'VS' ? 'disabled' : ''
+                              }" data-teamId="${
+                    game.schedule.awayTeam.id
+                }" tabindex="0">
                                 <div class="visible content">Bet Away</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
@@ -251,6 +331,8 @@ $(document).ready(function() {
             activateListeners();
         }
     }
+
+    function changeBetBtnToInput() {}
 
     // function createCharts() {
     // Chart.pluginService.register({
@@ -378,7 +460,6 @@ $(document).ready(function() {
             }
         });
     }
-
     /****************************
           Jeremy's Code Below for comments
      */

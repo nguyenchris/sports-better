@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true
         },
         startTime: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING,
             allowNull: false
         },
         awayScoreTotal: {
