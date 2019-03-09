@@ -1,1 +1,228 @@
-{"games":[{"schedule":{"id":48521,"startTime":"2019-03-05T00:30:00.000Z","endedTime":null,"awayTeam":{"id":108,"abbreviation":"DAL"},"homeTeam":{"id":84,"abbreviation":"BRO"},"venue":{"id":78,"name":"Barclays Center"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":88,"homeScoreTotal":127,"quarters":[{"quarterNumber":1,"awayScore":21,"homeScore":31},{"quarterNumber":2,"awayScore":26,"homeScore":34},{"quarterNumber":3,"awayScore":26,"homeScore":34},{"quarterNumber":4,"awayScore":15,"homeScore":28}]}},{"schedule":{"id":48522,"startTime":"2019-03-05T00:30:00.000Z","endedTime":null,"awayTeam":{"id":91,"abbreviation":"ATL"},"homeTeam":{"id":92,"abbreviation":"MIA"},"venue":{"id":86,"name":"American Airlines Arena"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":113,"homeScoreTotal":114,"quarters":[{"quarterNumber":1,"awayScore":31,"homeScore":32},{"quarterNumber":2,"awayScore":30,"homeScore":29},{"quarterNumber":3,"awayScore":24,"homeScore":24},{"quarterNumber":4,"awayScore":28,"homeScore":29}]}},{"schedule":{"id":48523,"startTime":"2019-03-05T01:30:00.000Z","endedTime":null,"awayTeam":{"id":99,"abbreviation":"DEN"},"homeTeam":{"id":106,"abbreviation":"SAS"},"venue":{"id":99,"name":"AT&T Center"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":103,"homeScoreTotal":104,"quarters":[{"quarterNumber":1,"awayScore":17,"homeScore":36},{"quarterNumber":2,"awayScore":31,"homeScore":22},{"quarterNumber":3,"awayScore":21,"homeScore":27},{"quarterNumber":4,"awayScore":34,"homeScore":19}]}},{"schedule":{"id":48524,"startTime":"2019-03-05T02:00:00.000Z","endedTime":null,"awayTeam":{"id":90,"abbreviation":"MIL"},"homeTeam":{"id":104,"abbreviation":"PHX"},"venue":{"id":98,"name":"Talking Stick Resort Arena"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":105,"homeScoreTotal":114,"quarters":[{"quarterNumber":1,"awayScore":31,"homeScore":20},{"quarterNumber":2,"awayScore":23,"homeScore":32},{"quarterNumber":3,"awayScore":28,"homeScore":24},{"quarterNumber":4,"awayScore":23,"homeScore":38}]}},{"schedule":{"id":48525,"startTime":"2019-03-05T02:00:00.000Z","endedTime":null,"awayTeam":{"id":110,"abbreviation":"NOP"},"homeTeam":{"id":98,"abbreviation":"UTA"},"venue":{"id":92,"name":"Vivint Smart Home Arena"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":115,"homeScoreTotal":112,"quarters":[{"quarterNumber":1,"awayScore":24,"homeScore":33},{"quarterNumber":2,"awayScore":28,"homeScore":28},{"quarterNumber":3,"awayScore":30,"homeScore":27},{"quarterNumber":4,"awayScore":33,"homeScore":24}]}},{"schedule":{"id":48526,"startTime":"2019-03-05T03:00:00.000Z","endedTime":null,"awayTeam":{"id":83,"abbreviation":"NYK"},"homeTeam":{"id":103,"abbreviation":"SAC"},"venue":{"id":97,"name":"Sleep Train Arena"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":null,"awayScoreTotal":108,"homeScoreTotal":115,"quarters":[{"quarterNumber":1,"awayScore":25,"homeScore":34},{"quarterNumber":2,"awayScore":26,"homeScore":21},{"quarterNumber":3,"awayScore":29,"homeScore":31},{"quarterNumber":4,"awayScore":28,"homeScore":29}]}},{"schedule":{"id":48527,"startTime":"2019-03-05T03:30:00.000Z","endedTime":null,"awayTeam":{"id":102,"abbreviation":"LAC"},"homeTeam":{"id":105,"abbreviation":"LAL"},"venue":{"id":25,"name":"Staples Center"},"venueAllegiance":"HOME","scheduleStatus":"NORMAL","originalStartTime":null,"delayedOrPostponedReason":null,"playedStatus":"COMPLETED_PENDING_REVIEW","attendance":null,"officials":[],"broadcasters":[],"weather":null},"score":{"currentQuarter":null,"currentQuarterSecondsRemaining":null,"currentIntermission":4,"awayScoreTotal":113,"homeScoreTotal":105,"quarters":[{"quarterNumber":1,"awayScore":26,"homeScore":34},{"quarterNumber":2,"awayScore":35,"homeScore":23},{"quarterNumber":3,"awayScore":30,"homeScore":28},{"quarterNumber":4,"awayScore":22,"homeScore":20}]}}]}
+{
+  "games": [
+    {
+      "schedule": {
+        "id": 48521,
+        "startTime": "2019-03-05T00:30:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 108, "abbreviation": "DAL"},
+        "homeTeam": {"id": 84, "abbreviation": "BRO"},
+        "venue": {"id": 78, "name": "Barclays Center"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 88,
+        "homeScoreTotal": 127,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 21, "homeScore": 31},
+          {"quarterNumber": 2, "awayScore": 26, "homeScore": 34},
+          {"quarterNumber": 3, "awayScore": 26, "homeScore": 34},
+          {"quarterNumber": 4, "awayScore": 15, "homeScore": 28}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48522,
+        "startTime": "2019-03-05T00:30:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 91, "abbreviation": "ATL"},
+        "homeTeam": {"id": 92, "abbreviation": "MIA"},
+        "venue": {"id": 86, "name": "American Airlines Arena"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 113,
+        "homeScoreTotal": 114,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 31, "homeScore": 32},
+          {"quarterNumber": 2, "awayScore": 30, "homeScore": 29},
+          {"quarterNumber": 3, "awayScore": 24, "homeScore": 24},
+          {"quarterNumber": 4, "awayScore": 28, "homeScore": 29}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48523,
+        "startTime": "2019-03-05T01:30:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 99, "abbreviation": "DEN"},
+        "homeTeam": {"id": 106, "abbreviation": "SAS"},
+        "venue": {"id": 99, "name": "AT&T Center"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 103,
+        "homeScoreTotal": 104,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 17, "homeScore": 36},
+          {"quarterNumber": 2, "awayScore": 31, "homeScore": 22},
+          {"quarterNumber": 3, "awayScore": 21, "homeScore": 27},
+          {"quarterNumber": 4, "awayScore": 34, "homeScore": 19}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48524,
+        "startTime": "2019-03-05T02:00:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 90, "abbreviation": "MIL"},
+        "homeTeam": {"id": 104, "abbreviation": "PHX"},
+        "venue": {"id": 98, "name": "Talking Stick Resort Arena"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 105,
+        "homeScoreTotal": 114,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 31, "homeScore": 20},
+          {"quarterNumber": 2, "awayScore": 23, "homeScore": 32},
+          {"quarterNumber": 3, "awayScore": 28, "homeScore": 24},
+          {"quarterNumber": 4, "awayScore": 23, "homeScore": 38}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48525,
+        "startTime": "2019-03-05T02:00:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 110, "abbreviation": "NOP"},
+        "homeTeam": {"id": 98, "abbreviation": "UTA"},
+        "venue": {"id": 92, "name": "Vivint Smart Home Arena"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 115,
+        "homeScoreTotal": 112,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 24, "homeScore": 33},
+          {"quarterNumber": 2, "awayScore": 28, "homeScore": 28},
+          {"quarterNumber": 3, "awayScore": 30, "homeScore": 27},
+          {"quarterNumber": 4, "awayScore": 33, "homeScore": 24}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48526,
+        "startTime": "2019-03-05T03:00:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 83, "abbreviation": "NYK"},
+        "homeTeam": {"id": 103, "abbreviation": "SAC"},
+        "venue": {"id": 97, "name": "Sleep Train Arena"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": null,
+        "awayScoreTotal": 108,
+        "homeScoreTotal": 115,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 25, "homeScore": 34},
+          {"quarterNumber": 2, "awayScore": 26, "homeScore": 21},
+          {"quarterNumber": 3, "awayScore": 29, "homeScore": 31},
+          {"quarterNumber": 4, "awayScore": 28, "homeScore": 29}
+        ]
+      }
+    },
+    {
+      "schedule": {
+        "id": 48527,
+        "startTime": "2019-03-05T03:30:00.000Z",
+        "endedTime": null,
+        "awayTeam": {"id": 102, "abbreviation": "LAC"},
+        "homeTeam": {"id": 105, "abbreviation": "LAL"},
+        "venue": {"id": 25, "name": "Staples Center"},
+        "venueAllegiance": "HOME",
+        "scheduleStatus": "NORMAL",
+        "originalStartTime": null,
+        "delayedOrPostponedReason": null,
+        "playedStatus": "COMPLETED_PENDING_REVIEW",
+        "attendance": null,
+        "officials": [],
+        "broadcasters": [],
+        "weather": null
+      },
+      "score": {
+        "currentQuarter": null,
+        "currentQuarterSecondsRemaining": null,
+        "currentIntermission": 4,
+        "awayScoreTotal": 113,
+        "homeScoreTotal": 105,
+        "quarters": [
+          {"quarterNumber": 1, "awayScore": 26, "homeScore": 34},
+          {"quarterNumber": 2, "awayScore": 35, "homeScore": 23},
+          {"quarterNumber": 3, "awayScore": 30, "homeScore": 28},
+          {"quarterNumber": 4, "awayScore": 22, "homeScore": 20}
+        ]
+      }
+    }
+  ]
+}
