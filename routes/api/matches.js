@@ -13,4 +13,6 @@ router.get('/matches/modal/:matchId', matchesApiController.getMatchBoxscore);
 
 router.get('/matches/comments', matchesApiController.postComment);
 
+router.get('/matches/odds', matchesApiController.getMatchOdds);
+
 module.exports = router;

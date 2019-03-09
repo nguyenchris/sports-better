@@ -106,10 +106,28 @@ exports.getMatchBoxscore = (req, res, next) => {
 //     // axios.get('https://api.mysportsfeeds.com/v2.1/pull/nba/{season}/games/{game}/boxscore.{format}')
 // }
 
+
+
 // Controller which returns static json file for testing today's gameJson
 exports.getGameJson = (req, res, next) => {
     res.json(gameJson);
+}
+    
+
+
+// /api/matches/:id
+exports.getMatchOdds = (req, res) => {
+    const today = moment(new Date()).format('YYYYMMDD');
+    
+    axios.get(`https://api.mysportsfeeds.com/v2.1/pull/nba/current/date/${today}/odds_gamelines.json?${id}`, config)
+    .then(res => {
+        const id = req.params.id
+        console.log(res);
+        
+
+    })
 };
+
 
 exports.postComment = (req, res, next) => {
     console.log('=====  Comments  =====');
