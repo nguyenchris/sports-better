@@ -119,9 +119,6 @@ exports.getMatchOdds = (req, res) => {
     })
 }
 
-  res.json(gameJson);
-};
-
 
 exports.postComment = (req, res, next) => {
   console.log('=====  Comments  =====');

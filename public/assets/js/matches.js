@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   getTodayMatches();
 
   // Global variable to hold all the data for the selected date of matches
@@ -8,14 +8,14 @@ $(document).ready(function() {
   function getTodayMatches() {
     activateLoader();
     $.get('/api/matches')
-      .done(function(data) {
-        matchesData = data;
+      .done(function (data) {
+        matchesData = { ...data };
         console.log(matchesData);
         $('#date-picker').attr('placeholder', data.date);
         $('.date-header').text('TODAY');
         generateGameCard(data);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
@@ -23,27 +23,27 @@ $(document).ready(function() {
   function getMatchByDate(date, text) {
     activateLoader();
     $.get(`/api/matches/${date}`)
-      .done(function(data) {
+      .done(function (data) {
         if (data.today == text) {
           $('.date-header').text('TODAY');
         } else {
           $('.date-header').text(data.day);
         }
-        matchesdata = data;
+        matchesData = { ...data };
+        console.log(matchesData);
         generateGameCard(data);
-        console.log(data);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
 
   function getMatchDetails(id) {
     $.get(`/api/matches/modal/${id}`)
-      .done(function(game) {
+      .done(function (game) {
         console.log(game);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
@@ -51,16 +51,17 @@ $(document).ready(function() {
   // Function to send post request with data for the user's selection
   function postBet(bet) {
     $.post(`/api/bets`, bet)
-      .done(function(result) {
+      .done(function (result) {
         console.log(result);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
 
   // Helper function to sort through searched match data in order to find the data for a match by passing in the id
   function findMatchData(id) {
+    console.log(matchesData);
     const matchObj = matchesData.games.find(game => {
       return game.schedule.id === id;
     });
@@ -92,11 +93,12 @@ $(document).ready(function() {
     const matchObj = findMatchData(matchId);
     console.log(matchObj);
     postBet({
-      id: teamId,
+      selectedTeamId: teamId,
       amount: 100,
       matchId: matchId,
       playedStatus: matchObj.schedule.playedStatus,
-      selectedteam: teamId
+      selectedteam: teamId,
+      startTime: matchObj.startTime
     });
   }
 
@@ -109,14 +111,14 @@ $(document).ready(function() {
     });
 
     /*
-        **** Code flow of when user selects a match to get details ****
+    **** Code flow of when user selects a match to get details ****
 
-        Click match > open modal > get boxscore, comments > render items > remove loader
-        active class > 
-        */
+    Click match > open modal > get boxscore, comments > render items > remove loader
+    active class > 
+    */
 
     // Click handler to get match id
-    $('.game-details').on('click', function() {
+    $('.game-details').on('click', function () {
       const id = $(this).attr('data-matchId');
       // getChartFG();
       // getChart3PT();
@@ -126,25 +128,27 @@ $(document).ready(function() {
           transition: 'scale',
           duration: 400,
           blurring: true,
-          // onShow: function () {
+          // onShow: function() {
           //     $('.game-details').modal({
           //         transition: 'fade',
           //         duration: 10000
-          //     })
+          //     });
           // },
-          // onVisible: getChartFG,
-          onHide: function() {
-            // $('.chart-area').empty();
-          }
+          onVisible: getChartFG
+          // onHide: function() {
+          //     $('.chart-area').empty();
+          // }
         })
         .modal('show');
     });
-    $('.menu .item').tab();
+    // $('.menu .item').tab();
+    $('.menu>[data-tab=game-stats]').tab();
+    $('.menu>[data-tab=bet-odds]').tab();
   }
 
   $('#calendar').calendar({
     type: 'date',
-    onChange: function(date, text) {
+    onChange: function (date, text) {
       const utcDate = new Date(date);
       console.log(text);
       getMatchByDate(utcDate, text);
@@ -159,7 +163,7 @@ $(document).ready(function() {
       $('#matches-div').append('<h1 class="white">No Games Found</h1>');
     } else {
       let markupData = data.games.map(game => {
-        const {playedStatus} = game.schedule;
+        const { playedStatus } = game.schedule;
         if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
           game.score.homeScoreTotal = '';
           game.score.awayScoreTotal = '';
@@ -171,41 +175,41 @@ $(document).ready(function() {
                               <div class="content">
                                   <div class="center">
                                       <div class="ui inverted button game-details" data-matchId="${
-                                        game.schedule.id
-                                      }">Game Details</div>
+          game.schedule.id
+          }">Game Details</div>
                                   </div>
                               </div>
                           </div>
                           <div class="content info">
                               <div class="ui header centered">
                                   <span class="left floated home-team">${
-                                    game.schedule.homeTeam.abbreviation
-                                  }</span><span
+          game.schedule.homeTeam.abbreviation
+          }</span><span
                                       class="live ${
-                                        playedStatus === 'LIVE' ? 'red' : ''
-                                      }">${playedStatus}</span><span
+          playedStatus === 'LIVE' ? 'red' : ''
+          }">${playedStatus}</span><span
                                       class="right floated away-team">${
-                                        game.schedule.awayTeam.abbreviation
-                                      }</span>
+          game.schedule.awayTeam.abbreviation
+          }</span>
                               </div>
                               <div class="meta">
                                   <span class="left aligned home">Home</span>
                                   <span class="right floated away">Away</span>
                               </div>
                               <img class="left floated tiny ui image home-img" src="/img/${
-                                game.schedule.homeTeam.abbreviation
-                              }.svg">
+          game.schedule.homeTeam.abbreviation
+          }.svg">
                               <img class="right floated tiny ui image away-img" src="/img/${
-                                game.schedule.awayTeam.abbreviation
-                              }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
+          game.schedule.awayTeam.abbreviation
+          }.svg"><div class="meta center aligned time"><span>${game.startTime.toUpperCase()} MST</span>
                               </div>
                               <div class="description">
                                   <span class="left aligned home-score">${
-                                    game.score.homeScoreTotal
-                                  }</span>
+          game.score.homeScoreTotal
+          }</span>
                                   <span class="right floated away-score">${
-                                    game.score.awayScoreTotal
-                                  }</span>
+          game.score.awayScoreTotal
+          }</span>
                               </div>
                           </div>
                       </div>
@@ -217,19 +221,19 @@ $(document).ready(function() {
                       </div>
                       <div class="extra content">
                           <div class="ui two buttons" data-matchId="${
-                            game.schedule.id
-                          }">
+          game.schedule.id
+          }">
                               <div class="ui basic animated fade green button bet home-bet" data-teamId="${
-                                game.schedule.homeTeam.id
-                              }" tabindex="0">
+          game.schedule.homeTeam.id
+          }" tabindex="0">
                                 <div class="visible content">Bet Home</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
                                 </div>
                               </div>
-                              <div class="ui basic animated fade red button bet home-bet" data-teamId="${
-                                game.schedule.awayTeam.id
-                              }" tabindex="0">
+                              <div class="ui basic animated fade red button bet home-bet disabled" data-teamId="${
+          game.schedule.awayTeam.id
+          }" tabindex="0">
                                 <div class="visible content">Bet Away</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
@@ -241,57 +245,78 @@ $(document).ready(function() {
         return markup;
       });
       removeLoader();
-      document.getElementById('matches-div').innerHTML = markupData.join('');
+      document.getElementById('matches-div').innerHTML = markupData.join(
+        ''
+      );
       activateListeners();
     }
   }
 
-  function createCharts() {
+  // function createCharts() {
+  // Chart.pluginService.register({
+  //     beforeDraw: function(chart) {
+  //         var width = chart.chart.width,
+  //             height = chart.chart.height,
+  //             ctx = chart.chart.ctx;
+  //         ctx.restore();
+  //         var fontSize = (height / 114).toFixed(2);
+  //         ctx.font = fontSize + 'em sans-serif';
+  //         ctx.textBaseline = 'middle';
+  //         var text = chart.config.options.elements.center.text,
+  //             textX = Math.round((width - ctx.measureText(text).width) / 2),
+  //             textY = height / 1.57;
+  //         ctx.fillText(text, textX, textY);
+  //         ctx.save();
+  //     }
+  // });
+
+  // let markup = `
+  //     <div class="home-charts">
+  //         <div class="fg-chart charts">
+  //             <canvas id="home-fg"></canvas>
+  //         </div>
+  //         <div class="three-pt-chart charts">
+  //             <canvas id="home-3pt"></canvas>
+  //         </div>
+  //         <div class="ft-chart charts">
+  //             <canvas id="home-ft"></canvas>
+  //         </div>
+  //     </div>
+
+  //     <div class="away-charts">
+  //         <div class="fg-chart charts" id="home-fg">
+  //             <canvas id="away-fg"></canvas>
+  //         </div>
+  //         <div class="three-pt-chart charts">
+  //             <canvas id="away-3pt"></canvas>
+  //         </div>
+  //         <div class="ft-chart charts">
+  //             <canvas id="away-ft"></canvas>
+  //         </div>
+  //     </div>`;
+  // }
+
+  function getChartFG() {
     Chart.pluginService.register({
-      beforeDraw: function(chart) {
-        var width = chart.chart.width,
+      beforeDraw: function (chart) {
+        const width = chart.chart.width,
           height = chart.chart.height,
           ctx = chart.chart.ctx;
         ctx.restore();
-        var fontSize = (height / 114).toFixed(2);
+        const fontSize = (height / 114).toFixed(2);
         ctx.font = fontSize + 'em sans-serif';
         ctx.textBaseline = 'middle';
-        var text = chart.config.options.elements.center.text,
-          textX = Math.round((width - ctx.measureText(text).width) / 2),
+        const text = chart.config.options.elements.center.text,
+          textX = Math.round(
+            (width - ctx.measureText(text).width) / 2
+          ),
           textY = height / 1.57;
         ctx.fillText(text, textX, textY);
         ctx.save();
       }
     });
 
-    let markup = `    
-            <div class="home-charts">
-                <div class="fg-chart charts">
-                    <canvas id="home-fg"></canvas>
-                </div>
-                <div class="three-pt-chart charts">
-                    <canvas id="home-3pt"></canvas>
-                </div>
-                <div class="ft-chart charts">
-                    <canvas id="home-ft"></canvas>
-                </div>
-            </div>
-
-            <div class="away-charts">
-                <div class="fg-chart charts" id="home-fg">
-                    <canvas id="away-fg"></canvas>
-                </div>
-                <div class="three-pt-chart charts">
-                    <canvas id="away-3pt"></canvas>
-                </div>
-                <div class="ft-chart charts">
-                    <canvas id="away-ft"></canvas>
-                </div>
-            </div>`;
-  }
-
-  function getChartFG() {
-    var data = {
+    const data = {
       labels: ['Red', 'Blue'],
       datasets: [
         {
@@ -301,7 +326,33 @@ $(document).ready(function() {
         }
       ]
     };
-    var promisedDeliveryChart = new Chart(document.getElementById('myChart'), {
+    let homeFGChart = new Chart(document.getElementById('home-fg'), {
+      type: 'doughnut',
+      data: data,
+      options: {
+        elements: {
+          center: {
+            text: '50%'
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        title: {
+          display: true,
+          text: 'Field Goal %',
+          fontSize: 15,
+          padding: 8
+        },
+        animation: {
+          duration: 1500
+        }
+      }
+    });
+
+    let awayFGChart = new Chart(document.getElementById('away-fg'), {
       type: 'doughnut',
       data: data,
       options: {
@@ -328,27 +379,7 @@ $(document).ready(function() {
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
   /****************************
-          Jeremy's Code Below for comments
-     */
-
-
-
-
-
-
-
-     
+        Jeremy's Code Below for comments
+   */
 });
