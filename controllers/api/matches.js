@@ -104,7 +104,6 @@ exports.getMatchBoxscore = (req, res, next) => {
 // }
 
 
-// /api/matches/odds:matchid
 
 // Controller which returns static json file for testing today's gameJson
 exports.getGameJson = (req, res, next) => {
@@ -121,6 +120,7 @@ exports.getMatchOdds = (req, res) => {
     .then(res => {
         const id = req.params.id
         console.log(res);
+        
 
     })
 };
