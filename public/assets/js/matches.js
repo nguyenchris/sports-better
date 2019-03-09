@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   getTodayMatches();
 
   // Global variable to hold all the data for the selected date of matches
@@ -8,14 +8,14 @@ $(document).ready(function() {
   function getTodayMatches() {
     activateLoader();
     $.get('/api/matches')
-      .done(function(data) {
+      .done(function (data) {
         matchesData = data;
         console.log(matchesData);
         $('#date-picker').attr('placeholder', data.date);
         $('.date-header').text('TODAY');
         generateGameCard(data);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
@@ -23,7 +23,7 @@ $(document).ready(function() {
   function getMatchByDate(date, text) {
     activateLoader();
     $.get(`/api/matches/${date}`)
-      .done(function(data) {
+      .done(function (data) {
         if (data.today == text) {
           $('.date-header').text('TODAY');
         } else {
@@ -33,17 +33,17 @@ $(document).ready(function() {
         generateGameCard(data);
         console.log(data);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
 
   function getMatchDetails(id) {
     $.get(`/api/matches/modal/${id}`)
-      .done(function(game) {
+      .done(function (game) {
         console.log(game);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
@@ -51,10 +51,10 @@ $(document).ready(function() {
   // Function to send post request with data for the user's selection
   function postBet(bet) {
     $.post(`/api/bets`, bet)
-      .done(function(result) {
+      .done(function (result) {
         console.log(result);
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log(err);
       });
   }
@@ -116,7 +116,7 @@ $(document).ready(function() {
         */
 
     // Click handler to get match id
-    $('.game-details').on('click', function() {
+    $('.game-details').on('click', function () {
       const id = $(this).attr('data-matchId');
       // getChartFG();
       // getChart3PT();
@@ -133,7 +133,7 @@ $(document).ready(function() {
           //     })
           // },
           // onVisible: getChartFG,
-          onHide: function() {
+          onHide: function () {
             // $('.chart-area').empty();
           }
         })
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
   $('#calendar').calendar({
     type: 'date',
-    onChange: function(date, text) {
+    onChange: function (date, text) {
       const utcDate = new Date(date);
       console.log(text);
       getMatchByDate(utcDate, text);
@@ -159,7 +159,7 @@ $(document).ready(function() {
       $('#matches-div').append('<h1 class="white">No Games Found</h1>');
     } else {
       let markupData = data.games.map(game => {
-        const {playedStatus} = game.schedule;
+        const { playedStatus } = game.schedule;
         if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
           game.score.homeScoreTotal = '';
           game.score.awayScoreTotal = '';
@@ -171,41 +171,41 @@ $(document).ready(function() {
                               <div class="content">
                                   <div class="center">
                                       <div class="ui inverted button game-details" data-matchId="${
-                                        game.schedule.id
-                                      }">Game Details</div>
+          game.schedule.id
+          }">Game Details</div>
                                   </div>
                               </div>
                           </div>
                           <div class="content info">
                               <div class="ui header centered">
                                   <span class="left floated home-team">${
-                                    game.schedule.homeTeam.abbreviation
-                                  }</span><span
+          game.schedule.homeTeam.abbreviation
+          }</span><span
                                       class="live ${
-                                        playedStatus === 'LIVE' ? 'red' : ''
-                                      }">${playedStatus}</span><span
+          playedStatus === 'LIVE' ? 'red' : ''
+          }">${playedStatus}</span><span
                                       class="right floated away-team">${
-                                        game.schedule.awayTeam.abbreviation
-                                      }</span>
+          game.schedule.awayTeam.abbreviation
+          }</span>
                               </div>
                               <div class="meta">
                                   <span class="left aligned home">Home</span>
                                   <span class="right floated away">Away</span>
                               </div>
                               <img class="left floated tiny ui image home-img" src="/img/${
-                                game.schedule.homeTeam.abbreviation
-                              }.svg">
+          game.schedule.homeTeam.abbreviation
+          }.svg">
                               <img class="right floated tiny ui image away-img" src="/img/${
-                                game.schedule.awayTeam.abbreviation
-                              }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
+          game.schedule.awayTeam.abbreviation
+          }.svg"><div class="meta center aligned time"><span>${game.schedule.startTime.toUpperCase()} MT</span>
                               </div>
                               <div class="description">
                                   <span class="left aligned home-score">${
-                                    game.score.homeScoreTotal
-                                  }</span>
+          game.score.homeScoreTotal
+          }</span>
                                   <span class="right floated away-score">${
-                                    game.score.awayScoreTotal
-                                  }</span>
+          game.score.awayScoreTotal
+          }</span>
                               </div>
                           </div>
                       </div>
@@ -217,19 +217,19 @@ $(document).ready(function() {
                       </div>
                       <div class="extra content">
                           <div class="ui two buttons" data-matchId="${
-                            game.schedule.id
-                          }">
+          game.schedule.id
+          }">
                               <div class="ui basic animated fade green button bet home-bet" data-teamId="${
-                                game.schedule.homeTeam.id
-                              }" tabindex="0">
+          game.schedule.homeTeam.id
+          }" tabindex="0">
                                 <div class="visible content">Bet Home</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
                                 </div>
                               </div>
                               <div class="ui basic animated fade red button bet home-bet" data-teamId="${
-                                game.schedule.awayTeam.id
-                              }" tabindex="0">
+          game.schedule.awayTeam.id
+          }" tabindex="0">
                                 <div class="visible content">Bet Away</div>
                                 <div class="hidden content">
                                   <i class="dollar sign icon"></i>
@@ -248,7 +248,7 @@ $(document).ready(function() {
 
   function createCharts() {
     Chart.pluginService.register({
-      beforeDraw: function(chart) {
+      beforeDraw: function (chart) {
         var width = chart.chart.width,
           height = chart.chart.height,
           ctx = chart.chart.ctx;
@@ -345,10 +345,13 @@ $(document).ready(function() {
      */
 
 
+    $( ".content" ).append( "<p>Test</p>" );
 
 
 
 
 
-     
+
+
+
 });
