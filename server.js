@@ -3,6 +3,7 @@ const path = require('path');
 const expressHbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 
 const db = require('./models');
@@ -11,10 +12,9 @@ const authHtmlRouter = require('./routes/html/auth');
 const authApiRouter = require('./routes/api/auth');
 const matchesHtmlRouter = require('./routes/html/matches');
 const matchesApiRouter = require('./routes/api/matches');
+const betsApiRouter = require('./routes/api/bets');
 
 const errorController = require('./controllers/error');
-
-const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -70,6 +70,7 @@ app.use((req, res, next) => {
 app.use(matchesHtmlRouter);
 app.use('/api', matchesApiRouter);
 app.use('/api', authApiRouter);
+app.use('/api', betsApiRouter);
 app.use(authHtmlRouter);
 app.use(errorController.get404);
 
