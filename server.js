@@ -18,34 +18,44 @@ const errorController = require('./controllers/error');
 
 const app = express();
 
-app.engine('hbs', expressHbs({
-    layoutsDir: 'views/layouts/',
-    defaultLayout: 'main-layout',
-    extname: 'hbs'
-}));
+app.engine(
+    'hbs',
+    expressHbs({
+        layoutsDir: 'views/layouts/',
+        defaultLayout: 'main-layout',
+        extname: 'hbs'
+    })
+);
 app.set('view engine', 'hbs');
 
-app.use(express.urlencoded({
-    extended: false
-}));
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, PATCH, DELETE'
+    );
     next();
 });
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: new SequelizeStore({
-        db: db.sequelize,
-        expiration: 3 * 60 * 60 * 1000
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: new SequelizeStore({
+            db: db.sequelize,
+            expiration: 3 * 60 * 60 * 1000
+        })
     })
-}));
+);
 
 app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.isLoggedIn;
@@ -60,11 +70,11 @@ app.use((req, res, next) => {
     db.User.findByPk(req.session.user.id)
         .then(user => {
             req.user = user;
-            next()
+            next();
         })
         .catch(err => {
             next(err);
-        })
+        });
 });
 
 app.use(matchesHtmlRouter);
@@ -75,12 +85,12 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync()   // Add {force: true} if need to reset DB tables
+    .sync() // Add {force: true} if need to reset DB tables
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);
         });
     })
-    .catch((err) => {
+    .catch(err => {
         console.log(err);
-    })
+    });
