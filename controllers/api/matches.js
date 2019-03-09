@@ -3,6 +3,9 @@ const axios = require('axios');
 const querystring = require('querystring');
 const config = require('../../config/axios-config');
 const gameJson = require('../../todayGames.json');
+const db = require('../../models');
+const Op = db.Sequelize.Op;
+const dtHelper = require('../../util/date-hours');
 
 const nbaAPIurl = 'https://api.mysportsfeeds.com/v2.1/pull/nba/current';
 
@@ -127,7 +130,58 @@ exports.getMatchOdds = (req, res) => {
 
 
 exports.postComment = (req, res, next) => {
-  console.log('=====  Comments  =====');
-  console.log(req.body);
-}
-   
+    console.log('=====  Comments  =====');
+    console.log(req.body);
+};
+
+// exports.checkForUpdatedMatches = (req, res, next) => {
+//     db.Match.findAll({
+//         where: {
+//             playedStatus: false,
+//             startTime: {
+//                 [Op.and]: [{ [Op.lte]: new Date() }, { [Op.gte]: dtHelper }]
+//             }
+//         }
+//     }).then(matches => {
+//         console.log(matches);
+//         if (matches.length == 0) {
+//             res.send(false);
+//         }
+//         res.send(true);
+//     });
+// }
+
+//     // let betChoices = match.Bets.reduce((acc, bet) => {
+//     //     return acc +=
+//     //         }, {})
+
+//     // var deskTypes = desks.reduce((acc, desk) => {
+
+//     //     acc[desk.type] += 1
+//     //     return acc;
+
+//     // }, { sitting: 0, standing: 0 });
+
+// exports.determineMatchResults = (req, res, next) => {
+//     db.Match.findAll({
+
+//     })
+// }
+
+//     db.Match.findAll({
+//         where: {
+//             playedStatus: false,
+//             startTime: {
+//                 [Op.and]: [{ [Op.lte]: new Date() }, { [Op.gte]: dtHelper }]
+//             }
+//         },
+//         include: [db.Bet]
+//     }).then(matches => {
+//         console.log(matches);
+
+//         if (matches.length == 0) {
+//             // next();
+//         }
+//         // console.log(matches);
+//     });
+// };
