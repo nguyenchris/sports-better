@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const db = require('../../models');
 
 exports.postBet = (req, res, next) => {
@@ -13,24 +15,25 @@ exports.postBet = (req, res, next) => {
                 where: {
                     id: matchId
                 }
-            })
-                .then(match => {
-                    if (!match) {
-                        return db.Match.create({
-                            id: matchId,
-                            playedStatus: false,
-                            startTime: startTime
-                        }).then(match => {
-                            match.addBet(bet).then(bet => {
-                                return res.json(bet);
-                            });
+            }).then(match => {
+                if (!match) {
+                    return db.Match.create({
+                        id: matchId,
+                        playedStatus: false,
+                        startTime: startTime
+                    }).then(match => {
+                        match.addBet(bet).then(bet => {
+                            return res.json(bet);
                         });
-                    }
-                    match.addBet(bet);
-                })
-                .then(bet => {
-                    res.json(bet);
+                    });
+                }
+                match.addBet(bet).then(match => {
+                    res.json({
+                        bet: bet,
+                        match: match
+                    });
                 });
+            });
         })
         .catch(err => {
             console.log(err);
