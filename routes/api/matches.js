@@ -7,5 +7,7 @@ const router = express.Router();
 
 router.get('/matches', matchesApiController.getTodayMatches);
 
+router.get('matches/odds/:matches', )
+
 module.exports = router;
 
