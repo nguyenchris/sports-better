@@ -85,7 +85,7 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync() // Add {force: true} if need to reset DB tables
+    .sync({ force: true }) // Add {force: true} if need to reset DB tables
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);
