@@ -37,4 +37,6 @@ router.post('/logout', userApiController.postLogout);
 
 router.get('/user', userApiController.getUser);
 
+router.get('/user/bets/matches', userApiController.getUserMatchBets);
+
 module.exports = router;

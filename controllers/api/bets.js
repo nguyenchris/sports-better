@@ -54,9 +54,6 @@ exports.getMatchBets = (req, res, next) => {
         },
         include: [db.Bet]
     }).then(matches => {
-        // if (matches.length === 0) {
-        //     return res.json(matches);
-        // }
         res.json({
             matchesArr: matches
         });

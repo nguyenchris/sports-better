@@ -84,3 +84,19 @@ exports.getUser = (req, res, next) => {
         wins: req.user.wins
     });
 };
+
+exports.getUserMatchBets = (req, res, next) => {
+    const matchesArr = JSON.parse(req.query.matches);
+    console.log(matchesArr);
+    req.user
+        .getBets({
+            where: {
+                MatchId: matchesArr
+            }
+        })
+        .then(bets => {
+            res.json({
+                matchBets: bets
+            });
+        });
+};
