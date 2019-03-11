@@ -368,6 +368,9 @@ $(document).ready(function() {
                             userBetAway = true;
                         }
                     }
+                } else {
+                    userBetHome = false;
+                    userBetAway = false;
                 }
                 console.log(userBetHome);
                 console.log(userBetAway);
@@ -461,7 +464,7 @@ $(document).ready(function() {
                                     <div class="hidden content">
                                       <i class="${
                                           userBetHome ? 'x' : 'dollar sign'
-                                      } icon"></i>Cancel
+                                      } icon"></i>${userBetHome ? 'Cancel' : ''}
                                     </div>
                                   </div>
                                   <div class="ui basic animated fade red button bet away-bet ${
@@ -478,7 +481,7 @@ $(document).ready(function() {
                                     <div class="hidden content">
                                       <i class="${
                                           userBetAway ? 'x' : 'dollar sign'
-                                      } icon"></i>Cancel
+                                      } icon"></i>${userBetAway ? 'Cancel' : ''}
                                     </div>
                                   </div>
                               </div>
