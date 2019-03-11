@@ -48,16 +48,15 @@ exports.postUserBet = (req, res, next) => {
 
 exports.getMatchBets = (req, res, next) => {
     const matchesNumArr = JSON.parse(req.query.matches);
-    console.log(matchesNumArr);
     db.Match.findAll({
         where: {
             id: matchesNumArr
         },
         include: [db.Bet]
     }).then(matches => {
-        if (matches.length === 0) {
-            return res.json(matches);
-        }
+        // if (matches.length === 0) {
+        //     return res.json(matches);
+        // }
         res.json({
             matchesArr: matches
         });

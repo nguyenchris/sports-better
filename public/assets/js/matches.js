@@ -1,38 +1,4 @@
 $(document).ready(function() {
-    // class User {
-    //     constructor(id, name, imageUrl) {
-    //         this.id = id;
-    //         this.name = name;
-    //         this.email = email;
-    //         this.imageUrl = imageUrl;
-    //         this.wins = wins;
-    //         this.losses = losses;
-    //     }
-
-    //     getUserData() {
-    //         $.get('/api/user').then(function(result) {
-    //             console.log(result);
-    //         });
-    //     }
-
-    //     // updateUserData() {
-    //     //     $.ajax({
-    //     //         url: '/api/'
-    //     //     })
-    //     // }
-    // }
-
-    // function fetchUser() {
-    //     $.get('/api/user').then(function(fetchedUser) {
-    //         user = { ...fetchedUser };
-    //         return user;
-    //         // getTodayMatches();
-    //     });
-    // }
-
-    // const userTest = new User();
-    // userTest.getUserData();
-
     fetchUser();
 
     // Global variable to hold all the data for the selected date of matches
@@ -43,12 +9,31 @@ $(document).ready(function() {
     let user = {};
     let allMatchBets = {};
     let matchBetTotals = [];
+    let allMatchesData = {};
+    let currentUser;
+
+    // Helper functions
+    const createUser = ({ user, bets, betTotal }) => ({
+        user,
+        bets,
+        betTotal
+    });
 
     function fetchUser() {
-        $.get('/api/user').done(function(fetchedUser) {
-            user = { ...fetchedUser };
-            getTodayMatches();
+        $.get('/api/user').then(function(fetchedUser) {
+            return getUserBet(fetchedUser);
         });
+    }
+
+    function getUserBet(userData) {
+        $.get(`/api/bets/${userData.id}`)
+            .done(function(data) {
+                currentUser = createUser(data);
+                getTodayMatches();
+            })
+            .fail(function(err) {
+                console.log(err);
+            });
     }
 
     // Function to get all of today's matches
@@ -56,7 +41,6 @@ $(document).ready(function() {
         activateLoader();
         $.get('/api/matches')
             .done(function(data) {
-                // matchesData = { ...data };
                 $('#date-picker').attr('placeholder', data.date);
                 $('.date-header').text('TODAY');
                 getAllMatchBets(data);
@@ -76,10 +60,7 @@ $(document).ready(function() {
                 } else {
                     $('.date-header').text(data.day);
                 }
-                // matchesData = { ...data };
-                // console.log(matchesData);
                 getAllMatchBets(data);
-                // generateGameCard(data);
             })
             .fail(function(err) {
                 console.log(err);
@@ -97,47 +78,31 @@ $(document).ready(function() {
     }
 
     function getAllMatchBets(matches) {
-        let matchIdsArr = matches.games.map(match => {
+        const matchIdsArr = matches.games.map(match => {
             return match.schedule.id;
         });
 
         matchesData = { ...matches };
 
         console.log('matchesData', matchesData);
-        console.log('matchesArr', matchIdsArr);
-        console.log('query', encodeURIComponent(JSON.stringify(matchIdsArr)));
         $.get(
             `/api/bets/matches/?matches=${encodeURIComponent(
                 JSON.stringify(matchIdsArr)
             )}`
         )
             .done(function(data) {
-                if (data.length === 0) {
+                if (data.matchesArr.length === 0) {
                     return generateGameCard(matchesData);
                 }
-                // matchBetTotal = data.reduce((acc, match) => {
-                //     return match.Bets
-                // }, 0)
-                allMatchBets = data.matchesArr.map(match => {
+                matchesData.matchBetsArr = data.matchesArr.map(match => {
                     match.betTotal = match.Bets.reduce((acc, bet) => {
                         return (acc += bet.amount);
                     }, 0);
                     return match;
                 });
-                // console.log('allMatchBets ', allMatchBets)
-                generateGameCard(matchesData);
-                console.log('matchesWithBetData ', allMatchBets);
-            })
-            .fail(function(err) {
-                console.log(err);
-            });
-    }
 
-    function getUserBet(userData) {
-        $.get(`/api/bets/${user.id}`)
-            .done(function(data) {
-                user = { ...data };
-                console.log(user);
+                console.log('FINAL', matchesData);
+                generateGameCard(matchesData);
             })
             .fail(function(err) {
                 console.log(err);
@@ -354,14 +319,14 @@ $(document).ready(function() {
             $('#matches-div').append('<h1 class="white">No Games Found</h1>');
         } else {
             console.log('Markup', data);
-            let markupData = data.games.map(game => {
-                // if (!allMatchData) {
-                //     console.log(allMatchMatch);
-                // }
-                // let matchedBet = allMatchBets.find(match => {
-                //     return match.id;
-                // });
+            const markupData = data.games.map(game => {
                 const { playedStatus } = game.schedule;
+                let matchWithBets = {};
+                if (matchesData.matchBetsArr.length !== 0) {
+                    matchWithBets = matchesData.matchBetsArr.find(match => {
+                        return match.id == game.schedule.id;
+                    });
+                }
                 if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
                     game.score.homeScoreTotal = '';
                     game.score.awayScoreTotal = '';
@@ -416,8 +381,14 @@ $(document).ready(function() {
                           </div>
                           <div class="extra content bet-money">
                               <div class="ui description">
-                                  <p class="total-money">Total Bid Amt:</p>
-                                  <p class="num-bids">Total Bids:</p>
+                                  <p class="total-money">Total Bets: ${
+                                      matchWithBets
+                                          ? matchWithBets.Bets.length
+                                          : 0
+                                  }</p>
+                                  <p class="num-bids">Total Wagers: ${
+                                      matchWithBets ? matchWithBets.betTotal : 0
+                                  }</p>
                               </div>
                           </div>
                           <div class="extra content">
