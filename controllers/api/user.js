@@ -76,13 +76,11 @@ exports.postLogout = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
     res.json({
-        user: {
-            id: req.user.id,
-            name: req.user.name,
-            email: req.user.email,
-            imageUrl: req.user.imageUrl,
-            losses: req.user.losses,
-            wins: req.user.wins
-        }
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        imageUrl: req.user.imageUrl,
+        losses: req.user.losses,
+        wins: req.user.wins
     });
 };

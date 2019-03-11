@@ -1,5 +1,5 @@
 const express = require('express');
-const authApiController = require('../../controllers/api/auth');
+const userApiController = require('../../controllers/api/user');
 const { body, check } = require('express-validator/check');
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.post(
             })
             .trim()
     ],
-    authApiController.postLogin
+    userApiController.postLogin
 );
 
 router.post(
@@ -30,11 +30,11 @@ router.post(
             min: 5
         })
         .trim(),
-    authApiController.postSignup
+    userApiController.postSignup
 );
 
-router.post('/logout', authApiController.postLogout);
+router.post('/logout', userApiController.postLogout);
 
-router.get('/user', authApiController.getUser);
+router.get('/user', userApiController.getUser);
 
 module.exports = router;

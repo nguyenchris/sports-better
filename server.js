@@ -9,7 +9,7 @@ require('dotenv').config();
 const db = require('./models');
 
 const authHtmlRouter = require('./routes/html/auth');
-const authApiRouter = require('./routes/api/auth');
+const userApiController = require('./routes/api/user');
 const matchesHtmlRouter = require('./routes/html/matches');
 const matchesApiRouter = require('./routes/api/matches');
 const betsApiRouter = require('./routes/api/bets');
@@ -77,7 +77,7 @@ app.use((req, res, next) => {
         });
 });
 
-app.use('/api', authApiRouter);
+app.use('/api', userApiController);
 app.use(matchesHtmlRouter);
 app.use('/api', matchesApiRouter);
 app.use('/api', betsApiRouter);

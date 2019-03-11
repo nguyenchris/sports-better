@@ -3,7 +3,7 @@
 }
 
 .ui.placeholder.segment {
-    background-color: #1B1C1C;
+    background-color: #1b1c1c;
 }
 
 .ui.header.date-div {
@@ -16,7 +16,7 @@
 }
 
 .ui.segment.date-segment {
-    background-color: #1B1C1C;
+    background-color: #1b1c1c;
 }
 
 .ui.segment .date-header {
@@ -114,7 +114,7 @@
 
 .ui .segment .date-div .calendar input::placeholder {
     color: black;
-    opacity: .6;
+    opacity: 0.6;
     /* text-align: center; */
 }
 
@@ -158,7 +158,6 @@
     display: inline-block;
 } */
 
-
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -169,40 +168,37 @@
     }
 }
 
-
 @media only screen and (min-width: 1200px) {
     .ui.modal {
         width: 1100px;
-        margin: 0
+        margin: 0;
     }
 }
-
-
 
 @media only screen and (max-width: 767px) {
     .ui.modal {
         width: 95%;
-        margin: 0
+        margin: 0;
     }
 }
 
 @media only screen and (min-width: 768px) {
     .ui.modal {
         width: 88%;
-        margin: 0
+        margin: 0;
     }
 }
 
 @media only screen and (min-width: 1050px) {
     .ui.modal {
         width: 980px;
-        margin: 0
+        margin: 0;
     }
 }
 
 @media only screen and (min-width: 1920px) {
     .ui.modal {
         width: 1100px;
-        margin: 0
+        margin: 0;
     }
 }
