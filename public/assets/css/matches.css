@@ -158,6 +158,14 @@
     display: inline-block;
 } */
 
+.ui.basic.button.bet.chosen-bet {
+    font-weight: 800;
+}
+
+.chosen-bet {
+    font-weight: 800;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;

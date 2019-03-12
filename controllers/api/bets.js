@@ -82,3 +82,16 @@ exports.getUserBets = (req, res, next) => {
             });
     });
 };
+
+exports.deleteBet = (req, res, next) => {
+    const id = parseInt(req.params.id);
+    db.Bet.destroy({
+        where: {
+            id: id
+        }
+    })
+        .then(result => {
+            console.log('Deleted Bet', result);
+        })
+        .catch(err => console.log(err));
+};

@@ -36,15 +36,6 @@ app.use(
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader(
-//         'Access-Control-Allow-Methods',
-//         'GET, POST, PUT, PATCH, DELETE'
-//     );
-//     next();
-// });
-
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -85,7 +76,7 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync() // Add {force: true} if need to reset DB tables
+    .sync() // {force: true}
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);

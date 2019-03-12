@@ -19,17 +19,28 @@ $(document).ready(function() {
         betTotal
     });
 
-    function fetchUser() {
-        $.get('/api/user').then(function(fetchedUser) {
-            return getUserBet(fetchedUser);
+    function findWhere(array, criteria) {
+        var key = Object.keys(criteria)[0];
+        return array.find(obj => {
+            return obj[key] == criteria[key];
         });
     }
 
-    function getUserBet(userData) {
+    function fetchUser(update) {
+        $.get('/api/user').then(function(fetchedUser) {
+            return getUserBet(fetchedUser, update);
+        });
+    }
+
+    function getUserBet(userData, update) {
         $.get(`/api/bets/${userData.id}`)
             .done(function(data) {
-                currentUser = createUser(data);
-                getTodayMatches();
+                if (update) {
+                    currentUser = createUser(data);
+                } else {
+                    currentUser = createUser(data);
+                    getTodayMatches();
+                }
             })
             .fail(function(err) {
                 console.log(err);
@@ -53,6 +64,7 @@ $(document).ready(function() {
 
     function getMatchByDate(date, text) {
         activateLoader();
+        console.log('USER', currentUser);
         $.get(`/api/matches/${date}`)
             .done(function(data) {
                 if (data.today == text) {
@@ -102,36 +114,33 @@ $(document).ready(function() {
                 });
 
                 console.log('FINAL', matchesData);
-                getUserMatchBets(matchIdsArr);
+                generateGameCard(matchesData);
+                // getUserMatchBets(matchIdsArr);
             })
             .fail(function(err) {
                 console.log(err);
             });
-    }
-
-    function getUserMatchBets(matchIdsArr) {
-        console.log(matchIdsArr);
-        $.get(
-            `/api/user/bets/matches/?matches=${encodeURIComponent(
-                JSON.stringify(matchIdsArr)
-            )}`
-        ).done(bets => {
-            console.log(bets);
-            currentUser = { ...currentUser, ...bets };
-            console.log(currentUser);
-            generateGameCard(matchesData);
-        });
     }
 
     // Function to send post request with data for the user's selection
     function postBet(bet) {
         $.post(`/api/bets/user`, bet)
             .done(function(result) {
-                console.log('successful bet');
+                fetchUser(true);
+                updateBetButton(result, true);
             })
             .fail(function(err) {
                 console.log(err);
             });
+    }
+
+    function cancelBet(id) {
+        $.ajax({
+            url: `/api/bets/${id}`,
+            method: 'DELETE'
+        }).then(function(result) {
+            console.log(result);
+        });
     }
 
     // Helper function to sort through searched match data in order to find the data for a match by passing in the id
@@ -156,8 +165,6 @@ $(document).ready(function() {
         $('#matches-div').empty();
     }
 
-    function updateBetButton(matchObj, teamId) {}
-
     function getBetAmount(event, fields) {
         if (fields.amount) {
             $('.mini.modal').modal('hide');
@@ -181,9 +188,6 @@ $(document).ready(function() {
             const buttonDiv = $('.two.buttons').find(
                 `[data-teamid='${teamIdBet}']`
             );
-
-            console.log(buttonDivs);
-
             let localBetObj = {
                 bet: {
                     selectedTeamId: teamIdBet,
@@ -199,61 +203,68 @@ $(document).ready(function() {
             };
 
             betObj = { ...localBetObj };
-            console.log(betObj);
-
             postBet(betObj);
         }
     }
 
-    function changeBetBtnToInput(matchId) {
-        let markup;
-
-        user.bets.forEach(bet => {
-            // if (bet.MatchId == )
-            markup = `
-                <div class="ui basic animated fade green button bet home-bet ${
-                    playedStatus !== 'VS' ? 'disabled' : ''
-                }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
-                                    <div class="visible content">${
-                                        user.bet
-                                    }</div>
-                                    <div class="hidden content">
-                                      <i class="dollar sign icon"></i>
-                                    </div>
-                                  </div>
-            `;
-
-            $(`[data-teamid='${teamIdBet}']`).replaceWith(`
-                    <div class="ui basic animated fade green button bet home-bet ${
-                        playedStatus !== 'VS' ? 'disabled' : ''
-                    }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
-                                    <div class="visible content">Bet Home</div>
-                                    <div class="hidden content">
-                                      <i class="dollar sign icon"></i>
-                                    </div>
-                                  </div>
-                                  `);
+    function updateBetButton(betObj, isNew) {
+        const { amount, selectedTeamId } = betObj.bet;
+        const { awayTeamId, homeTeamId, id } = betObj.match;
+        const matchObj = matchesData.matchBetsArr.find(match => {
+            return match.id === id;
         });
+        let matchBets, matchBetsAmt;
+        if (matchObj == undefined) {
+            matchBets = 0;
+            matchBetTotals = 0;
+        } else {
+            matchBets = matchObj.Bets.length;
+            matchBetsAmt = matchObj.betTotal;
+        }
+
+        if (isNew) {
+            $(`.bet[data-teamid='${selectedTeamId}']`)
+                .addClass('chosen-bet')
+                .children('.visible')
+                .text(`You Bet: $${amount}`);
+
+            $(`.card[data-matchid='${id}'] .total-bet-val`).text(
+                `${matchBets + 1}`
+            );
+            $(`.card[data-matchid='${id}'] .total-bet-amt-val`).text(
+                `${matchBetsAmt + parseInt(amount)}`
+            );
+        } else {
+        }
     }
 
     // Click handler for when user selects bet button. Pulls teamId and input amount.
     function betClickHandler(event) {
         event.stopPropagation();
+        let isChosenBet = $(this).hasClass('chosen-bet');
         teamIdBet = parseInt($(this).attr('data-teamId'));
         matchIdBet = parseInt(
             $(this)
                 .parents()
                 .attr('data-matchId')
         );
+        console.log(isChosenBet);
+        if (isChosenBet) {
+            const betObj = currentUser.bets.find(bet => {
+                return bet.MatchId === matchIdBet;
+            });
 
-        $('.mini.modal')
-            .modal({
-                duration: 210,
-                onHidden: function() {
-                    $('#bet-amount').val('');
-                }
-            })
-            .modal('show');
+            cancelBet(betObj.id);
+        } else {
+            $('.mini.modal')
+                .modal({
+                    duration: 210,
+                    onHidden: function() {
+                        $('#bet-amount').val('');
+                    }
+                })
+                .modal('show');
+        }
     }
 
     // Activates bet button clicker and
@@ -353,9 +364,9 @@ $(document).ready(function() {
                 }
                 console.log(matchWithBets);
 
-                if (currentUser.matchBets.length !== 0) {
-                    matchWithUserBet = currentUser.matchBets.find(match => {
-                        return match.MatchId == game.schedule.id;
+                if (currentUser.bets.length !== 0) {
+                    matchWithUserBet = currentUser.bets.find(bet => {
+                        return bet.MatchId == game.schedule.id;
                     });
                     console.log(matchWithUserBet);
                     if (matchWithUserBet) {
@@ -436,14 +447,14 @@ $(document).ready(function() {
                           </div>
                           <div class="extra content bet-money">
                               <div class="ui description">
-                                  <p class="total-money">Total Bets: ${
+                                  <p class="total-bets">Total Bets: <span class="total-bet-val">${
                                       matchWithBets
                                           ? matchWithBets.Bets.length
                                           : 0
-                                  }</p>
-                                  <p class="num-bids">Total Wagers: ${
+                                  }</span></p>
+                                  <p class="total-bet-amt">Total Bet Amt: $<span class="total-bet-amt-val">${
                                       matchWithBets ? matchWithBets.betTotal : 0
-                                  }</p>
+                                  }</span></p>
                               </div>
                           </div>
                           <div class="extra content">
@@ -451,9 +462,13 @@ $(document).ready(function() {
                                   game.schedule.id
                               }">
                                   <div class="ui basic animated fade green button bet home-bet ${
-                                      playedStatus !== 'VS' ? 'disabled' : ''
-                                  }${
-                    userBetAway ? 'disabled' : ''
+                                      playedStatus !== 'VS'
+                                          ? 'disabled'
+                                          : userBetAway
+                                          ? 'disabled'
+                                          : ''
+                                  } ${
+                    userBetHome ? 'chosen-bet' : ''
                 }" data-teamId="${game.schedule.homeTeam.id}" tabindex="0">
                                     <div class="visible content">${
                                         userBetHome
@@ -468,9 +483,13 @@ $(document).ready(function() {
                                     </div>
                                   </div>
                                   <div class="ui basic animated fade red button bet away-bet ${
-                                      playedStatus !== 'VS' ? 'disabled' : ''
-                                  }${
-                    userBetHome ? 'disabled' : ''
+                                      playedStatus !== 'VS'
+                                          ? 'disabled'
+                                          : userBetHome
+                                          ? 'disabled'
+                                          : ''
+                                  } ${
+                    userBetAway ? 'chosen-bet' : ''
                 }" data-teamId="${game.schedule.awayTeam.id}" tabindex="0">
                                     <div class="visible content">${
                                         userBetAway
