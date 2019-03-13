@@ -8,8 +8,6 @@ exports.postLogin = (req, res, next) => {
     const errorMsg = {
         error: 'Email or password is incorrect.'
     };
-    console.log(errors.isEmpty());
-    console.log(errors.array());
     if (!errors.isEmpty()) {
         return res.status(422).json({ error: errors.array()[0].msg });
     }

@@ -92,7 +92,7 @@ exports.deleteBet = (req, res, next) => {
     })
         .then(result => {
             console.log('Deleted Bet', result);
-            res.status().send(result);
+            res.status(204).json(result);
         })
         .catch(err => console.log(err));
 };

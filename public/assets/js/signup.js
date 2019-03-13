@@ -1,16 +1,19 @@
-$(document).ready(function () {
+$(document).ready(function() {
     $('.ui.form').form({
         fields: {
             name: {
                 identifier: 'name',
-                rules: [{
-                    type: 'empty',
-                    prompt: 'Please enter your name'
-                }]
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Please enter your name'
+                    }
+                ]
             },
             email: {
                 identifier: 'email',
-                rules: [{
+                rules: [
+                    {
                         type: 'empty',
                         prompt: 'Please enter your e-mail'
                     },
@@ -22,19 +25,21 @@ $(document).ready(function () {
             },
             password: {
                 identifier: 'password',
-                rules: [{
+                rules: [
+                    {
                         type: 'empty',
                         prompt: 'Please enter your password'
                     },
                     {
-                        type: 'length[5]',
+                        type: 'minLength[5]',
                         prompt: 'Your password must be at least 5 characters'
                     }
                 ]
             },
             confirmPassword: {
                 identifier: 'confirmPassword',
-                rules: [{
+                rules: [
+                    {
                         type: 'empty',
                         prompt: 'Please confirm your password'
                     },
@@ -46,13 +51,18 @@ $(document).ready(function () {
             },
             url: {
                 identifier: 'url',
-                rules: [{
+                rules: [
+                    {
                         type: 'empty',
                         prompt: 'You must provide an image URL'
                     },
                     {
                         type: 'contains[http]',
                         prompt: 'You must provide a valid image URL'
+                    },
+                    {
+                        type: 'contains[.jpg]',
+                        prompt: 'Image URL must end with ".jpg"'
                     }
                 ]
             }
@@ -60,28 +70,27 @@ $(document).ready(function () {
         onSuccess: submitSignup
     });
 
-
     function submitSignup(event, fields) {
         event.preventDefault();
-        let div = $('<div class="ui active dimmer">')
+        let div = $('<div class="ui active dimmer">');
         let loader = $('<div class="ui large text loader">').text('Signing Up');
         div.append(loader);
-        $('form').append(div)
+        $('form').append(div);
         const obj = {
             name: fields.name,
             email: fields.email,
             password: fields.password,
             imageUrl: fields.url
-        }
+        };
 
         $.post('/api/signup', obj)
-            .done(function (data) {
+            .done(function(data) {
                 window.location.assign('/');
             })
             .fail(function(err) {
                 $('.dimmer').remove();
                 const msg = err.responseJSON.error;
-                $('.ui.form').form('add errors', [msg])
+                $('.ui.form').form('add errors', [msg]);
             });
     }
 });

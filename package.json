@@ -35,6 +35,7 @@
     "jquery": "^3.3.1",
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",
+    "nba-color": "^1.4.0",
     "sequelize": "^4.42.1"
   },
   "devDependencies": {

@@ -47,10 +47,8 @@ $(document).ready(function() {
                 window.location.assign('/');
             })
             .fail(function(err) {
-                console.log(err);
                 $('.dimmer').remove();
                 const msg = err.responseJSON.error;
-                console.log(msg);
                 $('.ui.form').form('add errors', [msg]);
             });
     }

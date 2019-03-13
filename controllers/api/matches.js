@@ -92,12 +92,18 @@ exports.getMatchByDate = (req, res, next) => {
         });
 };
 
-// Route: /api/matches/boxscore/:matchId
-exports.getMatchBoxscore = (req, res, next) => {
-    const id = req.params.matchId;
-    axios.get(`${nbaAPIurl}/games/${id}/boxscore.json`, config).then(result => {
-        res.json(result.data);
-    });
+// Route: /api/matches/stats/:homeId-:awayId
+exports.getMatchStats = (req, res, next) => {
+    const homeId = req.params.homeId;
+    const awayId = req.params.awayId;
+    axios
+        .get(
+            `${nbaAPIurl}/standings.json?team=${homeId},${awayId}&stats=FG%25,3P%25,FT%25,W,L`,
+            config
+        )
+        .then(result => {
+            res.json(result.data);
+        });
 };
 
 // Route: /api/matches/modal/:matchId
