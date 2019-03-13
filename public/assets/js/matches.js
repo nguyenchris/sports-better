@@ -63,7 +63,6 @@ $(document).ready(function() {
 
     function getMatchByDate(date, text) {
         activateLoader();
-        console.log('USER', currentUser);
         $.get(`/api/matches/${date}`)
             .done(function(data) {
                 if (data.today == text) {
@@ -83,7 +82,6 @@ $(document).ready(function() {
         console.log(homeId, awayId);
         $.get(`/api/matches/stats/${homeId}-${awayId}`)
             .done(function(result) {
-                // console.log(result);
                 modalHome = result.teams.find(team => {
                     return team.team.id == homeId;
                 });
@@ -146,7 +144,7 @@ $(document).ready(function() {
 
     // Helper function to sort through searched match data in order to find the data for a match by passing in the id
     function findMatchData(id) {
-        console.log(matchesData);
+        // console.log(matchesData);
         const matchObj = matchesData.games.find(game => {
             return game.schedule.id == id;
         });
@@ -170,13 +168,13 @@ $(document).ready(function() {
         if (fields.amount) {
             $('.mini.modal').modal('hide');
             const matchObj = findMatchData(matchIdBet);
-            console.log('=======BET DATA AFTER SUBMIT=======');
-            console.log('matchIdBet', matchIdBet);
-            console.log('teamIdBet', teamIdBet);
-            console.log('matchObj', matchObj);
-            console.log('amount', fields.amount);
-            console.log('USER', currentUser);
-            console.log('================================');
+            // console.log('=======BET DATA AFTER SUBMIT=======');
+            // console.log('matchIdBet', matchIdBet);
+            // console.log('teamIdBet', teamIdBet);
+            // console.log('matchObj', matchObj);
+            // console.log('amount', fields.amount);
+            // console.log('USER', currentUser);
+            // console.log('================================');
             let localBetObj = {
                 bet: {
                     selectedTeamId: teamIdBet,
@@ -197,7 +195,7 @@ $(document).ready(function() {
     }
 
     function updateBetButton(betObj, isNew) {
-        console.log(betObj);
+        // console.log(betObj);
         const { amount, selectedTeamId } = betObj.bet;
         const { awayTeamId, homeTeamId, id } = betObj.match;
         const matchObj = matchesData.matchBetsArr.find(match => {
