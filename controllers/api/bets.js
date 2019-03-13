@@ -36,7 +36,7 @@ exports.postUserBet = (req, res, next) => {
             return match.addBet(newBet);
         })
         .then(match => {
-            res.json({
+            res.status(200).json({
                 bet: newBet,
                 match: match
             });
@@ -54,7 +54,7 @@ exports.getMatchBets = (req, res, next) => {
         },
         include: [db.Bet]
     }).then(matches => {
-        res.json({
+        res.status(200).json({
             matchesArr: matches
         });
     });
@@ -70,7 +70,7 @@ exports.getUserBets = (req, res, next) => {
                 const betTotal = bets.reduce((acc, bet) => {
                     return (acc += bet.amount);
                 }, 0);
-                res.json({
+                res.status(200).json({
                     user: req.user,
                     bets: bets,
                     betTotal: betTotal
@@ -92,6 +92,7 @@ exports.deleteBet = (req, res, next) => {
     })
         .then(result => {
             console.log('Deleted Bet', result);
+            res.status().send(result);
         })
         .catch(err => console.log(err));
 };

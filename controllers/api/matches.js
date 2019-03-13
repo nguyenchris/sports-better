@@ -92,7 +92,7 @@ exports.getMatchByDate = (req, res, next) => {
         });
 };
 
-// Route: /api/matches/modal/:matchId
+// Route: /api/matches/boxscore/:matchId
 exports.getMatchBoxscore = (req, res, next) => {
     const id = req.params.matchId;
     axios.get(`${nbaAPIurl}/games/${id}/boxscore.json`, config).then(result => {
@@ -101,10 +101,10 @@ exports.getMatchBoxscore = (req, res, next) => {
 };
 
 // Route: /api/matches/modal/:matchId
-// exports.getModalMatch = (req, res, next) => {
-//     console.log(req.params);
-//     // axios.get('https://api.mysportsfeeds.com/v2.1/pull/nba/{season}/games/{game}/boxscore.{format}')
-// }
+exports.getModalMatch = (req, res, next) => {
+    console.log(req.params);
+    axios.get(`${nbaAPIurl}/games/{game}/boxscore.{format}`);
+};
 
 // Controller which returns static json file for testing today's gameJson
 exports.getGameJson = (req, res, next) => {

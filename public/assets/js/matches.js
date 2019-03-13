@@ -6,10 +6,6 @@ $(document).ready(function() {
     let matchIdBet = null;
     let teamIdBet = null;
     let betObj = {};
-    let user = {};
-    let allMatchBets = {};
-    let matchBetTotals = [];
-    let allMatchesData = {};
     let currentUser;
 
     // Helper functions
@@ -56,7 +52,6 @@ $(document).ready(function() {
                 $('#date-picker').attr('placeholder', data.date);
                 $('.date-header').text('TODAY');
                 getAllMatchBets(data);
-                // generateGameCard(data);
             })
             .fail(function(err) {
                 console.log(err);
@@ -81,7 +76,7 @@ $(document).ready(function() {
     }
 
     function getMatchDetails(id) {
-        $.get(`/api/matches/modal/${id}`)
+        $.get(`/api/matches/boxscore/${id}`)
             .done(function(game) {
                 console.log(game);
             })
@@ -94,15 +89,9 @@ $(document).ready(function() {
         const matchIdsArr = matches.games.map(match => {
             return match.schedule.id;
         });
-
+        const query = encodeURIComponent(JSON.stringify(matchIdsArr));
         matchesData = { ...matches };
-
-        console.log('matchesData', matchesData);
-        $.get(
-            `/api/bets/matches/?matches=${encodeURIComponent(
-                JSON.stringify(matchIdsArr)
-            )}`
-        )
+        $.get(`/api/bets/matches/?matches=${query}`)
             .done(function(data) {
                 matchesData.matchBetsArr = data.matchesArr.map(match => {
                     match.betTotal = match.Bets.reduce((acc, bet) => {
@@ -111,7 +100,6 @@ $(document).ready(function() {
                     return match;
                 });
                 console.log('FINAL', matchesData);
-
                 if (!update) {
                     generateGameCard(matchesData);
                 }
@@ -174,18 +162,6 @@ $(document).ready(function() {
             console.log('amount', fields.amount);
             console.log('USER', currentUser);
             console.log('================================');
-
-            // disabled buttons that were selected
-            const buttonDivs = $('.extra.content')
-                .find(`[data-matchId='${matchIdBet}']`)
-                .children('.bet');
-
-            // console.log(buttonDivs[0].has('data-teamid'));
-            const opposingTeamBtn = buttonDivs[0];
-
-            const buttonDiv = $('.two.buttons').find(
-                `[data-teamid='${teamIdBet}']`
-            );
             let localBetObj = {
                 bet: {
                     selectedTeamId: teamIdBet,
@@ -228,19 +204,15 @@ $(document).ready(function() {
             homeOrAway = 'Away';
             opponentTeamId = homeTeamId;
         }
-        console.log(selectedTeamId);
         if (isNew) {
             $(`.bet[data-teamid='${selectedTeamId}']`)
                 .addClass('chosen-bet')
                 .children('.visible')
                 .text(`You Bet: $${amount}`);
-
             $(`.bet[data-teamid='${selectedTeamId}']`)
                 .find('.icon')
                 .replaceWith(`<i class='x icon'></i><span>Cancel</span>`);
-
             $(`.bet[data-teamid='${opponentTeamId}']`).addClass('disabled');
-
             $(`.card[data-matchid='${id}'] .total-bet-val`).text(
                 `${matchBets + 1}`
             );
@@ -253,27 +225,17 @@ $(document).ready(function() {
                 .removeClass('chosen-bet')
                 .find('.visible')
                 .text(`Bet ${homeOrAway}`);
-
             $(`.bet[data-teamid='${selectedTeamId}']`)
                 .find('.hidden')
                 .empty()
                 .append("<i class='dollar sign icon'></i>");
-
-            // $(`.bet[data-teamid='${selectedTeamId}']`)
-            //     .find('span')
-            //     .empty()
-            //     .replaceWith(`<i class='dollar sign icon'></i>`);
-
             $(`.bet[data-teamid='${opponentTeamId}']`).removeClass('disabled');
-
             $(`.card[data-matchid='${id}'] .total-bet-val`).text(
                 `${matchBets - 1}`
             );
             $(`.card[data-matchid='${id}'] .total-bet-amt-val`).text(
                 `${matchBetsAmt - parseInt(amount)}`
             );
-            console.log(opponentTeamId);
-            console.log(betObj.bet.id);
             deleteBet(betObj.bet.id);
         }
     }
@@ -288,7 +250,6 @@ $(document).ready(function() {
                 .parents()
                 .attr('data-matchId')
         );
-        console.log(isChosenBet);
         if (isChosenBet) {
             betObj.match = matchesData.matchBetsArr.find(match => {
                 return match.id === matchIdBet;
@@ -296,7 +257,6 @@ $(document).ready(function() {
             betObj.bet = betObj.match.Bets.find(bet => {
                 return bet.MatchId === matchIdBet;
             });
-            console.log(betObj);
             updateBetButton(betObj, false);
         } else {
             $('.mini.modal')
@@ -313,17 +273,14 @@ $(document).ready(function() {
     // Activates bet button clicker and
     function activateListeners() {
         $('.bet').on('click', betClickHandler);
-
         $('.cards .dimmable').dimmer({
             on: 'hover'
         });
-
         $('.mini.modal').modal({
             onHidden: function() {
                 $('#bet-amount').val('');
             }
         });
-
         // Click handler to get match id
         $('.game-details').on('click', function() {
             const id = $(this).attr('data-matchId');
@@ -341,6 +298,9 @@ $(document).ready(function() {
                     //         duration: 10000
                     //     });
                     // },
+                    onShow: function() {
+                        getMatchDetails(id);
+                    },
                     onVisible: getChartFG
                     // onHide: function() {
                     //     $('.chart-area').empty();
@@ -348,7 +308,6 @@ $(document).ready(function() {
                 })
                 .modal('show');
         });
-        // $('.menu .item').tab();
         $('.menu>[data-tab=game-stats]').tab();
         $('.menu>[data-tab=bet-odds]').tab();
 
@@ -368,12 +327,10 @@ $(document).ready(function() {
             onSuccess: getBetAmount
         });
     }
-
     $('#calendar').calendar({
         type: 'date',
         onChange: function(date, text) {
             const utcDate = new Date(date);
-            console.log(text);
             getMatchByDate(utcDate, text);
         }
     });
@@ -385,7 +342,6 @@ $(document).ready(function() {
             removeLoader();
             $('#matches-div').append('<h1 class="white">No Games Found</h1>');
         } else {
-            console.log('Markup', data);
             const markupData = data.games.map(game => {
                 const { playedStatus } = game.schedule;
                 let userBetHome, userBetAway;
@@ -417,7 +373,6 @@ $(document).ready(function() {
                     userBetHome = false;
                     userBetAway = false;
                 }
-
                 if (!game.score.homeScoreTotal || !game.score.awayScoreTotal) {
                     game.score.homeScoreTotal = '';
                     game.score.awayScoreTotal = '';

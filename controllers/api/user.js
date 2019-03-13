@@ -8,9 +8,13 @@ exports.postLogin = (req, res, next) => {
     const errorMsg = {
         error: 'Email or password is incorrect.'
     };
+    console.log(errors.isEmpty());
+    console.log(errors.array());
     if (!errors.isEmpty()) {
-        res.status(422).json(errorMsg);
+        return res.status(422).json({ error: errors.array()[0].msg });
     }
+
+    console.log('nxt');
     db.User.findOne({
         where: {
             email: req.body.email
@@ -22,9 +26,7 @@ exports.postLogin = (req, res, next) => {
             }
             const isMatch = user.validPassword(req.body.password);
             if (!isMatch) {
-                return res.status(422).json({
-                    error: errorMsg
-                });
+                return res.status(422).json(errorMsg);
             } else {
                 req.session.user = user;
                 req.session.isLoggedIn = true;

@@ -9,7 +9,7 @@ router.get('/matches', matchesApiController.getTodayMatches);
 
 router.get('/matches/:date', matchesApiController.getMatchByDate);
 
-router.get('/matches/modal/:matchId', matchesApiController.getMatchBoxscore);
+router.get('/matches/boxscore/:matchId', matchesApiController.getMatchBoxscore);
 
 router.get('/matches/comments', matchesApiController.postComment);
 
