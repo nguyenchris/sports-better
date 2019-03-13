@@ -81,6 +81,7 @@ $(document).ready(function() {
         console.log(homeId, awayId);
         $.get(`/api/matches/stats/${homeId}-${awayId}`)
             .done(function(result) {
+                // console.log(result);
                 modalHome = result.teams.find(team => {
                     return team.team.id == homeId;
                 });
@@ -89,6 +90,8 @@ $(document).ready(function() {
                 });
                 console.log('HOME MODAL', modalHome);
                 console.log('AWAY MODAL', modalAway);
+                getChartFG();
+                insertCharts();
             })
             .fail(function(err) {
                 console.log(err);
@@ -304,14 +307,14 @@ $(document).ready(function() {
                 .modal({
                     transition: 'scale',
                     duration: 400,
-                    blurring: true,
+                    blurring: true
                     // onShow: function() {
                     //     $('.game-details').modal({
                     //         transition: 'fade',
                     //         duration: 10000
                     //     });
                     // },
-                    onVisible: getChartFG
+                    // onVisible:
                     // onHide: function() {
                     //     $('.chart-area').empty();
                     // }
@@ -527,39 +530,44 @@ $(document).ready(function() {
     //         ctx.save();
     //     }
     // });
+    function insertCharts() {
+        $('.home-modal')
+            .text(modalHome.color.name)
+            .css({ color: `rgb(${modalHome.color.rgb})` });
+        $('.away-modal')
+            .text(modalAway.color.name)
+            .css({ color: `rgb(${modalAway.color.rgb})` });
+        // let markup = `
+        // <div class="home-charts">
+        //     <div class="fg-chart charts">
+        //         <canvas id="home-fg"></canvas>
+        //     </div>
+        //     <div class="three-pt-chart charts">
+        //         <canvas id="home-3pt"></canvas>
+        //     </div>
+        //     <div class="ft-chart charts">
+        //         <canvas id="home-ft"></canvas>
+        //     </div>
+        // </div>
 
-    // let markup = `
-    //     <div class="home-charts">
-    //         <div class="fg-chart charts">
-    //             <canvas id="home-fg"></canvas>
-    //         </div>
-    //         <div class="three-pt-chart charts">
-    //             <canvas id="home-3pt"></canvas>
-    //         </div>
-    //         <div class="ft-chart charts">
-    //             <canvas id="home-ft"></canvas>
-    //         </div>
-    //     </div>
-
-    //     <div class="away-charts">
-    //         <div class="fg-chart charts" id="home-fg">
-    //             <canvas id="away-fg"></canvas>
-    //         </div>
-    //         <div class="three-pt-chart charts">
-    //             <canvas id="away-3pt"></canvas>
-    //         </div>
-    //         <div class="ft-chart charts">
-    //             <canvas id="away-ft"></canvas>
-    //         </div>
-    //     </div>`;
-    // }
+        // <div class="away-charts">
+        //     <div class="fg-chart charts" id="home-fg">
+        //         <canvas id="away-fg"></canvas>
+        //     </div>
+        //     <div class="three-pt-chart charts">
+        //         <canvas id="away-3pt"></canvas>
+        //     </div>
+        //     <div class="ft-chart charts">
+        //         <canvas id="away-ft"></canvas>
+        //     </div>
+        // </div>`;
+    }
 
     function getChartFG() {
         const hStats = modalHome.stats;
         const aStats = modalAway.stats;
         const home = modalHome.team;
         const away = modalAway.team;
-
         Chart.pluginService.register({
             beforeDraw: function(chart) {
                 const width = chart.chart.width,
@@ -578,20 +586,104 @@ $(document).ready(function() {
                 ctx.save();
             }
         });
-
         let homeFGdata = {
-            labels: ['FG%'],
+            labels: ['FG%', 'Missed%'],
             datasets: [
                 {
                     data: [
                         parseInt(hStats.fieldGoals.fgPct),
-                        100 - hStats.fieldGoals.fgPct
+                        parseInt(100 - hStats.fieldGoals.fgPct)
                     ],
-                    backgroundColor: ['rgb(114 76 159)', '#CCD0D3'],
-                    hoverBackgroundColor: ['#FF6384', '#CCD0D3']
+                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalHome.color.rgb})`,
+                        '#CCD0D3'
+                    ]
                 }
             ]
         };
+        let awayFGdata = {
+            labels: ['FG%', 'Missed%'],
+            datasets: [
+                {
+                    data: [
+                        parseInt(aStats.fieldGoals.fgPct),
+                        100 - aStats.fieldGoals.fgPct
+                    ],
+                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalAway.color.rgb})`,
+                        '#CCD0D3'
+                    ]
+                }
+            ]
+        };
+        let home3Ptdata = {
+            labels: ['3Pt%', 'Missed%'],
+            datasets: [
+                {
+                    data: [
+                        parseInt(hStats.fieldGoals.fg3PtPct),
+                        100 - hStats.fieldGoals.fg3PtPct
+                    ],
+                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalHome.color.rgb})`,
+                        '#CCD0D3'
+                    ]
+                }
+            ]
+        };
+        let away3Ptdata = {
+            labels: ['3Pt%', 'Missed%'],
+            datasets: [
+                {
+                    data: [
+                        parseInt(aStats.fieldGoals.fg3PtPct),
+                        100 - aStats.fieldGoals.fg3PtPct
+                    ],
+                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalAway.color.rgb})`,
+                        '#CCD0D3'
+                    ]
+                }
+            ]
+        };
+        let homeFTdata = {
+            labels: ['FT%', 'Missed%'],
+            datasets: [
+                {
+                    data: [
+                        parseInt(hStats.freeThrows.ftPct),
+                        100 - hStats.freeThrows.ftPct
+                    ],
+                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalHome.color.rgb})`,
+                        '#CCD0D3'
+                    ]
+                }
+            ]
+        };
+
+        let awayFTdata = {
+            labels: ['FT%', 'Missed%'],
+            datasets: [
+                {
+                    data: [
+                        parseInt(aStats.freeThrows.ftPct),
+                        100 - aStats.freeThrows.ftPct
+                    ],
+                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    hoverBackgroundColor: [
+                        `rgb(${modalAway.color.rgb})`,
+                        '#CCD0D3'
+                    ]
+                }
+            ]
+        };
+
         let homeFGChart = new Chart(document.getElementById('home-fg'), {
             type: 'doughnut',
             data: homeFGdata,
@@ -617,85 +709,132 @@ $(document).ready(function() {
                 }
             }
         });
+        let awayFGChart = new Chart(document.getElementById('away-fg'), {
+            type: 'doughnut',
+            data: awayFGdata,
+            options: {
+                elements: {
+                    center: {
+                        text: `${parseInt(aStats.fieldGoals.fgPct)}%`
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Field Goal %',
+                    fontSize: 15,
+                    padding: 8
+                },
+                animation: {
+                    duration: 1500
+                }
+            }
+        });
 
-        // let awayFGChart = new Chart(document.getElementById('away-fg'), {
-        //     type: 'doughnut',
-        //     data: data,
-        //     options: {
-        //         elements: {
-        //             center: {
-        //                 text: '50%'
-        //             }
-        //         },
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend: {
-        //             display: false
-        //         },
-        //         title: {
-        //             display: true,
-        //             text: 'Field Goal %',
-        //             fontSize: 15,
-        //             padding: 8
-        //         },
-        //         animation: {
-        //             duration: 1500
-        //         }
-        //     }
-        // });
-
-        // let home3Pt = new Chart(document.getElementById('home-3pt'), {
-        //     type: 'doughnut',
-        //     data: data,
-        //     options: {
-        //         elements: {
-        //             center: {
-        //                 text: '50%'
-        //             }
-        //         },
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend: {
-        //             display: false
-        //         },
-        //         title: {
-        //             display: true,
-        //             text: 'Field Goal %',
-        //             fontSize: 15,
-        //             padding: 8
-        //         },
-        //         animation: {
-        //             duration: 1500
-        //         }
-        //     }
-        // });
-
-        // // let homeFt = new Chart(document.getElementById('home-ft'), {
-        // //     type: 'doughnut',
-        // //     data: data,
-        // //     options: {
-        // //         elements: {
-        // //             center: {
-        // //                 text: '50%'
-        // //             }
-        // //         },
-        // //         responsive: true,
-        // //         maintainAspectRatio: false,
-        // //         legend: {
-        // //             display: false
-        // //         },
-        // //         title: {
-        // //             display: true,
-        // //             text: 'Field Goal %',
-        // //             fontSize: 15,
-        // //             padding: 8
-        // //         },
-        // //         animation: {
-        // //             duration: 1500
-        // //         }
-        // //     }
-        // // });
-
+        let home3Pt = new Chart(document.getElementById('home-3pt'), {
+            type: 'doughnut',
+            data: home3Ptdata,
+            options: {
+                elements: {
+                    center: {
+                        text: `${parseInt(hStats.fieldGoals.fg3PtPct)}%`
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Three Point %',
+                    fontSize: 15,
+                    padding: 8
+                },
+                animation: {
+                    duration: 1500
+                }
+            }
+        });
+        let away3Pt = new Chart(document.getElementById('away-3pt'), {
+            type: 'doughnut',
+            data: away3Ptdata,
+            options: {
+                elements: {
+                    center: {
+                        text: `${parseInt(aStats.fieldGoals.fg3PtPct)}%`
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Three Point %',
+                    fontSize: 15,
+                    padding: 8
+                },
+                animation: {
+                    duration: 1500
+                }
+            }
+        });
+        let homeFT = new Chart(document.getElementById('home-ft'), {
+            type: 'doughnut',
+            data: homeFTdata,
+            options: {
+                elements: {
+                    center: {
+                        text: `${parseInt(hStats.freeThrows.ftPct)}%`
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Free Throw %',
+                    fontSize: 15,
+                    padding: 8
+                },
+                animation: {
+                    duration: 1500
+                }
+            }
+        });
+        let awayFT = new Chart(document.getElementById('away-ft'), {
+            type: 'doughnut',
+            data: awayFTdata,
+            options: {
+                elements: {
+                    center: {
+                        text: `${parseInt(aStats.freeThrows.ftPct)}%`
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Free Throw %',
+                    fontSize: 15,
+                    padding: 8
+                },
+                animation: {
+                    duration: 1500
+                }
+            }
+        });
         // let away3Pt = new Chart(document.getElementById('away-3pt'), {
         //     type: 'doughnut',
         //     data: data,
@@ -721,7 +860,6 @@ $(document).ready(function() {
         //         }
         //     }
         // });
-
         // let awayFt = new Chart(document.getElementById('away-ft'), {
         //     type: 'doughnut',
         //     data: data,
