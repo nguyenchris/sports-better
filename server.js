@@ -76,7 +76,7 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync({ force: true }) // {force: true}
+    .sync() // {force: true}
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started at port ' + PORT);
