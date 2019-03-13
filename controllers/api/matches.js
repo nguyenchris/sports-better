@@ -103,27 +103,12 @@ exports.getMatchStats = (req, res, next) => {
             config
         )
         .then(result => {
-            // const arr = nbaColors.find(obj => {
-
-            // })
             const arr = result.data.teams.map(teamObj => {
                 const hex = nbaColors.find(obj => {
                     return obj.name.includes(teamObj.team.city);
-                    // teamObj.team.city.includes(obj.name);
                 });
                 return (teamObj.color = hex);
             });
-
-            // const arr = result.data.teams.map(team => {
-            //     team.color = nbaColors.find(teamColor => {
-            //         return
-            //     })
-            //     return team;
-            // });
-            // const newArr = arr.map(team => {
-
-            // })
-            // console.log(result.data);
             res.json(result.data);
         });
 };

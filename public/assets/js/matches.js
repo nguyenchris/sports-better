@@ -53,7 +53,8 @@ $(document).ready(function() {
             .done(function(data) {
                 $('#date-picker').attr('placeholder', data.date);
                 $('.date-header').text('TODAY');
-                getAllMatchBets(data);
+                matchesData = data;
+                getAllMatchBets(matchesData);
             })
             .fail(function(err) {
                 console.log(err);
@@ -70,7 +71,8 @@ $(document).ready(function() {
                 } else {
                     $('.date-header').text(data.day);
                 }
-                getAllMatchBets(data);
+                matchesData = data;
+                getAllMatchBets(matchesData);
             })
             .fail(function(err) {
                 console.log(err);
@@ -103,7 +105,7 @@ $(document).ready(function() {
             return match.schedule.id;
         });
         const query = encodeURIComponent(JSON.stringify(matchIdsArr));
-        matchesData = { ...matches };
+        // matchesData = { ...matches };
         $.get(`/api/bets/matches/?matches=${query}`)
             .done(function(data) {
                 matchesData.matchBetsArr = data.matchesArr.map(match => {
@@ -367,8 +369,7 @@ $(document).ready(function() {
                 } else {
                     matchWithBets = undefined;
                 }
-
-                if (currentUser.bets.length !== 0) {
+                if (currentUser.bets) {
                     matchWithUserBet = currentUser.bets.find(bet => {
                         return bet.MatchId == game.schedule.id;
                     });
