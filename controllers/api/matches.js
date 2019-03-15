@@ -1,6 +1,5 @@
 const moment = require('moment');
 const axios = require('axios');
-const querystring = require('querystring');
 const config = require('../../config/axios-config');
 const gameJson = require('../../todayGames.json');
 const db = require('../../models');

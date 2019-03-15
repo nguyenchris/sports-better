@@ -3,6 +3,7 @@ const path = require('path');
 const expressHbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const helmet = require('helmet');
 const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 
@@ -17,6 +18,8 @@ const betsApiRouter = require('./routes/api/bets');
 const errorController = require('./controllers/error');
 
 const app = express();
+
+app.use(helmet());
 
 app.engine(
     'hbs',
