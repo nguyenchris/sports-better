@@ -29,11 +29,12 @@ exports.getTodayMatches = (req, res, next) => {
                 let { playedStatus, startTime } = game.schedule;
                 let {
                     currentQuarterSecondsRemaining,
-                    currentQuarter
+                    currentQuarter,
+                    currentIntermission
                 } = game.score;
                 game.currentGameTime = 'Tipoff Soon';
                 if (playedStatus == 'LIVE') {
-                    if (game.currentIntermission === 2) {
+                    if (currentIntermission === 2) {
                         game.currentGameTime = 'HALFTIME';
                     }
                     if (currentQuarterSecondsRemaining !== null) {
