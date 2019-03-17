@@ -5,6 +5,7 @@ const gameJson = require('../../todayGames.json');
 const db = require('../../models');
 const Op = db.Sequelize.Op;
 const dtHelper = require('../../util/date-hours');
+const dateHelper = require('../../util/format-dates');
 const nbaColors = require('../../hex-colors.json');
 
 const nbaAPIurl = 'https://api.mysportsfeeds.com/v2.1/pull/nba/current';
@@ -15,6 +16,7 @@ exports.getTodayMatches = (req, res, next) => {
     const today = moment(new Date()).format('YYYYMMDD');
     const dateHeader = moment(new Date()).format('MMMM D, YYYY');
     const dayHeader = moment(new Date()).format('dddd');
+    let currentGameTime = 'Tipoff Soon';
 
     axios
         .get(
@@ -25,6 +27,27 @@ exports.getTodayMatches = (req, res, next) => {
             const origGameArray = result.data.games;
             const newGameArray = origGameArray.map(game => {
                 let { playedStatus, startTime } = game.schedule;
+                let {
+                    currentQuarterSecondsRemaining,
+                    currentQuarter
+                } = game.score;
+                game.currentGameTime = 'Tipoff Soon';
+                if (playedStatus == 'LIVE') {
+                    if (game.currentIntermission === 2) {
+                        game.currentGameTime = 'HALFTIME';
+                    }
+                    if (currentQuarterSecondsRemaining !== null) {
+                        const minutes = dateHelper.formatToMinutes(
+                            currentQuarterSecondsRemaining
+                        );
+                        if (currentQuarter > 4) {
+                            currentQuarter = 'OT';
+                        } else {
+                            currentQuarter = `Q${currentQuarter}`;
+                        }
+                        game.currentGameTime = `${currentQuarter} ${minutes}`;
+                    }
+                }
                 game.startTime = moment(startTime).format('h:mm a');
                 if (playedStatus == 'UNPLAYED') {
                     game.schedule.playedStatus = 'VS';

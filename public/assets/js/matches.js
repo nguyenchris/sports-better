@@ -425,7 +425,11 @@ $(document).ready(function() {
                                   }.svg">
                                   <img class="right floated tiny ui image away-img" src="/img/${
                                       game.schedule.awayTeam.abbreviation
-                                  }.svg"><div class="meta center aligned time"><span>${game.startTime.toUpperCase()} MST</span>
+                                  }.svg"><div class="meta center aligned time"><span>${
+                    playedStatus == 'LIVE'
+                        ? game.currentGameTime
+                        : game.startTime.toUpperCase() + ' MST'
+                }</span>
                                   </div>
                                   <div class="description">
                                       <span class="left aligned home-score">${
