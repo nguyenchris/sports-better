@@ -35,7 +35,7 @@ const hexArr = arr.map(team => {
     // if (team.league == 'nba') {
     return (obj = {
         name: team.name,
-        rgb: rgb[0]
+        rgb: [rgb[0], rgb[1]]
         // });
     });
     // return rgb2hex(team.colors.rgb);
@@ -45,6 +45,6 @@ console.log(hexArr);
 
 const color = JSON.stringify(hexArr);
 // const json = JSON.stringify(obj);
-fs.writeFile('hex-colors.json', color, 'utf8', () => {
+fs.writeFile('hex-colors2.json', color, 'utf8', () => {
     console.log('file created');
 });

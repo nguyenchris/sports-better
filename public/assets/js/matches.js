@@ -574,9 +574,12 @@ $(document).ready(function() {
                         parseInt(hStats.fieldGoals.fgPct),
                         parseInt(100 - hStats.fieldGoals.fgPct)
                     ],
-                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalHome.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalHome.color.rgb})`,
+                        `rgb(${modalHome.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }
@@ -590,9 +593,12 @@ $(document).ready(function() {
                         parseInt(aStats.fieldGoals.fgPct),
                         100 - aStats.fieldGoals.fgPct
                     ],
-                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalAway.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalAway.color.rgb})`,
+                        `rgb(${modalAway.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }
@@ -606,9 +612,12 @@ $(document).ready(function() {
                         parseInt(hStats.fieldGoals.fg3PtPct),
                         100 - hStats.fieldGoals.fg3PtPct
                     ],
-                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalHome.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalHome.color.rgb})`,
+                        `rgb(${modalHome.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }
@@ -622,9 +631,12 @@ $(document).ready(function() {
                         parseInt(aStats.fieldGoals.fg3PtPct),
                         100 - aStats.fieldGoals.fg3PtPct
                     ],
-                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalAway.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalAway.color.rgb})`,
+                        `rgb(${modalAway.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }
@@ -638,9 +650,12 @@ $(document).ready(function() {
                         parseInt(hStats.freeThrows.ftPct),
                         100 - hStats.freeThrows.ftPct
                     ],
-                    backgroundColor: [`rgb(${modalHome.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalHome.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalHome.color.rgb})`,
+                        `rgb(${modalHome.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }
@@ -655,9 +670,12 @@ $(document).ready(function() {
                         parseInt(aStats.freeThrows.ftPct),
                         100 - aStats.freeThrows.ftPct
                     ],
-                    backgroundColor: [`rgb(${modalAway.color.rgb})`, '#CCD0D3'],
+                    backgroundColor: [
+                        `rgb(${modalAway.color.rgb[0]})`,
+                        '#CCD0D3'
+                    ],
                     hoverBackgroundColor: [
-                        `rgb(${modalAway.color.rgb})`,
+                        `rgb(${modalAway.color.rgb[1]})`,
                         '#CCD0D3'
                     ]
                 }

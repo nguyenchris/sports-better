@@ -6,7 +6,7 @@ const db = require('../../models');
 const Op = db.Sequelize.Op;
 const dtHelper = require('../../util/date-hours');
 const dateHelper = require('../../util/format-dates');
-const nbaColors = require('../../hex-colors.json');
+const nbaColors = require('../../hex-colors2.json');
 
 const nbaAPIurl = 'https://api.mysportsfeeds.com/v2.1/pull/nba/current';
 
