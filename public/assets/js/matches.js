@@ -91,7 +91,6 @@ $(document).ready(function() {
                 console.log('HOME MODAL', modalHome);
                 console.log('AWAY MODAL', modalAway);
                 getChartFG();
-                insertCharts();
             })
             .fail(function(err) {
                 console.log(err);
@@ -289,11 +288,7 @@ $(document).ready(function() {
         $('.cards .dimmable').dimmer({
             on: 'hover'
         });
-        $('.mini.modal').modal({
-            onHidden: function() {
-                $('#bet-amount').val('');
-            }
-        });
+
         // Click handler to get match id
         $('.game-details').on('click', function() {
             const id = $(this).attr('data-matchId');
@@ -301,23 +296,20 @@ $(document).ready(function() {
             const homeId = matchObj.schedule.homeTeam.id;
             const awayId = matchObj.schedule.awayTeam.id;
             getMatchDetails(homeId, awayId);
-            console.log('matchId=', id);
-            console.log(homeId, awayId);
-            $('.ui.modal')
+            createCharts();
+            $('.game-modal')
                 .modal({
                     transition: 'scale',
                     duration: 400,
-                    blurring: true
-                    // onShow: function() {
-                    //     $('.game-details').modal({
-                    //         transition: 'fade',
-                    //         duration: 10000
-                    //     });
-                    // },
+                    blurring: true,
+                    onShow: function() {
+                        $('#modal-loader').addClass('active');
+                    },
                     // onVisible:
-                    // onHide: function() {
-                    //     $('.chart-area').empty();
-                    // }
+                    onHidden: function() {
+                        $('.chart-area').empty();
+                        $('.modal-header-teams').empty();
+                    }
                 })
                 .modal('show');
         });
@@ -516,54 +508,38 @@ $(document).ready(function() {
         }
     }
 
-    // function createCharts() {
-    // Chart.pluginService.register({
-    //     beforeDraw: function(chart) {
-    //         var width = chart.chart.width,
-    //             height = chart.chart.height,
-    //             ctx = chart.chart.ctx;
-    //         ctx.restore();
-    //         var fontSize = (height / 114).toFixed(2);
-    //         ctx.font = fontSize + 'em sans-serif';
-    //         ctx.textBaseline = 'middle';
-    //         var text = chart.config.options.elements.center.text,
-    //             textX = Math.round((width - ctx.measureText(text).width) / 2),
-    //             textY = height / 1.57;
-    //         ctx.fillText(text, textX, textY);
-    //         ctx.save();
-    //     }
-    // });
-    function insertCharts() {
-        $('.home-modal')
-            .text(modalHome.color.name)
-            .css({ color: `rgb(${modalHome.color.rgb})` });
-        $('.away-modal')
-            .text(modalAway.color.name)
-            .css({ color: `rgb(${modalAway.color.rgb})` });
-        // let markup = `
-        // <div class="home-charts">
-        //     <div class="fg-chart charts">
-        //         <canvas id="home-fg"></canvas>
-        //     </div>
-        //     <div class="three-pt-chart charts">
-        //         <canvas id="home-3pt"></canvas>
-        //     </div>
-        //     <div class="ft-chart charts">
-        //         <canvas id="home-ft"></canvas>
-        //     </div>
-        // </div>
+    function createCharts() {
+        let markupHeader = `
+            <div class="home-modal ui left floated"></div>
+            <div class="away-modal ui right floated"></div>
+        `;
 
-        // <div class="away-charts">
-        //     <div class="fg-chart charts" id="home-fg">
-        //         <canvas id="away-fg"></canvas>
-        //     </div>
-        //     <div class="three-pt-chart charts">
-        //         <canvas id="away-3pt"></canvas>
-        //     </div>
-        //     <div class="ft-chart charts">
-        //         <canvas id="away-ft"></canvas>
-        //     </div>
-        // </div>`;
+        let markup = `
+        <div class="home-charts">
+            <div class="fg-chart charts">
+                <canvas id="home-fg"></canvas>
+            </div>
+            <div class="three-pt-chart charts">
+                <canvas id="home-3pt"></canvas>
+            </div>
+            <div class="ft-chart charts">
+                <canvas id="home-ft"></canvas>
+            </div>
+        </div>
+
+        <div class="away-charts">
+            <div class="fg-chart charts" id="home-fg">
+                <canvas id="away-fg"></canvas>
+            </div>
+            <div class="three-pt-chart charts">
+                <canvas id="away-3pt"></canvas>
+            </div>
+            <div class="ft-chart charts">
+                <canvas id="away-ft"></canvas>
+            </div>
+        </div>`;
+        document.querySelector('.chart-area').innerHTML = markup;
+        document.querySelector('.modal-header-teams').innerHTML = markupHeader;
     }
 
     function getChartFG() {
@@ -571,6 +547,7 @@ $(document).ready(function() {
         const aStats = modalAway.stats;
         const home = modalHome.team;
         const away = modalAway.team;
+
         Chart.pluginService.register({
             beforeDraw: function(chart) {
                 const width = chart.chart.width,
@@ -708,7 +685,7 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
@@ -733,7 +710,7 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
@@ -759,7 +736,7 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
@@ -784,7 +761,7 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
@@ -809,7 +786,7 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
@@ -834,62 +811,17 @@ $(document).ready(function() {
                     padding: 8
                 },
                 animation: {
-                    duration: 1500
+                    duration: 1700
                 }
             }
         });
-        // let away3Pt = new Chart(document.getElementById('away-3pt'), {
-        //     type: 'doughnut',
-        //     data: data,
-        //     options: {
-        //         elements: {
-        //             center: {
-        //                 text: '50%'
-        //             }
-        //         },
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend: {
-        //             display: false
-        //         },
-        //         title: {
-        //             display: true,
-        //             text: 'Field Goal %',
-        //             fontSize: 15,
-        //             padding: 8
-        //         },
-        //         animation: {
-        //             duration: 1500
-        //         }
-        //     }
-        // });
-        // let awayFt = new Chart(document.getElementById('away-ft'), {
-        //     type: 'doughnut',
-        //     data: data,
-        //     options: {
-        //         elements: {
-        //             center: {
-        //                 text: '50%'
-        //             }
-        //         },
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend: {
-        //             display: false
-        //         },
-        //         title: {
-        //             display: true,
-        //             text: 'Field Goal %',
-        //             fontSize: 15,
-        //             padding: 8
-        //         },
-        //         animation: {
-        //             duration: 1500
-        //         }
-        //     }
-        // });
+
+        $('#modal-loader').removeClass('active');
+        $('.home-modal')
+            .text(modalHome.color.name)
+            .css({ color: `rgb(${modalHome.color.rgb})` });
+        $('.away-modal')
+            .text(modalAway.color.name)
+            .css({ color: `rgb(${modalAway.color.rgb})` });
     }
-    //     /****************************
-    //           Jeremy's Code Below for comments
-    //      */
 });
