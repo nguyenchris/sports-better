@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', matchesController.getIndex);
 
-router.get('/matches', isAuth, checkGames, matchesController.getMatches);
+router.get('/matches', isAuth, matchesController.getMatches);
 
 router.get('/leaders', isAuth, checkGames, matchesController.getLeaderboard);
 
