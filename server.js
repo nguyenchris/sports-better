@@ -4,6 +4,7 @@ const expressHbs = require('express-handlebars');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const helmet = require('helmet');
+
 const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 
@@ -22,53 +23,53 @@ const app = express();
 app.use(helmet());
 
 app.engine(
-    'hbs',
-    expressHbs({
-        layoutsDir: 'views/layouts/',
-        defaultLayout: 'main-layout',
-        extname: 'hbs'
-    })
+  'hbs',
+  expressHbs({
+    layoutsDir: 'views/layouts/',
+    defaultLayout: 'main-layout',
+    extname: 'hbs'
+  })
 );
 app.set('view engine', 'hbs');
 
 app.use(
-    express.urlencoded({
-        extended: true
-    })
+  express.urlencoded({
+    extended: true
+  })
 );
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: new SequelizeStore({
-            db: db.sequelize,
-            expiration: 3 * 60 * 60 * 1000
-        })
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new SequelizeStore({
+      db: db.sequelize,
+      expiration: 3 * 60 * 60 * 1000
     })
+  })
 );
 
 app.use((req, res, next) => {
-    res.locals.isLoggedIn = req.session.isLoggedIn;
-    next();
+  res.locals.isLoggedIn = req.session.isLoggedIn;
+  next();
 });
 
 app.use((req, res, next) => {
-    console.log(req.session.user);
-    if (!req.session.user) {
-        return next();
-    }
-    db.User.findByPk(req.session.user.id)
-        .then(user => {
-            req.user = user;
-            next();
-        })
-        .catch(err => {
-            next(err);
-        });
+  console.log(req.session.user);
+  if (!req.session.user) {
+    return next();
+  }
+  db.User.findByPk(req.session.user.id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 app.use('/api', userApiController);
@@ -79,12 +80,12 @@ app.use(authHtmlRouter);
 app.use(errorController.get404);
 
 db.sequelize
-    .sync() // {force: true}
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log('Server started at port ' + PORT);
-        });
-    })
-    .catch(err => {
-        console.log(err);
+  .sync() // {force: true}
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server started at port ${PORT}`);
     });
+  })
+  .catch(err => {
+    console.log(err);
+  });
