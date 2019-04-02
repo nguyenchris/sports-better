@@ -10,33 +10,61 @@ module.exports = (req, res, next) => {
   db.Match.findAll({
     where: {
       playedStatus: false
-    }
+    },
+    include: [db.Bet]
   })
     .then(matches => {
       if (matches) {
         matches.forEach(match => {
-          const { startTime, id, homeTeamId, awayTeamId } = match;
+          const { startTime, id, homeTeamId, awayTeamId, Bets } = match;
           let winningTeamId = '';
           if (Date.parse(startTime) < Date.now()) {
             axios
               .get(`${nbaAPIurl}/games/${id}/boxscore.json?offset=10`, config)
               .then(result => {
-                const { homeScoreTotal, awayScoreTotal } = result.data.scoring;
-                if (homeScoreTotal > awayScoreTotal) {
-                  winningTeamId = homeTeamId;
-                } else {
-                  winningTeamId = awayTeamId;
+                if (result.data) {
+                  const {
+                    homeScoreTotal,
+                    awayScoreTotal
+                  } = result.data.scoring;
+                  if (homeScoreTotal > awayScoreTotal) {
+                    winningTeamId = homeTeamId;
+                  } else {
+                    winningTeamId = awayTeamId;
+                  }
+                  return match
+                    .update({
+                      winningTeamId: winningTeamId,
+                      playedStatus: true,
+                      awayScoreTotal: awayScoreTotal,
+                      homeScoreTotal: homeScoreTotal
+                    })
+                    .then(match => {
+                      match.Bets.forEach(bet => {
+                        if (bet) {
+                          let isWin;
+                          if (bet.selectedTeamId === winningTeamId) {
+                            isWin = true;
+                          } else {
+                            isWin = false;
+                          }
+                          db.User.findByPk(bet.UserId).then(user => {
+                            const updatedWins = user.wins + 1;
+                            const updatedLosses = user.losses + 1;
+                            if (isWin) {
+                              user.update({
+                                wins: updatedWins
+                              });
+                            } else {
+                              user.update({
+                                losses: updatedLosses
+                              });
+                            }
+                          });
+                        }
+                      });
+                    });
                 }
-                return match
-                  .update({
-                    winningTeamId: winningTeamId,
-                    playedStatus: true,
-                    awayScoreTotal: awayScoreTotal,
-                    homeScoreTotal: homeScoreTotal
-                  })
-                  .then(result => {
-                    return result;
-                  });
               });
           }
         });
