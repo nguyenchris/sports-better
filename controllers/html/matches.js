@@ -20,8 +20,6 @@ exports.getMatches = async (req, res, next) => {
 // Route: /leaders
 exports.getLeaderboard = (req, res, next) => {
   let fetchedUsers = [];
-  let total = null;
-  let rank = null;
   let totalBets = null;
   let winningTeamsArr = [];
   db.Match.findAll({
@@ -39,19 +37,33 @@ exports.getLeaderboard = (req, res, next) => {
       });
     })
     .then(users => {
+      // const filteredUsers = users.filter(user => {
+      //   return winningTeamsArr.some(id => !user.Bets.includes(id));
+      // });
+      // const filteredUsers = winningTeamsArr.some(
+      //   id => !users[0].Bets.includes(id)
+      // );
+
+      // console.log(filteredUsers);
       // Get properties for each user, calculate win total and loss amounts
       users.forEach(el => {
         const { name, imageUrl, wins, losses } = el;
         const total = el.Bets.reduce((total, bet) => {
-          return (total += bet.amount);
+          return total + bet.amount;
         }, 0);
         const winTotal = el.Bets.reduce((acc, obj) => {
           if (winningTeamsArr.find(id => obj.selectedTeamId === id)) {
-            return (acc += obj.amount);
+            return acc + obj.amount;
           }
           return acc;
         }, 0);
         let lossTotal = total - winTotal;
+        let profit = null;
+        if (winTotal < lossTotal) {
+          profit = 0;
+        } else {
+          profit = winTotal - lossTotal;
+        }
         totalBets = el.Bets.length;
         fetchedUsers.push({
           name,
@@ -61,19 +73,23 @@ exports.getLeaderboard = (req, res, next) => {
           total,
           totalBets,
           winTotal,
-          lossTotal
+          lossTotal,
+          profit
         });
       });
       let rank = 1;
-      fetchedUsers = fetchedUsers.sort((a, b) => b.winTotal - a.lossTotal);
-      fetchedUsers = fetchedUsers.map(obj => {
+      let sortedUsers = fetchedUsers.sort((a, b) => b.profit - a.profit);
+      console.log(sortedUsers);
+      let finalUsersSort = sortedUsers.map(obj => {
         obj['rank'] = rank++;
         return obj;
       });
+      console.log(finalUsersSort);
+
       res.render('leaders', {
         title: 'Leaders',
         activeLeaders: true,
-        users: fetchedUsers
+        users: finalUsersSort
       });
     })
     .catch(err => {

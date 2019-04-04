@@ -25,7 +25,7 @@ exports.getTodayMatches = (req, res, next) => {
           currentQuarter,
           currentIntermission
         } = game.score;
-        game.indexDate = moment(startTime).format('YYYY-MM-DD h:mm:ss');
+        game.indexDate = moment(startTime).format('YYYY-MM-DD HH:mm:ss');
         game.currentGameTime = 'Tipoff Soon';
         if (playedStatus == 'LIVE') {
           if (currentIntermission === 2) {

@@ -11,15 +11,11 @@ module.exports = (req, res, next) => {
     include: [db.Bet]
   })
     .then(matches => {
-      console.log('MATCHES', matches);
       if (matches) {
         matches.forEach(match => {
           const { startTime, id, homeTeamId, awayTeamId } = match;
           let winningTeamId = '';
-          console.log('===========================');
-          console.log(Date.parse('2019-04-04 02:00:00.000000'));
-          console.log(Date.now());
-          if (Date.parse(startTime) < Date.now()) {
+          if (Date.parse(startTime) < Date.now() + 11500000) {
             axios
               .get(`${nbaAPIurl}/games/${id}/boxscore.json?offset=10`, config)
               .then(result => {
@@ -43,7 +39,6 @@ module.exports = (req, res, next) => {
                     .then(match => {
                       match.Bets.forEach(bet => {
                         if (bet) {
-                          console.log(bet);
                           let isWin;
                           if (bet.selectedTeamId === winningTeamId) {
                             isWin = true;
@@ -73,7 +68,6 @@ module.exports = (req, res, next) => {
       }
 
       next();
-      console.log('hi');
     })
     .catch(err => {
       console.log(err);
