@@ -1,10 +1,6 @@
 const moment = require('moment');
 const axios = require('axios');
 const config = require('../../config/axios-config');
-const gameJson = require('../../todayGames.json');
-const db = require('../../models');
-const Op = db.Sequelize.Op;
-const dtHelper = require('../../util/date-hours');
 const dateHelper = require('../../util/format-dates');
 const nbaColors = require('../../hex-colors2.json');
 
@@ -29,6 +25,7 @@ exports.getTodayMatches = (req, res, next) => {
           currentQuarter,
           currentIntermission
         } = game.score;
+        game.indexDate = moment(startTime).format('YYYY-MM-DD h:mm:ss');
         game.currentGameTime = 'Tipoff Soon';
         if (playedStatus == 'LIVE') {
           if (currentIntermission === 2) {
@@ -137,56 +134,11 @@ exports.getModalMatch = (req, res, next) => {
 };
 
 // Controller which returns static json file for testing today's gameJson
-exports.getGameJson = (req, res, next) => {
-  res.json(gameJson);
-};
+// exports.getGameJson = (req, res, next) => {
+//   res.json(gameJson);
+// };
 
 exports.postComment = (req, res, next) => {
   console.log('=====  Comments  =====');
   console.log(req.body);
 };
-
-// exports.checkForUpdatedMatches = (req, res, next) => {
-//     db.Match.findAll({
-//         where: {
-//             playedStatus: false,
-//             startTime: {
-//                 [Op.and]: [{ [Op.lte]: new Date() }, { [Op.gte]: dtHelper }]
-//             }
-//         }
-//     }).then(matches => {
-//         console.log(matches);
-//         if (matches.length == 0) {
-//             res.send(false);
-//         }
-//         res.send(true);
-//     });
-// }
-
-//     // let betChoices = match.Bets.reduce((acc, bet) => {
-//     //     return acc +=
-//     //         }, {})
-
-// exports.determineMatchResults = (req, res, next) => {
-//     db.Match.findAll({
-
-//     })
-// }
-
-//     db.Match.findAll({
-//         where: {
-//             playedStatus: false,
-//             startTime: {
-//                 [Op.and]: [{ [Op.lte]: new Date() }, { [Op.gte]: dtHelper }]
-//             }
-//         },
-//         include: [db.Bet]
-//     }).then(matches => {
-//         console.log(matches);
-
-//         if (matches.length == 0) {
-//             // next();
-//         }
-//         // console.log(matches);
-//     });
-// };

@@ -157,6 +157,10 @@
     height: 100px;
     display: inline-block;
 } */
+.choose-date {
+  margin-top: 5px;
+  font-size: 12px;
+}
 
 .team-avg {
   margin-bottom: 3px;

@@ -28,11 +28,24 @@ $(document).ready(function() {
       return {
         home: homeTeam.abbreviation,
         away: awayTeam.abbreviation,
-        venue: venue.name
+        venue: venue.name,
+        sliderDate: game.indexDate
       };
     });
 
     createMarkup(newArr);
+    createSliderData(newArr);
+  }
+
+  function createSliderData(arr) {
+    arr.forEach((game, i) => {
+      if (i > 2) {
+        return;
+      }
+      $(`.slider-${i}-teams`).html(`${game.home}<span>VS</span>${game.away}`);
+      $(`.slider-${i}-date`).attr('data-date', `${game.sliderDate}`);
+    });
+    owl5();
   }
 
   function createMarkup(arr) {
@@ -138,6 +151,75 @@ $(document).ready(function() {
             }
           }
         });
+      });
+    }
+  }
+
+  function owl5() {
+    var owl5 = $('#slider-five');
+    if (owl5.length) {
+      console.log('hi');
+      // Carousel initialization
+      owl5.owlCarousel({
+        animateIn: 'fadeIn',
+        items: 1,
+        autoplay: true,
+        loop: true,
+        dots: true,
+        autoplayTimeout: 8000
+      });
+    }
+    // add animate.css class(es) to the elements to be animated
+    function setAnimation(_elem, _InOut) {
+      // Store all animationend event name in a string.
+      // cf animate.css documentation
+      const animationEndEvent =
+        'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+
+      _elem.each(function() {
+        var $elem = $(this);
+        var $animationType = 'animated ' + $elem.data('animation-' + _InOut);
+
+        $elem.addClass($animationType).one(animationEndEvent, function() {
+          $elem.removeClass($animationType); // remove animate.css Class at the end of the animations
+        });
+      });
+    }
+
+    // Fired before current slide change
+    owl5.on('change.owl.carousel', function(event) {
+      var $currentItem = $('.owl-item', owl5).eq(event.item.index);
+      var $elemsToanim = $currentItem.find('[data-animation-out]');
+      setAnimation($elemsToanim, 'out');
+    });
+
+    // Fired after current slide has been changed
+    owl5.on('changed.owl.carousel', function(event) {
+      var $currentItem = $('.owl-item', owl5).eq(event.item.index);
+      var $elemsToanim = $currentItem.find('[data-animation-in]');
+      setAnimation($elemsToanim, 'in');
+    });
+
+    var CountTimer = $('.CountDownTimer');
+    if (CountTimer.length) {
+      $('.CountDownTimer').TimeCircles({
+        fg_width: 0.03,
+        bg_width: 0.8,
+        circle_bg_color: '#ffffff',
+        time: {
+          Days: {
+            color: '#fbc02d'
+          },
+          Hours: {
+            color: '#fbc02d'
+          },
+          Minutes: {
+            color: '#fbc02d'
+          },
+          Seconds: {
+            color: '#fbc02d'
+          }
+        }
       });
     }
   }
