@@ -1,7 +1,4 @@
 const db = require('../models');
-const Op = db.Sequelize.Op;
-const dtHelper = require('../util/date-hours');
-const moment = require('moment');
 const axios = require('axios');
 const config = require('../config/axios-config');
 const nbaAPIurl = 'https://api.mysportsfeeds.com/v2.1/pull/nba/current';
@@ -14,10 +11,14 @@ module.exports = (req, res, next) => {
     include: [db.Bet]
   })
     .then(matches => {
+      console.log('MATCHES', matches);
       if (matches) {
         matches.forEach(match => {
-          const { startTime, id, homeTeamId, awayTeamId, Bets } = match;
+          const { startTime, id, homeTeamId, awayTeamId } = match;
           let winningTeamId = '';
+          console.log('===========================');
+          console.log(Date.parse('2019-04-04 02:00:00.000000'));
+          console.log(Date.now());
           if (Date.parse(startTime) < Date.now()) {
             axios
               .get(`${nbaAPIurl}/games/${id}/boxscore.json?offset=10`, config)
@@ -42,6 +43,7 @@ module.exports = (req, res, next) => {
                     .then(match => {
                       match.Bets.forEach(bet => {
                         if (bet) {
+                          console.log(bet);
                           let isWin;
                           if (bet.selectedTeamId === winningTeamId) {
                             isWin = true;
@@ -71,6 +73,7 @@ module.exports = (req, res, next) => {
       }
 
       next();
+      console.log('hi');
     })
     .catch(err => {
       console.log(err);
