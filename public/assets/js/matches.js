@@ -79,7 +79,7 @@ $(document).ready(function() {
   }
 
   function getMatchDetails(homeId, awayId) {
-    console.log(homeId, awayId);
+    // console.log(homeId, awayId);
     $.get(`/api/matches/stats/${homeId}-${awayId}`)
       .done(function(result) {
         modalHome = result.teams.find(team => {
@@ -88,8 +88,8 @@ $(document).ready(function() {
         modalAway = result.teams.find(team => {
           return team.team.id == awayId;
         });
-        console.log('HOME MODAL', modalHome);
-        console.log('AWAY MODAL', modalAway);
+        // console.log('HOME MODAL', modalHome);
+        // console.log('AWAY MODAL', modalAway);
         getChartFG();
       })
       .fail(function(err) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
           }, 0);
           return match;
         });
-        console.log('FINAL', matchesData);
+        // console.log('FINAL', matchesData);
         if (!update) {
           generateGameCard(matchesData);
         }
