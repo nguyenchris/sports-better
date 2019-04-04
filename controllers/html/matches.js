@@ -23,15 +23,35 @@ exports.getLeaderboard = (req, res, next) => {
   let total = null;
   let rank = null;
   let totalBets = null;
-  db.User.findAll({
-    include: [db.Bet]
+  let winningTeamsArr = [];
+  db.Match.findAll({
+    where: {
+      playedStatus: true
+    }
   })
+    .then(matches => {
+      // Find all the winning team id's and push into one array
+      matches.forEach(match => {
+        winningTeamsArr.push(match.winningTeamId);
+      });
+      return db.User.findAll({
+        include: [db.Bet]
+      });
+    })
     .then(users => {
+      // Get properties for each user, calculate win total and loss amounts
       users.forEach(el => {
         const { name, imageUrl, wins, losses } = el;
         const total = el.Bets.reduce((total, bet) => {
           return (total += bet.amount);
         }, 0);
+        const winTotal = el.Bets.reduce((acc, obj) => {
+          if (winningTeamsArr.find(id => obj.selectedTeamId === id)) {
+            return (acc += obj.amount);
+          }
+          return acc;
+        }, 0);
+        let lossTotal = total - winTotal;
         totalBets = el.Bets.length;
         fetchedUsers.push({
           name,
@@ -39,8 +59,16 @@ exports.getLeaderboard = (req, res, next) => {
           wins,
           losses,
           total,
-          totalBets
+          totalBets,
+          winTotal,
+          lossTotal
         });
+      });
+      let rank = 1;
+      fetchedUsers = fetchedUsers.sort((a, b) => b.winTotal - a.lossTotal);
+      fetchedUsers = fetchedUsers.map(obj => {
+        obj['rank'] = rank++;
+        return obj;
       });
       res.render('leaders', {
         title: 'Leaders',

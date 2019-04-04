@@ -1,16 +1,20 @@
-
-#tableHeader{
-    margin-top: 5%;
-    margin-left: 10%;
-    color: white;
-    
-
+#tableHeader {
+  color: white;
+  text-align: center;
 }
-.ui.table{
-
-    width: 70%;
+.details {
+  text-align: center;
+  color: white;
 }
 
-.ui.inverted.grey.table{
-    margin: 0% 10% 0% 10%;
+.ui.table.leader-table {
+  /* width: 75%; */
+}
+
+.ui.inverted.grey.table {
+  margin: auto;
+}
+
+.image.header {
+  /* height: 10%; */
 }

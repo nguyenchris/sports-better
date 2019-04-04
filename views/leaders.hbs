@@ -1,27 +1,31 @@
-<div class="ui container">
-
-    <table class="ui inverted grey selectable inverted table">
+<div class="ui container leader-container">
+    <table class="ui inverted grey selectable inverted table leader-table">
         <h1 id="tableHeader">Leaders</h1>
+        <h4 class="details">*Ranked by Total Won ($)*</h4>
         <thead>
             <tr>
                 <th></th>
                 <th>Rank</th>
                 <th>Member</th>
                 <th>Total Bets</th>
-                <th>Total Won</th>
+                <th>Wins - Losses</th>
+                <th>Amount Won ($)</th>
+                <th>Amount Lost ($)</th>
+                <th>Total Spent ($)</th>
             </tr>
         </thead>
         <tbody>
             {{#each users}}
             <tr>
                 <td>
-                    <h4 class="ui image header">
-                        <img class="ui mini rounded image" src="{{imageUrl}}"></img>
-                    </h4>
+                    <img class="ui tiny rounded image" src="{{imageUrl}}"></img>
                 </td>
-                <td></td>
+                <td>{{rank}}</td>
                 <td>{{name}}</td>
                 <td>{{totalBets}}</td>
+                <td>{{wins}} - {{losses}}</td>
+                <td>$ {{winTotal}}</td>
+                <td>$ {{lossTotal}}</td>
                 <td>$ {{total}}</td>
             </tr>
             {{/each}}
