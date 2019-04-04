@@ -22,6 +22,7 @@ exports.getLeaderboard = (req, res, next) => {
   let fetchedUsers = [];
   let totalBets = null;
   let winningTeamsArr = [];
+  let finishedMatchesArr = [];
   db.Match.findAll({
     where: {
       playedStatus: true
@@ -31,33 +32,36 @@ exports.getLeaderboard = (req, res, next) => {
       // Find all the winning team id's and push into one array
       matches.forEach(match => {
         winningTeamsArr.push(match.winningTeamId);
+        finishedMatchesArr.push(match.id);
       });
       return db.User.findAll({
         include: [db.Bet]
       });
     })
     .then(users => {
-      // const filteredUsers = users.filter(user => {
-      //   return winningTeamsArr.some(id => !user.Bets.includes(id));
-      // });
-      // const filteredUsers = winningTeamsArr.some(
-      //   id => !users[0].Bets.includes(id)
-      // );
-
-      // console.log(filteredUsers);
       // Get properties for each user, calculate win total and loss amounts
       users.forEach(el => {
         const { name, imageUrl, wins, losses } = el;
+        let gameNotDoneBets = 0;
+        // Calculates total amount spent for bets
         const total = el.Bets.reduce((total, bet) => {
           return total + bet.amount;
         }, 0);
+
+        // Calculates total amount won if the game has finished
+        // if not finished add bet amount to gameNotDoneBets
         const winTotal = el.Bets.reduce((acc, obj) => {
-          if (winningTeamsArr.find(id => obj.selectedTeamId === id)) {
-            return acc + obj.amount;
+          if (!finishedMatchesArr.find(id => obj.MatchId === id)) {
+            gameNotDoneBets += obj.amount;
+          } else {
+            if (winningTeamsArr.find(id => obj.selectedTeamId == id)) {
+              return acc + obj.amount;
+            }
           }
           return acc;
         }, 0);
-        let lossTotal = total - winTotal;
+        // Calculate lossTotal by subtracting any bets from games which have not yet completed, then subtract winTotal in order to get final total lost
+        let lossTotal = total - gameNotDoneBets - winTotal;
         let profit = null;
         if (winTotal < lossTotal) {
           profit = 0;
@@ -79,12 +83,10 @@ exports.getLeaderboard = (req, res, next) => {
       });
       let rank = 1;
       let sortedUsers = fetchedUsers.sort((a, b) => b.profit - a.profit);
-      console.log(sortedUsers);
       let finalUsersSort = sortedUsers.map(obj => {
         obj['rank'] = rank++;
         return obj;
       });
-      console.log(finalUsersSort);
 
       res.render('leaders', {
         title: 'Leaders',

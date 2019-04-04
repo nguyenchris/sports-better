@@ -14,10 +14,13 @@ module.exports = (req, res, next) => {
       if (matches) {
         matches.forEach(match => {
           const { startTime, id, homeTeamId, awayTeamId } = match;
-          let winningTeamId = '';
+          let winningTeamId = null;
+          console.log('ID', id);
+          console.log('homeTeamId', homeTeamId);
+          console.log('awayTeamId', awayTeamId);
           if (Date.parse(startTime) < Date.now() + 11500000) {
             axios
-              .get(`${nbaAPIurl}/games/${id}/boxscore.json?offset=10`, config)
+              .get(`${nbaAPIurl}/games/${id}/boxscore.json?`, config)
               .then(result => {
                 if (result.data) {
                   const {
@@ -29,6 +32,7 @@ module.exports = (req, res, next) => {
                   } else {
                     winningTeamId = awayTeamId;
                   }
+                  console.log(winningTeamId);
                   return match
                     .update({
                       winningTeamId: winningTeamId,
