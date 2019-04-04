@@ -51,6 +51,7 @@
         </div>
 
         <div class="ui bottom attached active tab segment stats-tab" data-tab="game-stats">
+            <div class="season-avg-header">Season Averages</div>
 
             <div class="ui header modal-header-teams">
                 <div class="home-modal ui left floated"></div>
@@ -92,8 +93,8 @@
 
 
         <h3 class="ui dividing header">Comments</h3>
-
-        <div class="comment">
+        <p class="comment-unavailable">Sorry, comments are currently unavailable.</p>
+        {{!-- <div class="comment">
             <a class="avatar">
                 <img src="">
             </a>
@@ -109,12 +110,12 @@
                     <a class="reply">Reply</a>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <form class="ui reply form">
             <div class="field">
                 <textarea></textarea>
             </div>
-            <div class="ui blue labeled submit icon button">
+            <div class="ui blue labeled submit icon button disabled">
                 <i class="icon edit"></i> Add Reply
             </div>
         </form>

@@ -1,149 +1,149 @@
 .ui .cards {
-    margin-top: 3%;
+  margin-top: 3%;
 }
 
 .ui.placeholder.segment {
-    background-color: #1b1c1c;
+  background-color: #1b1c1c;
 }
 
 .ui.header.date-div {
-    /* background-color: #1B1C1C; */
-    color: white;
+  /* background-color: #1B1C1C; */
+  color: white;
 }
 
 .ui.header h4 {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .ui.segment.date-segment {
-    background-color: #1b1c1c;
+  background-color: #1b1c1c;
 }
 
 .ui.segment .date-header {
-    margin-top: 0px;
-    font-size: 20px;
+  margin-top: 0px;
+  font-size: 20px;
 }
 
 .ui .cards .card {
-    width: 31%;
-    animation: fadeIn 1.3s;
+  width: 31%;
+  animation: fadeIn 1.3s;
 }
 
 .ui .cards .card .info .home {
-    margin-left: 22px;
-    font-size: 13px;
+  margin-left: 22px;
+  font-size: 13px;
 }
 
 .ui .cards .card .info .away {
-    margin-right: 25px;
-    font-size: 13px;
+  margin-right: 25px;
+  font-size: 13px;
 }
 
 .ui .cards .card .info .header {
-    margin-bottom: 3px;
-    margin-top: 2px;
+  margin-bottom: 3px;
+  margin-top: 2px;
 }
 
 .ui .cards .card .dimmable .info .header .live {
-    padding-top: 0px;
-    font-size: 18px;
-    font-weight: lighter;
+  padding-top: 0px;
+  font-size: 18px;
+  font-weight: lighter;
 }
 
 .ui .cards .card .dimmable .image {
-    margin-top: 5px;
-    padding-bottom: 0px;
+  margin-top: 5px;
+  padding-bottom: 0px;
 }
 
 .ui .cards .card .info .header .home-team {
-    margin-left: 16px;
-    font-size: 22px;
+  margin-left: 16px;
+  font-size: 22px;
 }
 
 .ui .cards .card .info .header .away-team {
-    margin-right: 18px;
-    font-size: 22px;
+  margin-right: 18px;
+  font-size: 22px;
 }
 
 .ui .cards .card .info .time {
-    margin-top: 9px;
+  margin-top: 9px;
 }
 
 .ui .cards .card .dimmable {
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .ui .cards .card .dimmable .description {
-    padding-top: 8px;
+  padding-top: 8px;
 }
 
 .ui .cards .card .dimmable .home-score {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .ui .cards .card .dimmable .away-score {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .white {
-    color: white;
+  color: white;
 }
 
 .red {
-    color: red;
+  color: red;
 }
 
 .ui .cards .card .dimmable .info .header .live.red {
-    padding: 1.5px 4px;
-    border: solid 1.5px red;
+  padding: 1.5px 4px;
+  border: solid 1.5px red;
 }
 
 .ui .cards .card .content .bet-money .total-money {
-    text-align: center;
+  text-align: center;
 }
 
 .ui .segment .date-div .calendar input {
-    width: 90%;
-    cursor: pointer;
-    text-align: center;
+  width: 90%;
+  cursor: pointer;
+  text-align: center;
 }
 
 .ui .segment .date-div .calendar i {
-    margin-left: 5%;
+  margin-left: 5%;
 }
 
 .ui .segment .date-div .calendar input::placeholder {
-    color: black;
-    opacity: 0.6;
-    /* text-align: center; */
+  color: black;
+  opacity: 0.6;
+  /* text-align: center; */
 }
 
 .chart-area {
-    text-align: center;
-    /* width: 100%; */
+  text-align: center;
+  /* width: 100%; */
 }
 
 .charts {
-    width: 110px;
-    height: 110px;
+  width: 110px;
+  height: 110px;
 }
 
 .home-charts {
-    width: 45%;
-    display: inline-block;
+  width: 45%;
+  display: inline-block;
 }
 
 .home-charts .charts {
-    float: left;
+  float: left;
 }
 
 .away-charts .charts {
-    float: right;
+  float: right;
 }
 
 .away-charts {
-    width: 45%;
-    display: inline-block;
+  width: 45%;
+  display: inline-block;
 }
 
 /* .fg-chart {
@@ -158,65 +158,87 @@
     display: inline-block;
 } */
 
+.team-avg {
+  margin-bottom: 3px;
+}
+
+.comment-unavailable {
+  text-align: center;
+}
+
+.season-avg {
+  font-size: 10px;
+  color: grey;
+  margin-top: 0;
+  text-align: center;
+}
+
+.season-avg-header {
+  font-size: 25px;
+  /* color: grey; */
+  margin-top: 5px;
+  text-align: center;
+}
+
 .home-modal {
-    display: inline-block;
-    margin-left: 17%;
+  display: inline-block;
+  margin-left: 15%;
 }
 
 .away-modal {
-    float: right;
-    margin-right: 17%;
+  float: right;
+  margin-right: 15%;
 }
 
 .ui.basic.button.bet.chosen-bet {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 .chosen-bet {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media only screen and (min-width: 1200px) {
-    .ui.modal {
-        width: 1100px;
-        margin: 0;
-    }
+  .ui.modal {
+    width: 1100px;
+    margin: 0;
+  }
 }
 
 @media only screen and (max-width: 767px) {
-    .ui.modal {
-        width: 95%;
-        margin: 0;
-    }
+  .ui.modal {
+    width: 95%;
+    margin: 0;
+  }
 }
 
 @media only screen and (min-width: 768px) {
-    .ui.modal {
-        width: 88%;
-        margin: 0;
-    }
+  .ui.modal {
+    width: 88%;
+    margin: 0;
+  }
 }
 
 @media only screen and (min-width: 1050px) {
-    .ui.modal {
-        width: 980px;
-        margin: 0;
-    }
+  .ui.modal {
+    width: 980px;
+    margin: 0;
+  }
 }
 
 @media only screen and (min-width: 1920px) {
-    .ui.modal {
-        width: 1100px;
-        margin: 0;
-    }
+  .ui.modal {
+    width: 1100px;
+    margin: 0;
+  }
 }
