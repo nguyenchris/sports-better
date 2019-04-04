@@ -106,7 +106,7 @@ $(document).ready(function() {
           //stagePadding: (stagePadding ? stagePadding : 0),
           autoplay: autoplay ? true : false,
           autoplayTimeout: autoplayTimeout ? autoplayTimeout : 1000,
-          smartSpeed: smartSpeed ? smartSpeed : 250,
+          smartSpeed: smartSpeed ? smartSpeed : 100,
           dots: dots ? true : false,
           nav: nav ? true : false,
           navText: [
